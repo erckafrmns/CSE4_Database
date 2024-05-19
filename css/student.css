@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+body{
+    font-family: "Poppins", sans-serif;
+    background-color: #D8DEE6;
+}
+
+/* SIDE NAVBAR */
+nav{
+    height: 100%;
+    width: 245px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #2C3E50;
+    overflow-x: hidden;
+    box-shadow: 0 4px 5px #2C3E50;
+}
+
+nav h2{
+    color: white;
+    font-size: 30px;
+    font-style: italic;
+    padding: 30px 0 75px 40px;
+}
+
+nav a{
+    display: block;
+    text-decoration: none;
+    color: #4F6F8F;
+    font-size: 20px;
+    margin: 0 40px 60px 40px ;
+    transition: all 0.3s ease;
+}
+
+nav a:hover{
+    color: white;
+}
+
+nav a.active{
+    color: white;
+}
+
+/* CONTENT PANEL */
+.contentPanel{
+    height: 100%;
+    width: auto;
+    margin: 0 0 0 245px;
+    text-align: center;
+    color: #14202B;
+}
+
+.contentPanel h1{
+    padding: 20px 0 0 40px;
+    font-size: 35px;
+}
+
+/* FORM */
+.form-container{
+    display: inline-block;
+    border: 2px solid #2C3E50;
+    border-radius: 120px 30px 120px 30px / 80px 30px 80px 30px;
+    text-align: left;
+    width: 750px;
+    height: 470px;
+    box-shadow: 0 4px 8px #2C3E50;
+}
+
+form{
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    margin: 40px;
+}
+
+label{
+    grid-column: 1;
+    font-size: 25px;
+    font-weight: 500;
+    font-style: normal;
+    text-align: right;
+    margin: 10px 20px 30px 0;
+    color: #14202B;
+}
+
+input {
+    grid-column: 2; 
+    width: 350px; 
+    height: 50px;
+    box-sizing: border-box; 
+    background-color: #F0F0EA;
+    font-size: 18px;
+    color: #14202B;
+    font-weight: 600;
+    padding: 6px 0 0 12px;
+    border-radius: 5px 5px 5px 5px;
+    margin-top: 3px;
+}
+
+input::-webkit-input-placeholder{
+    color: #999;
+    font-size: 16px;
+}
+
+#MajorID {
+    grid-column: 2;
+    width: 350px;
+    height: 50px;
+    box-sizing: border-box;
+    background-color: #F0F0EA;
+    font-weight: 600;
+    padding: 6px 0 6px 12px;
+    border-radius: 5px;
+    margin-top: 3px;
+    color: #14202B;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#MajorID option{
+    color: #14202B;
+    font-size: 18px;
+    font-weight: 600;
+    width: 350px;
+}
+
+button {
+    grid-column: 1 / span 2; 
+    justify-self: center;
+    padding: 10px 20px; 
+    width: 300px;
+    height: 55px;
+    border-radius: 20px 20px 20px 20px;
+    margin-top: 16px;
+    background-color: #2C3E50;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover{
+    color: #4F6F8F;
+    transform: scale(0.95);
+}
