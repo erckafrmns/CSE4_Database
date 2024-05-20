@@ -26,11 +26,15 @@ if (isset($_POST["submit"])){
 <body>
 
     <nav>
-        <h2>FORMS  <i class="fa-brands fa-wpforms" style="color: #ffffff; font-style: italic;"></i></h2>
-        <a href="index.php"><i class="fa-solid fa-user fa-sm"></i>               STUDENT</a>
-        <a href="major.php"><i class="fa-solid fa-book fa-sm"></i>               MAJOR</a>
-        <a href="department.php"><i class="fa-solid fa-building-columns fa-sm"></i>               DEPARTMENT</a>
-        <a href="course.php" class="active"><i class="fa-solid fa-book-open-reader fa-sm"></i>               COURSE</a>
+        <h2><i class="fa-brands fa-wpforms" style="color: #ffffff; font-style: italic;"></i>            FORMS</h2>
+        <div class="forms-items">
+            <a href="index.php"><i class="fa-solid fa-user fa-sm"></i>               STUDENT</a>
+            <a href="major.php"><i class="fa-solid fa-book fa-sm"></i>               MAJOR</a>
+            <a href="department.php"><i class="fa-solid fa-building-columns fa-sm"></i>               DEPARTMENT</a>
+            <a href="course.php" class="active"><i class="fa-solid fa-book-open-reader fa-sm"></i>               COURSE</a>
+        </div>
+        <button onclick="location.href='report.php'" class="tabs"><i class="fa-regular fa-file-lines"></i>            Report</button>
+        <button onclick="location.href='admin.php'" class="tabs"><i class="fa-solid fa-user-tie"></i>            Admin</button>
     </nav>
 
     <div class="contentPanel">

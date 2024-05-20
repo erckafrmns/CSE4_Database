@@ -6,7 +6,6 @@ body{
 }
 
 /* SIDE NAVBAR */
-
 nav{
     height: 100%;
     width: 245px;
@@ -21,26 +20,71 @@ nav{
 
 nav h2{
     color: white;
-    font-size: 30px;
+    font-size: 22px;
     font-style: italic;
-    padding: 30px 0 75px 40px;
+    margin-top: 15px;
+    padding: 40px 40px; 
+    box-sizing: border-box;
 }
 
-nav a{
+.tabs {
+    display: block;
+    font-size: 20px;
+    font-style: italic;
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    height:50px;
+    width: 100px;
+    border-radius: 20px 20px 20px 20px;
+    border: 1px solid #4F6F8F;
+    background-color: #2C3E50;
+    margin: 0 40px 20px 40px;
+    padding: 10px 0;
+    cursor: pointer;
+    text-align: center;
+    width: calc(100% - 80px); 
+    box-sizing: border-box; 
+}
+
+.tabs:hover {
+    color: #4F6F8F; 
+}
+
+.forms-items{
+    margin-bottom: 140px;
+}
+
+.forms-items a{
     display: block;
     text-decoration: none;
     color: #4F6F8F;
-    font-size: 20px;
-    margin: 0 40px 60px 40px ;
+    font-size: 18px;
+    margin: 0 40px 30px 55px ;
     transition: all 0.3s ease;
 }
 
-nav a:hover{
+.forms-items a:hover{
     color: white;
 }
 
-nav a.active{
+.forms-items a.active{
     color: white;
+}
+
+nav h2::after,
+.tabs a::after {
+    content: '';
+    display: block;
+    height: 1px;
+    width:100%;
+    background-color: #d8d8d3;
+    margin: 10px auto;
+}
+
+nav h2::after {
+    margin-bottom: 0; 
+    padding-bottom: 0;
 }
 
 /* CONTENT PANEL */
@@ -57,14 +101,15 @@ nav a.active{
 }
 
 .contentPanel h1{
-    padding: 10px 0 10px 30px;
-    font-size: 35px;
+    padding: 40px 0 0 40px;
+    font-size: 25px;
+    margin-bottom: 40px;
 }
 
 /* FORM */
 
 .form-header{
-    width: 850px;
+    width: 800px;
     height: 50px;
     background-color: #2C3E50;
     border: 2px solid #2C3E50;
@@ -83,7 +128,7 @@ nav a.active{
     border: 2px solid #2C3E50;
     border-radius: 0 0 30px 30px;
     text-align: left;
-    width: 849px;
+    width: 799px;
     height: 350px;
     box-shadow: 0 4px 8px #2C3E50;
 }
@@ -119,22 +164,22 @@ input {
     margin-top: 3px;
 }
 
-.submitBTN {
+.contentPanel button {
     grid-column: 1 / span 2; 
     justify-self: center;
     padding: 10px 20px; 
-    width: 300px;
-    height: 55px;
+    width: 280px;
+    height: 50px;
     border-radius: 20px 20px 20px 20px;
     margin-top: 16px;
     background-color: #2C3E50;
     color: white;
-    font-size: 20px;
+    font-size: 18px;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.submitBTN:hover{
+.contentPanel button:hover{
     color: #4F6F8F;
     transform: scale(0.95);
 }
