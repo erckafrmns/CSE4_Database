@@ -43,7 +43,7 @@ if (isset($_POST["submit"])){
     </nav>
 
     <div class="contentPanel">
-        <h1><i class="fa-solid fa-building-columns"></i>                         Department Form</h1>
+        <h1 class="defaultH1"><i class="fa-solid fa-building-columns"></i>                         Department Form</h1>
 
         <div class="form-header">
             <h3><i class="fa-solid fa-file-circle-plus" style="color: #F0F0EA;"></i>                ADD NEW DEPARTMENT</h3>

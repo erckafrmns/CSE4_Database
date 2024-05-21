@@ -61,7 +61,7 @@ while ($row = mysqli_fetch_assoc($departmentResult)) {
     </nav>
 
     <div class="contentPanel">
-        <h1><i class="fa-solid fa-book"></i>                         Major Form</h1>
+        <h1 class="defaultH1"><i class="fa-solid fa-book"></i>                         Major Form</h1>
 
         <div class="form-header">
             <h3><i class="fa-solid fa-file-circle-plus" style="color: #F0F0EA;"></i>                ADD NEW MAJOR</h3>
