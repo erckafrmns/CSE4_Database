@@ -6,9 +6,15 @@ if (isset($_POST["submit"])){
     $CourseName = $_POST["CourseName"];
     $Credits = $_POST["Credits"];
 
-    $query = "INSERT INTO department VALUES ('$CourseID', '$CourseName', '$Credits')";
-    mysqli_query($conn, $query);
-    echo "<script> alert(''$CourseName' was Successfully Added!'); </script>";
+    $check_query = "SELECT * FROM course WHERE CourseID = '$CourseID'";
+    $check_result = mysqli_query($conn, $check_query);
+    if (mysqli_num_rows($check_result) > 0) {
+        echo "<script> alert('Course ID: $CourseID already exists!'); </script>";
+    } else {
+        $query = "INSERT INTO course VALUES ('$CourseID', '$CourseName', '$Credits')";
+        mysqli_query($conn, $query);
+        echo "<script> alert('$CourseName was Successfully Added!'); </script>";
+    }
 }  
 
 ?>
@@ -54,7 +60,7 @@ if (isset($_POST["submit"])){
                 </div>
                 <div class="form-group">
                     <label for="Credits">Credits :</label>
-                    <input type="text" name="Credits" placeholder="Enter credits ..." required value="">
+                    <input type="number" name="Credits" placeholder="Enter credits ..." required value="">
                 </div>  
                 <button type="submit" class="submitBTN" name="submit">SUBMIT      <i class="fa-solid fa-arrow-up-right-from-square fa-sm"></i></button>
             </form>

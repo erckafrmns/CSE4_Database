@@ -39,7 +39,7 @@ if (isset($_POST["submit"])){
     } else {
         $query = "INSERT INTO student VALUES ('$StudentID', '$FirstName', '$LastName', '$MajorID')";
         mysqli_query($conn, $query);
-        echo "<script> alert('Data Submitted'); </script>";
+        echo "<script> alert('$FirstName $LastName was Successfully Added!'); </script>";
         $StudentID = generateUniqueStudentID($conn);
     }
 }

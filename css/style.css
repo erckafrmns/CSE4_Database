@@ -170,7 +170,7 @@ input::-webkit-input-placeholder{
     font-size: 14px;
 }
 
-#DepartmentID {
+.select-dept {
     width: 400px; 
     height: 40px;
     box-sizing: border-box;
@@ -184,7 +184,7 @@ input::-webkit-input-placeholder{
     cursor: pointer;
 }
 
-#DepartmentID option{
+.select-dept option{
     color: #14202B;
     font-size: 16px;
     font-weight: 600;
@@ -211,25 +211,6 @@ input::-webkit-input-placeholder{
     color: #a5a5a5;
     transform: scale(0.98);
 }
-
-/* VALIDATION ICONS */
-
-/* .check-icon {
-    color: #16922f;
-    font-size: 22px;
-}
-
-.cross-icon {
-    color: #c11010;
-    font-size: 22px;
-}
-
-.check-icon, .cross-icon {
-    position: absolute;
-    top: 36%;
-    transform: translateX(3350%);
-    font-size: 22px;
-} */
 
 
 /* REPORTS */

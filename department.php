@@ -6,9 +6,15 @@ if (isset($_POST["submit"])){
     $DepartmentName = $_POST["DepartmentName"];
     $Location = $_POST["Location"];
 
-    $query = "INSERT INTO department VALUES ('$DepartmentID', '$DepartmentName', '$Location')";
-    mysqli_query($conn, $query);
-    echo "<script> alert(''$DepartmentName' was Successfully Added!'); </script>";
+    $check_query = "SELECT * FROM department WHERE DepartmentID = '$DepartmentID'";
+    $check_result = mysqli_query($conn, $check_query);
+    if (mysqli_num_rows($check_result) > 0) {
+        echo "<script> alert('Department ID: $DepartmentID already exists!'); </script>";
+    } else {
+        $query = "INSERT INTO department VALUES ('$DepartmentID', '$DepartmentName', '$Location')";
+        mysqli_query($conn, $query);
+        echo "<script> alert('$DepartmentName was Successfully Added!'); </script>";
+    }
 }  
 
 ?>

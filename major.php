@@ -6,9 +6,25 @@ if (isset($_POST["submit"])){
     $MajorName = $_POST["MajorName"];
     $DepartmentID = $_POST["DepartmentID"];
 
-    $query = "INSERT INTO major VALUES ('$MajorID', '$MajorName', '$DepartmentID')";
-    mysqli_query($conn, $query);
-    echo "<script> alert(''$MajorName' Major was Successfully Added!'); </script>";
+    // Check if MajorID already exists
+    $check_query = "SELECT * FROM major WHERE MajorID = '$MajorID'";
+    $check_result = mysqli_query($conn, $check_query);
+    if (mysqli_num_rows($check_result) > 0) {
+        echo "<script> alert('Major ID: $MajorID already exists!'); </script>";
+    } else {
+        // Insert new major if MajorID does not exist
+        $query = "INSERT INTO major VALUES ('$MajorID', '$MajorName', '$DepartmentID')";
+        mysqli_query($conn, $query);
+
+        // Assign default courses to the newly created major and insert it in junction table
+        $default_courses = ['GEM14', 'NSTP1', 'NSTP2'];
+        foreach ($default_courses as $courseID) {
+            $courseMajorQuery = "INSERT INTO major_course_jnct (MajorID, CourseID) VALUES ('$MajorID', '$courseID')";
+            mysqli_query($conn, $courseMajorQuery);
+        }
+
+        echo "<script> alert('$MajorName Major was Successfully Added!'); </script>";
+    }
 }  
 
 // Fetch all available department from the database
@@ -30,50 +46,6 @@ while ($row = mysqli_fetch_assoc($departmentResult)) {
     <title>Major Form</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="https://kit.fontawesome.com/b6ecc94894.js" crossorigin="anonymous"></script>
-    <!-- <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var majorIDInput = document.querySelector('input[name="MajorID"]');
-            var checkIcon = document.createElement('i');
-            var crossIcon = document.createElement('i');
-            checkIcon.classList.add('fa-regular', 'fa-circle-check', 'check-icon');
-            crossIcon.classList.add('fa-regular', 'fa-circle-xmark', 'cross-icon');
-            majorIDInput.parentNode.appendChild(checkIcon);
-            majorIDInput.parentNode.appendChild(crossIcon);
-
-            majorIDInput.addEventListener('input', function() {
-                var majorID = majorIDInput.value;
-                if (majorID) {
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('POST', 'check_major_id.php', true);
-                    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                    xhr.onreadystatechange = function () {
-                        if (xhr.readyState == 4 && xhr.status == 200) {
-                            var response = xhr.responseText.trim(); // Trim response text
-                            console.log('Response Text:', response);
-                            if (response === 'exists') { // Use strict comparison
-                                console.log('Here in exist statement');
-                                crossIcon.style.transform = 'translateX(3350%)';
-                                checkIcon.style.transform = 'translateX(-3350%)';
-                            } else if (response === 'not_exists') { // Use strict comparison
-                                console.log('Here in not exist statement');
-                                checkIcon.style.transform = 'translateX(3350%)';
-                                crossIcon.style.transform = 'translateX(-3350%)';
-                            } else {
-                                console.log('Here in neither or else statement');
-                                checkIcon.style.transform = 'translateX(-3350%)';
-                                crossIcon.style.transform = 'translateX(-3350%)';
-                            }
-                        }
-                    };
-                    xhr.send('majorID=' + majorID);
-                } else {
-                    checkIcon.style.transform = 'translateX(-3350%)';
-                    crossIcon.style.transform = 'translateX(-3350%)';
-                }
-            });
-        });
-    </script> -->
-
 </head>
 <body>
 
@@ -106,7 +78,7 @@ while ($row = mysqli_fetch_assoc($departmentResult)) {
                 </div>
                 <div class="form-group">
                     <label for="DepartmentID">Department ID :</label>
-                    <select id="DepartmentID" name="DepartmentID" required>
+                    <select id="DepartmentID" name="DepartmentID" class="select-dept" required>
                         <option value="" disabled selected>Select Department ID ...</option>
                         <?php echo $deptOptions; ?>
                     </select>
