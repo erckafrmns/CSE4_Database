@@ -44,12 +44,18 @@ if (isset($_POST["submit"])){
         </div>
         <div class="form-container">
             <form action="" method="post" autocomplete="off">
-                <label for="DepartmentID">Department ID :</label>
-                <input type="text" id="DepartmentID" placeholder="Enter department ID ..." name="DepartmentID" >
-                <label for="DepartmentName">Department Name :</label>
-                <input type="text" id="DepartmentName" placeholder="Enter department name ..." name="DepartmentName" required>
-                <label for="Location">Location :</label>
-                <input type="text" name="Location" placeholder="Enter location ..." required value="">
+                <div class="form-group">
+                    <label for="DepartmentID">Department ID :</label>
+                    <input type="text" id="DepartmentID" placeholder="Enter department ID ..." name="DepartmentID" >
+                </div>
+                <div class="form-group">
+                    <label for="DepartmentName">Department Name :</label>
+                    <input type="text" id="DepartmentName" placeholder="Enter department name ..." name="DepartmentName" required>
+                </div>
+                <div class="form-group">
+                    <label for="Location">Location :</label>
+                    <input type="text" name="Location" placeholder="Enter location ..." required value="">
+                </div>
                 <button type="submit" class="submitBTN" name="submit">SUBMIT      <i class="fa-solid fa-arrow-up-right-from-square fa-sm"></i></button>
             </form>
         </div>
