@@ -80,20 +80,31 @@ while ($row = mysqli_fetch_assoc($majorResult)) {
     <div class="contentPanel">
         <h1><i class="fa-solid fa-user-pen" style="color: #14202b;"></i>  Student Form</h1>
 
+        <div class="form-header">
+            <h3><i class="fa-solid fa-file-circle-plus" style="color: #F0F0EA;"></i>                ADD NEW STUDENT</h3>
+        </div>
         <div class="form-container">
             <form action="" class="" method="post" autocomplete="off">
-                <label for="StudentID">Student No. :</label>
-                <input type="text" id="StudentID" name="StudentID" value="<?php echo $StudentID; ?>" disabled>
-                <input type="hidden" name="StudentID" value="<?php echo $StudentID; ?>">
-                <label for="FirstName">First Name :</label>
-                <input type="text" placeholder="Enter your first name ..." name="FirstName" required value="">
-                <label for="LastName">Last Name :</label>
-                <input type="text" placeholder="Enter your last name ..." name="LastName" required value="">
-                <label for="MajorID">Major ID :</label>
-                <select id="MajorID" name="MajorID" required>
-                    <option value="" disabled selected>Select Major ID ...</option>
-                    <?php echo $majorOptions; ?>
-                </select>
+                <div class="form-group">
+                    <label for="StudentID">Student No. :</label>
+                    <input type="text" id="StudentID" name="StudentID" value="<?php echo $StudentID; ?>" disabled>
+                    <input type="hidden" name="StudentID" value="<?php echo $StudentID; ?>">
+                </div>
+                <div class="form-group">
+                    <label for="FirstName">First Name :</label>
+                    <input type="text" placeholder="Enter your first name ..." name="FirstName" required>
+                </div>
+                <div class="form-group">
+                    <label for="LastName">Last Name :</label>
+                    <input type="text" placeholder="Enter your last name ..." name="LastName" required>
+                </div>
+                <div class="form-group">
+                    <label for="MajorID">Major ID :</label>
+                    <select id="MajorID" name="MajorID" required>
+                        <option value="" disabled selected>Select Major ID ...</option>
+                        <?php echo $majorOptions; ?>
+                    </select>
+                </div>
                 <button type="submit" class="submitBTN" name="submit">SUBMIT      <i class="fa-solid fa-arrow-up-right-from-square fa-sm"></i></button>
             </form>
         </div>
