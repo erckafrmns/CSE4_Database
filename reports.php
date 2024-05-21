@@ -57,8 +57,8 @@ function fetchStudents($conn, $selected_major = '', $selected_department = '', $
             echo "<td>" . $row["LastName"] . "</td>";
             echo "<td>" . $row["MajorID"] . "</td>";
             echo "<td>" . $row["MajorName"] . "</td>";
-            echo "<td>" . $row["DepartmentName"] . "</td>";
             echo "<td>" . $row["DepartmentID"] . "</td>";
+            echo "<td>" . $row["DepartmentName"] . "</td>";
             echo "</tr>";
         }
     } else {
@@ -84,6 +84,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reports</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://kit.fontawesome.com/b6ecc94894.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
@@ -103,27 +104,38 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
             <h1>Student Report</h1>
         </div>
         <div class="report-select">
-            <select name="sort_criteria" id="sort_criteria">
-                <option value="">Select Sort Criteria</option>
-                <option value="StudentID">Student ID</option>
-                <option value="FirstName">First Name</option>
-                <option value="LastName">Last Name</option>
-                <option value="MajorName">Major Name</option>
-                <option value="DepartmentName">Department Name</option>
-            </select>
-            <select name="sort_order" id="sort_order">
-                <option value="">Select Sort Order</option>
-                <option value="ASC">Ascending</option>
-                <option value="DESC">Descending</option>
-            </select>
-            <select name="select-major" id="select-major">
-                <option value="">All Major</option>
-                <?php echo $majorOptions; ?>
-            </select>
-            <select name="select-department" id="select-department">
-                <option value="">All Department</option>
-                <?php echo $deptOptions; ?>
-            </select>
+            <div class="sort">
+                <h5><i class="fa-solid fa-tornado fa-sm"></i>     Sort:</h5>
+                <div class="select-container">
+                    <select name="sort_criteria" id="sort_criteria">
+                        <option value="">Sort Criteria</option>
+                        <option value="StudentID">Student ID</option>
+                        <option value="FirstName">First Name</option>
+                        <option value="LastName">Last Name</option>
+                        <option value="MajorName">Major Name</option>
+                        <option value="DepartmentName">Department Name</option>
+                    </select>
+                    <select name="sort_order" id="sort_order">
+                        <option value="">Sort Order</option>
+                        <option value="ASC">Ascending</option>
+                        <option value="DESC">Descending</option>
+                    </select>
+                </div>
+            </div>
+            <div class="filter">
+                <h5><i class="fa-solid fa-filter fa-sm"></i>     Filter:</h5>
+                <div class="select-container">
+                    <select name="select-major" id="select-major">
+                        <option value="">All Major</option>
+                        <?php echo $majorOptions; ?>
+                    </select>
+                    <select name="select-department" id="select-department">
+                        <option value="">All Department</option>
+                        <?php echo $deptOptions; ?>
+                    </select>
+                </div>
+            </div>
+            <button class="report-download">Download PDF <i class="fa-solid fa-download"></i></button>
         </div>
         <div class="student-table">
             <table>

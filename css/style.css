@@ -236,7 +236,6 @@ input::-webkit-input-placeholder{
 .wrapper {
     display: flex;
     flex-direction: column;
-    align-items: center;
     height: 100%;
     width: calc(100% - 245px); 
     margin: 0 0 0 245px;
@@ -248,4 +247,87 @@ input::-webkit-input-placeholder{
     margin:0;
     font-size: 25px;
     text-transform: uppercase;
+    margin-top: 15px;
+}
+
+.report-select {
+    display: flex;
+    align-items: flex-start; 
+    margin: 20px 25px 5px 35px;
+}
+
+.sort, .filter {
+    margin-right: 25px; 
+}
+
+.sort h5, .filter h5 {
+    text-align: left;
+    margin: 0;
+    padding-left: 2px;
+    font-size: 14px;
+}
+
+#sort_criteria, #sort_order, #select-major, 
+#select-department {
+    background-color: #2C3E50;
+    color: #e9e9e4;
+    width: auto;
+    height: 30px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#sort_criteria option, #sort_order option, #select-major option, 
+#select-department option{
+    font-size: 14px;
+}
+
+.report-download {
+    background-color: #2C3E50;
+    color: #e9e9e4;
+    height: 35px;
+    width: 150px;
+    font-size: 16px;
+    border-radius: 5px;
+    margin: 18px 0 0 270px ;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.report-download:hover{
+    transform: scale(0.98);
+}
+
+.student-table {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 5px 35px 20px 35px;
+    padding-top: 10px;
+}
+
+.student-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.student-table table tbody tr:nth-child(odd) {
+    background-color: none;
+}
+
+.student-table table tbody tr:nth-child(even) {
+    background-color: #99a6b6; 
+}
+
+.student-table th, .student-table td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #14202B;
+    font-size: 14px;
+}
+
+.student-table th {
+    background-color: #2C3E50;
+    color: #dbdbd6;
 }
