@@ -157,7 +157,7 @@ form{
     font-size: 16px;
     color: #14202B;
     font-weight: 600;
-    border: 1px solid #2C3E50;
+    border: 2px solid #2C3E50;
     border-radius: 5px;
     padding: 5px 15px 0 15px;
 }
@@ -185,7 +185,7 @@ input::-webkit-input-placeholder{
     color: #14202B;
     font-size: 16px;
     font-weight: 600;
-    width: 350px;
+    width: 400px;
     height: 40px;
 }
 

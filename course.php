@@ -19,7 +19,7 @@ if (isset($_POST["submit"])){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Course Display and Form</title>
+    <title>Course Form</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="https://kit.fontawesome.com/b6ecc94894.js" crossorigin="anonymous"></script>
 </head>
@@ -37,7 +37,7 @@ if (isset($_POST["submit"])){
     </nav>
 
     <div class="contentPanel">
-        <h1><i class="fa-solid fa-book-open-reader"></i>                         Course Display and Form</h1>
+        <h1><i class="fa-solid fa-book-open-reader"></i>                         Course Form</h1>
 
         <div class="form-header">
             <h3><i class="fa-solid fa-file-circle-plus" style="color: #F0F0EA;"></i>                ADD NEW COURSE</h3>

@@ -27,10 +27,10 @@ while ($row = mysqli_fetch_assoc($departmentResult)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Major Display and Form</title>
+    <title>Major Form</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="https://kit.fontawesome.com/b6ecc94894.js" crossorigin="anonymous"></script>
-    <script>
+    <!-- <script>
         document.addEventListener('DOMContentLoaded', function() {
             var majorIDInput = document.querySelector('input[name="MajorID"]');
             var checkIcon = document.createElement('i');
@@ -72,7 +72,7 @@ while ($row = mysqli_fetch_assoc($departmentResult)) {
                 }
             });
         });
-    </script>
+    </script> -->
 
 </head>
 <body>
@@ -89,22 +89,28 @@ while ($row = mysqli_fetch_assoc($departmentResult)) {
     </nav>
 
     <div class="contentPanel">
-        <h1><i class="fa-solid fa-book"></i>                         Major Display and Form</h1>
+        <h1><i class="fa-solid fa-book"></i>                         Major Form</h1>
 
         <div class="form-header">
             <h3><i class="fa-solid fa-file-circle-plus" style="color: #F0F0EA;"></i>                ADD NEW MAJOR</h3>
         </div>
         <div class="form-container">
             <form action="" method="post" autocomplete="off">
-                <label for="MajorID">Major ID :</label>
-                <input type="text" id="MajorID" placeholder="Enter major ID ..." name="MajorID" >
-                <label for="MajorName">Major Name :</label>
-                <input type="text" id="MajorName" placeholder="Enter major name ..." name="MajorName" required>
-                <label for="DepartmentID">Department ID :</label>
-                <select id="DepartmentID" name="DepartmentID" required>
-                    <option value="" disabled selected>Select Department ID ...</option>
-                    <?php echo $deptOptions; ?>
-                </select>
+                <div class="form-group">
+                    <label for="MajorID">Major ID :</label>
+                    <input type="text" id="MajorID" placeholder="Enter major ID ..." name="MajorID" >
+                </div>
+                <div class="form-group">
+                    <label for="MajorName">Major Name :</label>
+                    <input type="text" id="MajorName" placeholder="Enter major name ..." name="MajorName" required>
+                </div>
+                <div class="form-group">
+                    <label for="DepartmentID">Department ID :</label>
+                    <select id="DepartmentID" name="DepartmentID" required>
+                        <option value="" disabled selected>Select Department ID ...</option>
+                        <?php echo $deptOptions; ?>
+                    </select>
+                </div>
                 <button type="submit" class="submitBTN" name="submit">SUBMIT      <i class="fa-solid fa-arrow-up-right-from-square fa-sm"></i></button>
             </form>
         </div>
