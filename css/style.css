@@ -369,3 +369,59 @@ input::-webkit-input-placeholder{
     background-color: #2C3E50;
     color: #dbdbd6;
 }
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#reportHead {
+    width: auto;
+    font-size: 25px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin: 15px 480px 0 480px;
+    cursor: pointer;
+    border-bottom: 3px solid #14202B;
+}
+
+.dropdown{
+    margin-top: 56px;
+    display: none;
+    position: absolute;
+    z-index: 999;
+    background-color: #2C3E50;
+    border-radius: 5px 5px 15px 15px;
+    width: 230px;
+    border: 2px solid #dbdbd6;
+}
+
+.dropdown li {
+    padding: 5px 0 5px 0;
+    cursor: pointer;
+    height: auto;
+    width: 230px;
+}
+
+.dropdown li a {
+    text-decoration: none;
+    font-size: 20px;
+    color: #dbdbd6;
+    font-weight: 500;
+}
+
+.dropdown li:hover{ 
+    background-color: #99a6b6;
+    border-radius: 15px 15px 15px 15px;
+}
+
+.dropdown li a:hover{ 
+    color: #14202B;
+}
+ul li:hover {
+    color: #34485c; 
+}

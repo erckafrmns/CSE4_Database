@@ -101,11 +101,18 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
 
     <div class="wrapper">
         <div class="report-header">
-            <h1>Student Report</h1>
+            <ul>
+                <li id="reportHead">Student Report     <i class="fa-solid fa-caret-down fa-sm"></i></li>
+                <ul class="dropdown">
+                    <li><a href="">Major Report</a></li>
+                    <li><a href="">Department Report</a></li>
+                    <li><a href="">Course Report</a></li>
+                </ul>
+            </ul>    
         </div>
         <div class="report-select">
             <div class="sort">
-                <h5><i class="fa-solid fa-tornado fa-sm"></i>     Sort:</h5>
+                <h5><i class="fa-solid fa-tornado fa-flip-horizontal fa-sm"></i>     Sort:</h5>
                 <div class="select-container">
                     <select name="sort_criteria" id="sort_criteria">
                         <option value="">Sort Criteria</option>
@@ -187,6 +194,16 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
 
             // Initial fetch
             fetchFilteredData();
+        });
+    </script>
+    <script>
+        document.getElementById('reportHead').addEventListener('click', function() {
+            var dropdown = document.querySelector('ul .dropdown');
+            if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+                dropdown.style.display = 'block';
+            } else {
+                dropdown.style.display = 'none';
+            }
         });
     </script>
 </body>
