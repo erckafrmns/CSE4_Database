@@ -81,7 +81,7 @@ while ($row = mysqli_fetch_assoc($majorResult)) {
         <h1><i class="fa-solid fa-user-pen" style="color: #14202b;"></i>  Student Form</h1>
 
         <div class="form-header">
-            <h3><i class="fa-solid fa-file-circle-plus" style="color: #F0F0EA;"></i>                ADD NEW STUDENT</h3>
+            <h3><i class="fa-solid fa-user-plus" style="color: #F0F0EA;"></i>                ADD NEW STUDENT</h3>
         </div>
         <div class="form-container">
             <form action="" class="" method="post" autocomplete="off">
