@@ -39,7 +39,7 @@ nav h2{
     border: 1px solid #4F6F8F;
     border-radius: 20px 20px 20px 20px;
     background-color: #2C3E50;
-    margin: 0 40px 20px 40px;
+    margin: 0 40px 0 40px;
     padding: 10px 0;
     cursor: pointer;
     text-align: center;
@@ -60,7 +60,7 @@ nav h2{
     text-decoration: none;
     color: #4F6F8F;
     font-size: 18px;
-    margin: 0 40px 30px 55px ;
+    margin: 0 40px 50px 55px ;
     transition: all 0.3s ease;
 }
 

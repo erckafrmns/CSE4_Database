@@ -67,7 +67,7 @@ while ($row = mysqli_fetch_assoc($majorResult)) {
 <body>
 
     <nav>
-        <h2><i class="fa-brands fa-wpforms" style="color: #ffffff; font-style: italic;"></i>            FORMS</h2>
+        <h2><i class="fa-brands fa-wpforms fa-sm" style="color: #ffffff; font-style: italic;"></i>                  FORMS</h2>
         <div class="forms-items">
             <a href="index.php" class="active"><i class="fa-solid fa-user fa-sm"></i>               STUDENT</a>
             <a href="major.php"><i class="fa-solid fa-book fa-sm"></i>               MAJOR</a>
@@ -75,7 +75,6 @@ while ($row = mysqli_fetch_assoc($majorResult)) {
             <a href="course.php"><i class="fa-solid fa-book-open-reader fa-sm"></i>               COURSE</a>
         </div>
         <button onclick="location.href='reports.php'" class="tabs"><i class="fa-regular fa-file-lines"></i>            Reports</button>
-        <button onclick="location.href='admin.php'" class="tabs"><i class="fa-solid fa-user-tie"></i>            Admin</button>
     </nav>
 
     <div class="contentPanel">
