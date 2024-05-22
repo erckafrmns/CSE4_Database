@@ -337,7 +337,7 @@ input::-webkit-input-placeholder{
     transform: scale(0.98);
 }
 
-.student-table {
+.report-table {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -345,27 +345,27 @@ input::-webkit-input-placeholder{
     padding-top: 10px;
 }
 
-.student-table table {
+.report-table table {
     width: 100%;
     border-collapse: collapse;
 }
 
-.student-table table tbody tr:nth-child(odd) {
+.report-table table tbody tr:nth-child(odd) {
     background-color: none;
 }
 
-.student-table table tbody tr:nth-child(even) {
+.report-table table tbody tr:nth-child(even) {
     background-color: #99a6b6; 
 }
 
-.student-table th, .student-table td {
+.report-table th, .report-table td {
     padding: 8px;
     text-align: left;
     border: 1px solid #14202B;
     font-size: 14px;
 }
 
-.student-table th {
+.report-table th {
     background-color: #2C3E50;
     color: #dbdbd6;
 }

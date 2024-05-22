@@ -96,7 +96,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
             </div>
             <button class="report-download">Download PDF <i class="fa-solid fa-download"></i></button>
         </div>
-        <div class="student-table">
+        <div class="report-table">
             <table>
                 <thead>
                     <tr>
@@ -106,7 +106,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                         <th scope="col">Credits</th>
                     </tr>
                 </thead>
-                <tbody id="student-table-body">
+                <tbody id="report-table-body">
                     <?php fetchCourse($conn); ?>
                 </tbody>
             </table>
@@ -128,7 +128,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                         sort_order: sortOrder
                     },
                     success: function(response) {
-                        $('#student-table-body').html(response);
+                        $('#report-table-body').html(response);
                     }
                 });
             }

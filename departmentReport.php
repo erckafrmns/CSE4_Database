@@ -72,7 +72,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                 <li id="reportHead">Department Report     <i class="fa-solid fa-caret-down fa-sm"></i></li>
                 <ul class="dropdown">
                     <li><a href="studentReport.php">Student Report</a></li>
-                    <li><a href="departmentReport.php">Major Report</a></li>
+                    <li><a href="majorReport.php">Major Report</a></li>
                     <li><a href="courseReport.php">Course Report</a></li>
                 </ul>
             </ul>    
@@ -96,7 +96,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
             </div>
             <button class="report-download">Download PDF <i class="fa-solid fa-download"></i></button>
         </div>
-        <div class="student-table">
+        <div class="report-table">
             <table>
                 <thead>
                     <tr>
@@ -106,7 +106,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                         <th scope="col">Location</th>
                     </tr>
                 </thead>
-                <tbody id="student-table-body">
+                <tbody id="report-table-body">
                     <?php fetchDepartment($conn); ?>
                 </tbody>
             </table>
@@ -128,7 +128,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                         sort_order: sortOrder
                     },
                     success: function(response) {
-                        $('#student-table-body').html(response);
+                        $('#report-table-body').html(response);
                     }
                 });
             }
