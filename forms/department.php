@@ -1,5 +1,5 @@
 <?php
-require 'connection.php';
+require '../connection.php';
 
 if (isset($_POST["submit"])){
     $DepartmentID = $_POST["DepartmentID"];
@@ -26,7 +26,7 @@ if (isset($_POST["submit"])){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Department Form</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
     <script src="https://kit.fontawesome.com/b6ecc94894.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -34,12 +34,12 @@ if (isset($_POST["submit"])){
     <nav>
         <h2><i class="fa-brands fa-wpforms fa-sm" style="color: #ffffff; font-style: italic;"></i>                  FORMS</h2>
         <div class="forms-items">
-            <a href="index.php"><i class="fa-solid fa-user fa-sm"></i>               STUDENT</a>
+            <a href="../index.php"><i class="fa-solid fa-user fa-sm"></i>               STUDENT</a>
             <a href="major.php"><i class="fa-solid fa-book fa-sm"></i>               MAJOR</a>
             <a href="department.php" class="active"><i class="fa-solid fa-building-columns fa-sm"></i>               DEPARTMENT</a>
             <a href="course.php"><i class="fa-solid fa-book-open-reader fa-sm"></i>               COURSE</a>
         </div>
-        <button onclick="location.href='studentReport.php'" class="tabs"><i class="fa-regular fa-file-lines"></i>            Reports</button>
+        <button onclick="location.href='../reports/studentReport.php'" class="tabs"><i class="fa-regular fa-file-lines"></i>            Reports</button>
     </nav>
 
     <div class="contentPanel">

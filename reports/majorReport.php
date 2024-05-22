@@ -1,14 +1,32 @@
 <?php
-require 'connection.php';
+require '../connection.php';
 
-// Function to fetch student data based on the sorting criteria
-function fetchDepartment($conn, $sort_criteria = '', $sort_order = '') {
-    $sql = "SELECT d.DepartmentID, d.DepartmentName, d.Location
-            FROM department d";
+// Fetch all available departments from the database
+$departmentQuery = "SELECT * FROM department";
+$departmentResult = mysqli_query($conn, $departmentQuery);
+$deptOptions = '';
+while ($row = mysqli_fetch_assoc($departmentResult)) {
+    $deptOptions .= "<option value='{$row['DepartmentID']}'>{$row['DepartmentName']}</option>";
+}
+
+// Function to fetch student data based on the selected department, and sorting criteria
+function fetchMajor($conn, $selected_department = '', $sort_criteria = '', $sort_order = '') {
+    $sql = "SELECT m.MajorID, m.MajorName, d.DepartmentID, d.DepartmentName
+            FROM major m
+            JOIN department d ON m.DepartmentID = d.DepartmentID";
+
+    $where_clauses = [];
+    if (!empty($selected_department)) {
+        $where_clauses[] = "d.DepartmentID = '$selected_department'";
+    }
+
+    if (!empty($where_clauses)) {
+        $sql .= " WHERE " . implode(" AND ", $where_clauses);
+    }
 
 
     if (!empty($sort_criteria) && !empty($sort_order)) {
-        $valid_criteria = ['DepartmentID', 'DepartmentName', 'Location'];
+        $valid_criteria = ['MajorID', 'MajorName', 'DepartmentID', 'DepartmentName'];
         $valid_orders = ['ASC', 'DESC'];
 
         if (in_array($sort_criteria, $valid_criteria) && in_array($sort_order, $valid_orders)) {
@@ -25,21 +43,23 @@ function fetchDepartment($conn, $sort_criteria = '', $sort_order = '') {
         while ($row = $result->fetch_assoc()) {
             echo "<tr>";
             echo "<td>" . $count++ . "</td>";
+            echo "<td>" . $row["MajorID"] . "</td>";
+            echo "<td>" . $row["MajorName"] . "</td>";
             echo "<td>" . $row["DepartmentID"] . "</td>";
             echo "<td>" . $row["DepartmentName"] . "</td>";
-            echo "<td>" . $row["Location"] . "</td>";
             echo "</tr>";
         }
     } else {
-        echo "<tr><td colspan='4'>No results found</td></tr>";
+        echo "<tr><td colspan='5'>No results found</td></tr>";
     }
 }
 
 // Check if the request is an AJAX request and fetch the filtered and sorted data
 if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
+    $selected_department = isset($_GET['select_department']) ? $_GET['select_department'] : '';
     $sort_criteria = isset($_GET['sort_criteria']) ? $_GET['sort_criteria'] : '';
     $sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : '';
-    fetchDepartment($conn, $sort_criteria, $sort_order);
+    fetchMajor($conn, $selected_department, $sort_criteria, $sort_order);
     exit;
 }
 ?>
@@ -49,8 +69,8 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Department Report</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Major Report</title>
+    <link rel="stylesheet" href="../css/style.css">
     <script src="https://kit.fontawesome.com/b6ecc94894.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
@@ -58,10 +78,10 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
     <nav>
         <h2><i class="fa-brands fa-wpforms fa-sm" style="color: #ffffff; font-style: italic;"></i> FORMS</h2>
         <div class="forms-items">
-            <a href="index.php"><i class="fa-solid fa-user fa-sm"></i> STUDENT</a>
-            <a href="major.php"><i class="fa-solid fa-book fa-sm"></i> MAJOR</a>
-            <a href="department.php"><i class="fa-solid fa-building-columns fa-sm"></i> DEPARTMENT</a>
-            <a href="course.php"><i class="fa-solid fa-book-open-reader fa-sm"></i> COURSE</a>
+            <a href="../index.php"><i class="fa-solid fa-user fa-sm"></i> STUDENT</a>
+            <a href="../forms/major.php"><i class="fa-solid fa-book fa-sm"></i> MAJOR</a>
+            <a href="../forms/department.php"><i class="fa-solid fa-building-columns fa-sm"></i> DEPARTMENT</a>
+            <a href="../forms/course.php"><i class="fa-solid fa-book-open-reader fa-sm"></i> COURSE</a>
         </div>
         <button onclick="location.href='studentReport.php'" class="tabs"><i class="fa-regular fa-file-lines"></i> Reports</button>
     </nav>
@@ -69,10 +89,10 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
     <div class="wrapper">
         <div class="report-header">
             <ul>
-                <li id="reportHead">Department Report     <i class="fa-solid fa-caret-down fa-sm"></i></li>
+                <li id="reportHead">Major Report     <i class="fa-solid fa-caret-down fa-sm"></i></li>
                 <ul class="dropdown">
                     <li><a href="studentReport.php">Student Report</a></li>
-                    <li><a href="majorReport.php">Major Report</a></li>
+                    <li><a href="departmentReport.php">Department Report</a></li>
                     <li><a href="courseReport.php">Course Report</a></li>
                 </ul>
             </ul>    
@@ -83,9 +103,10 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                 <div class="select-container">
                     <select name="sort_criteria" id="sort_criteria">
                         <option value="">Sort Criteria</option>
+                        <option value="MajorID">Major ID</option>
+                        <option value="MajorName">Major Name</option>
                         <option value="DepartmentID">Department ID</option>
                         <option value="DepartmentName">Department Name</option>
-                        <option value="Location">Location</option>
                     </select>
                     <select name="sort_order" id="sort_order">
                         <option value="">Sort Order</option>
@@ -94,20 +115,30 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                     </select>
                 </div>
             </div>
-            <button class="departmentReport-download">Download PDF <i class="fa-solid fa-download"></i></button>
+            <div class="filter">
+                <h5><i class="fa-solid fa-filter fa-sm"></i>     Filter:</h5>
+                <div class="select-container">
+                    <select name="select_department" id="select_department">
+                        <option value="">All Department</option>
+                        <?php echo $deptOptions; ?>
+                    </select>
+                </div>
+            </div>
+            <button class="majorReport-download">Download PDF <i class="fa-solid fa-download"></i></button>
         </div>
         <div class="report-table">
             <table>
                 <thead>
                     <tr>
                         <th scope="col">No.</th>
+                        <th scope="col">Major ID</th>
+                        <th scope="col">Major Name</th>
                         <th scope="col">Department ID</th>
                         <th scope="col">Department Name</th>
-                        <th scope="col">Location</th>
                     </tr>
                 </thead>
                 <tbody id="report-table-body">
-                    <?php fetchDepartment($conn); ?>
+                    <?php fetchMajor($conn); ?>
                 </tbody>
             </table>
         </div>
@@ -116,14 +147,16 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
     <script>
         $(document).ready(function() {
             function fetchFilteredData() {
+                var selectedDepartment = $('#select_department').val();
                 var sortCriteria = $('#sort_criteria').val();
                 var sortOrder = $('#sort_order').val();
 
                 $.ajax({
-                    url: 'departmentReport.php',
+                    url: 'majorReport.php',
                     type: 'GET',
                     data: {
                         ajax: 1,
+                        select_department: selectedDepartment,
                         sort_criteria: sortCriteria,
                         sort_order: sortOrder
                     },
@@ -133,7 +166,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                 });
             }
 
-            $('#sort_criteria, #sort_order').change(function() {
+            $('#select_department, #sort_criteria, #sort_order').change(function() {
                 fetchFilteredData();
             });
 
@@ -141,11 +174,12 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
             fetchFilteredData();
 
             // Download PDF
-            $('.departmentReport-download').click(function() {
+            $('.majorReport-download').click(function() {
                 var sortCriteria = $('#sort_criteria').val();
                 var sortOrder = $('#sort_order').val();
+                var selectedDepartment = $('#select_department').val();
 
-                window.location.href = 'generatePDF/departmentPDF.php?sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder;
+                window.location.href = '../generatePDF/majorPDF.php?sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder + '&select_department=' + selectedDepartment;
             });
         });
     </script>
