@@ -306,7 +306,7 @@ input::-webkit-input-placeholder{
 }
 
 #sort_criteria, #sort_order, #select-major, 
-#select-department {
+#select-department, #select_credits {
     background-color: #2C3E50;
     color: #e9e9e4;
     width: auto;
@@ -317,24 +317,41 @@ input::-webkit-input-placeholder{
 }
 
 #sort_criteria option, #sort_order option, #select-major option, 
-#select-department option{
+#select-department option, #select_credits option{
     font-size: 14px;
 }
 
-.report-download {
+.studentReport-download, .courseReport-download,
+.majorReport-download, .departmentReport-download {
     background-color: #2C3E50;
     color: #e9e9e4;
     height: 35px;
     width: 150px;
     font-size: 16px;
     border-radius: 5px;
-    margin: 18px 0 0 270px ;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.report-download:hover{
+.studentReport-download:hover, .courseReport-download:hover, 
+.majorReport-download:hover, .departmentReport-download:hover{
     transform: scale(0.98);
+}
+
+.courseReport-download {
+    margin: 18px 0 0 660px ;
+}
+
+.studentReport-download {
+    margin: 18px 0 0 272px ;
+}
+
+.majorReport-download {
+    margin: 18px 0 0 482px ;
+}
+
+.departmentReport-download {
+    margin: 18px 0 0 750px ;
 }
 
 .report-table {

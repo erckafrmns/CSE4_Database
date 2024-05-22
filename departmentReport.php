@@ -31,7 +31,7 @@ function fetchDepartment($conn, $sort_criteria = '', $sort_order = '') {
             echo "</tr>";
         }
     } else {
-        echo "<tr><td colspan='5'>No results found</td></tr>";
+        echo "<tr><td colspan='4'>No results found</td></tr>";
     }
 }
 
@@ -94,7 +94,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                     </select>
                 </div>
             </div>
-            <button class="report-download">Download PDF <i class="fa-solid fa-download"></i></button>
+            <button class="departmentReport-download">Download PDF <i class="fa-solid fa-download"></i></button>
         </div>
         <div class="report-table">
             <table>

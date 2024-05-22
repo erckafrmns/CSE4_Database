@@ -64,7 +64,7 @@ function fetchStudents($conn, $selected_major = '', $selected_department = '', $
             echo "</tr>";
         }
     } else {
-        echo "<tr><td colspan='7'>No results found</td></tr>";
+        echo "<tr><td colspan='8'>No results found</td></tr>";
     }
 }
 
@@ -144,7 +144,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                     </select>
                 </div>
             </div>
-            <button class="report-download">Download PDF <i class="fa-solid fa-download"></i></button>
+            <button class="studentReport-download">Download PDF <i class="fa-solid fa-download"></i></button>
         </div>
         <div class="report-table">
             <table>
@@ -197,6 +197,16 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
 
             // Initial fetch
             fetchFilteredData();
+
+            // Download PDF
+            $('.studentReport-download').click(function() {
+                var sortCriteria = $('#sort_criteria').val();
+                var sortOrder = $('#sort_order').val();
+                var selectedMajor = $('#select-major').val();
+                var selectedDepartment = $('#select-department').val();
+
+                window.location.href = 'generatePDF/studentPDF.php?sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder + '&select-major=' + selectedMajor + '&select-department' + selectedDepartment;
+            });
         });
     </script>
     <script>

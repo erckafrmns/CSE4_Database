@@ -124,7 +124,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                     </select>
                 </div>
             </div>
-            <button class="report-download">Download PDF <i class="fa-solid fa-download"></i></button>
+            <button class="majorReport-download">Download PDF <i class="fa-solid fa-download"></i></button>
         </div>
         <div class="report-table">
             <table>

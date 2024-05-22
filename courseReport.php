@@ -1,11 +1,29 @@
 <?php
 require 'connection.php';
 
-// Function to fetch student data based on the sorting criteria
-function fetchCourse($conn, $sort_criteria = '', $sort_order = '') {
-    $sql = "SELECT c.CourseID, c.CourseName, c.Credits
-            FROM course c";
+// Function to fetch unique credits
+function fetchUniqueCredits($conn) {
+    $sql = "SELECT DISTINCT Credits FROM course ORDER BY Credits ASC";
+    $result = $conn->query($sql);
 
+    $creditOptions = '';
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $creditOptions .= '<option value="' . $row["Credits"] . '">' . $row["Credits"] . '</option>';
+        }
+    }
+    return $creditOptions;
+}
+
+$creditOptions = fetchUniqueCredits($conn);
+
+// Function to fetch course data based on the sorting criteria and selected credits
+function fetchCourse($conn, $sort_criteria = '', $sort_order = '', $selected_credits = '') {
+    $sql = "SELECT c.CourseID, c.CourseName, c.Credits FROM course c";
+    
+    if (!empty($selected_credits)) {
+        $sql .= " WHERE c.Credits = " . intval($selected_credits);
+    }
 
     if (!empty($sort_criteria) && !empty($sort_order)) {
         $valid_criteria = ['CourseID', 'CourseName', 'Credits'];
@@ -31,7 +49,7 @@ function fetchCourse($conn, $sort_criteria = '', $sort_order = '') {
             echo "</tr>";
         }
     } else {
-        echo "<tr><td colspan='5'>No results found</td></tr>";
+        echo "<tr><td colspan='4'>No results found</td></tr>";
     }
 }
 
@@ -39,7 +57,8 @@ function fetchCourse($conn, $sort_criteria = '', $sort_order = '') {
 if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
     $sort_criteria = isset($_GET['sort_criteria']) ? $_GET['sort_criteria'] : '';
     $sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : '';
-    fetchCourse($conn, $sort_criteria, $sort_order);
+    $selected_credits = isset($_GET['selected_credits']) ? $_GET['selected_credits'] : '';
+    fetchCourse($conn, $sort_criteria, $sort_order, $selected_credits);
     exit;
 }
 ?>
@@ -94,7 +113,16 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                     </select>
                 </div>
             </div>
-            <button class="report-download">Download PDF <i class="fa-solid fa-download"></i></button>
+            <div class="filter">
+                <h5><i class="fa-solid fa-filter fa-sm"></i>     Filter:</h5>
+                <div class="select-container">
+                    <select name="select_credits" id="select_credits">
+                        <option value="">All Credits</option>
+                        <?php echo $creditOptions; ?>
+                    </select>
+                </div>
+            </div>
+            <button class="courseReport-download">Download PDF <i class="fa-solid fa-download"></i></button>
         </div>
         <div class="report-table">
             <table>
@@ -118,6 +146,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
             function fetchFilteredData() {
                 var sortCriteria = $('#sort_criteria').val();
                 var sortOrder = $('#sort_order').val();
+                var selectedCredits = $('#select_credits').val();
 
                 $.ajax({
                     url: 'courseReport.php',
@@ -125,7 +154,8 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                     data: {
                         ajax: 1,
                         sort_criteria: sortCriteria,
-                        sort_order: sortOrder
+                        sort_order: sortOrder,
+                        selected_credits: selectedCredits
                     },
                     success: function(response) {
                         $('#report-table-body').html(response);
@@ -133,12 +163,21 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                 });
             }
 
-            $('#sort_criteria, #sort_order').change(function() {
+            $('#sort_criteria, #sort_order, #select_credits').change(function() {
                 fetchFilteredData();
             });
 
             // Initial fetch
             fetchFilteredData();
+
+            // Download PDF
+            $('.courseReport-download').click(function() {
+                var sortCriteria = $('#sort_criteria').val();
+                var sortOrder = $('#sort_order').val();
+                var selectedCredits = $('#select_credits').val();
+
+                window.location.href = 'generatePDF/coursePDF.php?sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder + '&selected_credits=' + selectedCredits;
+            });
         });
     </script>
     <script>
