@@ -35,11 +35,11 @@ $pdf->SetFont('helvetica', '', 11);
 $html = '<h2>Course Report</h2>';
 $html .= '<table border="1" cellpadding="5">
             <thead>
-                <tr style="background-color: #99a6b6;>
-                    <th>No.</th>
-                    <th>Course ID</th>
-                    <th>Course Name</th>
-                    <th>Credits</th>
+                <tr style="background-color: #99a6b6;">
+                    <th width="10%">No.</th>
+                    <th width="25%">Course ID</th>
+                    <th width="50%">Course Name</th>
+                    <th width="15%">Credits</th>
                 </tr>
             </thead>
             <tbody>';
@@ -48,10 +48,10 @@ $count = 1;
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $html .= '<tr>
-                    <td>' . $count++ . '</td>
-                    <td>' . $row['CourseID'] . '</td>
-                    <td>' . $row['CourseName'] . '</td>
-                    <td>' . $row['Credits'] . '</td>
+                    <td width="10%">' . $count++ . '</td>
+                    <td width="25%">' . $row['CourseID'] . '</td>
+                    <td width="50%">' . $row['CourseName'] . '</td>
+                    <td width="15%">' . $row['Credits'] . '</td>
                   </tr>';
     }
 } else {

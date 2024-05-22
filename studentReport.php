@@ -134,11 +134,11 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
             <div class="filter">
                 <h5><i class="fa-solid fa-filter fa-sm"></i>     Filter:</h5>
                 <div class="select-container">
-                    <select name="select-major" id="select-major">
+                    <select name="select_major" id="select_major">
                         <option value="">All Major</option>
                         <?php echo $majorOptions; ?>
                     </select>
-                    <select name="select-department" id="select-department">
+                    <select name="select_department" id="select_department">
                         <option value="">All Department</option>
                         <?php echo $deptOptions; ?>
                     </select>
@@ -170,8 +170,8 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
     <script>
         $(document).ready(function() {
             function fetchFilteredData() {
-                var selectedMajor = $('#select-major').val();
-                var selectedDepartment = $('#select-department').val();
+                var selectedMajor = $('#select_major').val();
+                var selectedDepartment = $('#select_department').val();
                 var sortCriteria = $('#sort_criteria').val();
                 var sortOrder = $('#sort_order').val();
 
@@ -191,7 +191,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                 });
             }
 
-            $('#select-major, #select-department, #sort_criteria, #sort_order').change(function() {
+            $('#select_major, #select_department, #sort_criteria, #sort_order').change(function() {
                 fetchFilteredData();
             });
 
@@ -200,12 +200,12 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
 
             // Download PDF
             $('.studentReport-download').click(function() {
+                var selectedMajor = $('#select_major').val();
+                var selectedDepartment = $('#select_department').val();
                 var sortCriteria = $('#sort_criteria').val();
                 var sortOrder = $('#sort_order').val();
-                var selectedMajor = $('#select-major').val();
-                var selectedDepartment = $('#select-department').val();
 
-                window.location.href = 'generatePDF/studentPDF.php?sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder + '&select-major=' + selectedMajor + '&select-department' + selectedDepartment;
+                window.location.href = 'generatePDF/studentPDF.php?select_major=' + selectedMajor + '&select_department=' + selectedDepartment + '&sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder ;
             });
         });
     </script>

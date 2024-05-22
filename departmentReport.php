@@ -139,6 +139,14 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
 
             // Initial fetch
             fetchFilteredData();
+
+            // Download PDF
+            $('.departmentReport-download').click(function() {
+                var sortCriteria = $('#sort_criteria').val();
+                var sortOrder = $('#sort_order').val();
+
+                window.location.href = 'generatePDF/departmentPDF.php?sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder;
+            });
         });
     </script>
     <script>

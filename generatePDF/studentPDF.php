@@ -1,5 +1,5 @@
 <?php
-require '../connection.php';  // Adjusted path to correctly reference connection.php
+require '../connection.php';  
 require_once('../tcpdf/tcpdf.php');
 
 function fetchStudentData($conn, $selected_major = '', $selected_department = '', $sort_criteria = '', $sort_order = '') {

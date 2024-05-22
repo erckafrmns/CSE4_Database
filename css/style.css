@@ -305,8 +305,8 @@ input::-webkit-input-placeholder{
     font-size: 14px;
 }
 
-#sort_criteria, #sort_order, #select-major, 
-#select-department, #select_credits {
+#sort_criteria, #sort_order, #select_major, 
+#select_department, #select_credits {
     background-color: #2C3E50;
     color: #e9e9e4;
     width: auto;
@@ -316,8 +316,8 @@ input::-webkit-input-placeholder{
     cursor: pointer;
 }
 
-#sort_criteria option, #sort_order option, #select-major option, 
-#select-department option, #select_credits option{
+#sort_criteria option, #sort_order option, #select_major option, 
+#select_department option, #select_credits option{
     font-size: 14px;
 }
 

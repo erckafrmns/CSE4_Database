@@ -118,7 +118,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
             <div class="filter">
                 <h5><i class="fa-solid fa-filter fa-sm"></i>     Filter:</h5>
                 <div class="select-container">
-                    <select name="select-department" id="select-department">
+                    <select name="select_department" id="select_department">
                         <option value="">All Department</option>
                         <?php echo $deptOptions; ?>
                     </select>
@@ -147,7 +147,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
     <script>
         $(document).ready(function() {
             function fetchFilteredData() {
-                var selectedDepartment = $('#select-department').val();
+                var selectedDepartment = $('#select_department').val();
                 var sortCriteria = $('#sort_criteria').val();
                 var sortOrder = $('#sort_order').val();
 
@@ -166,12 +166,21 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                 });
             }
 
-            $('#select-department, #sort_criteria, #sort_order').change(function() {
+            $('#select_department, #sort_criteria, #sort_order').change(function() {
                 fetchFilteredData();
             });
 
             // Initial fetch
             fetchFilteredData();
+
+            // Download PDF
+            $('.majorReport-download').click(function() {
+                var sortCriteria = $('#sort_criteria').val();
+                var sortOrder = $('#sort_order').val();
+                var selectedDepartment = $('#select_department').val();
+
+                window.location.href = 'generatePDF/majorPDF.php?sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder + '&select_department=' + selectedDepartment;
+            });
         });
     </script>
     <script>
