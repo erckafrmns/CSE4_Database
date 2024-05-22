@@ -50,8 +50,10 @@ function fetchStudents($conn, $selected_major = '', $selected_department = '', $
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
+        $count = 1;
         while ($row = $result->fetch_assoc()) {
             echo "<tr>";
+            echo "<td>" . $count++ . "</td>";
             echo "<td>" . $row["StudentID"] . "</td>";
             echo "<td>" . $row["FirstName"] . "</td>";
             echo "<td>" . $row["LastName"] . "</td>";
@@ -62,7 +64,7 @@ function fetchStudents($conn, $selected_major = '', $selected_department = '', $
             echo "</tr>";
         }
     } else {
-        echo "<tr><td colspan='5'>No results found</td></tr>";
+        echo "<tr><td colspan='7'>No results found</td></tr>";
     }
 }
 
@@ -82,7 +84,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reports</title>
+    <title>Student Report</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="https://kit.fontawesome.com/b6ecc94894.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -96,7 +98,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
             <a href="department.php"><i class="fa-solid fa-building-columns fa-sm"></i> DEPARTMENT</a>
             <a href="course.php"><i class="fa-solid fa-book-open-reader fa-sm"></i> COURSE</a>
         </div>
-        <button onclick="location.href='reports.php'" class="tabs"><i class="fa-regular fa-file-lines"></i> Reports</button>
+        <button onclick="location.href='studentReport.php'" class="tabs"><i class="fa-regular fa-file-lines"></i> Reports</button>
     </nav>
 
     <div class="wrapper">
@@ -104,9 +106,9 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
             <ul>
                 <li id="reportHead">Student Report     <i class="fa-solid fa-caret-down fa-sm"></i></li>
                 <ul class="dropdown">
-                    <li><a href="">Major Report</a></li>
-                    <li><a href="">Department Report</a></li>
-                    <li><a href="">Course Report</a></li>
+                    <li><a href="majorReport.php">Major Report</a></li>
+                    <li><a href="departmentReport.php">Department Report</a></li>
+                    <li><a href="courseReport.php">Course Report</a></li>
                 </ul>
             </ul>    
         </div>
@@ -148,6 +150,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
             <table>
                 <thead>
                     <tr>
+                        <th scope="col">No.</th>
                         <th scope="col">Student ID</th>
                         <th scope="col">First Name</th>
                         <th scope="col">Last Name</th>
@@ -173,7 +176,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                 var sortOrder = $('#sort_order').val();
 
                 $.ajax({
-                    url: 'reports.php',
+                    url: 'studentReport.php',
                     type: 'GET',
                     data: {
                         ajax: 1,

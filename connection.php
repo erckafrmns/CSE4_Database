@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
 $username = "root";
-$password = "Puh0nsoftdev";
+$password = "";
 $dbname = "cse4_database";
 
 $conn = new mysqli($servername, $username, $password, $dbname);

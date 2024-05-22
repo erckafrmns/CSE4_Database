@@ -57,7 +57,7 @@ while ($row = mysqli_fetch_assoc($departmentResult)) {
             <a href="department.php"><i class="fa-solid fa-building-columns fa-sm"></i>               DEPARTMENT</a>
             <a href="course.php"><i class="fa-solid fa-book-open-reader fa-sm"></i>               COURSE</a>
         </div>
-        <button onclick="location.href='reports.php'" class="tabs"><i class="fa-regular fa-file-lines"></i>            Reports</button>
+        <button onclick="location.href='studentReport.php'" class="tabs"><i class="fa-regular fa-file-lines"></i>            Reports</button>
     </nav>
 
     <div class="contentPanel">
