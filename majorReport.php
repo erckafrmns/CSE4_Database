@@ -10,7 +10,7 @@ while ($row = mysqli_fetch_assoc($departmentResult)) {
 }
 
 // Function to fetch student data based on the selected department, and sorting criteria
-function fetchStudents($conn, $selected_department = '', $sort_criteria = '', $sort_order = '') {
+function fetchMajor($conn, $selected_department = '', $sort_criteria = '', $sort_order = '') {
     $sql = "SELECT m.MajorID, m.MajorName, d.DepartmentID, d.DepartmentName
             FROM major m
             JOIN department d ON m.DepartmentID = d.DepartmentID";
@@ -59,7 +59,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
     $selected_department = isset($_GET['select_department']) ? $_GET['select_department'] : '';
     $sort_criteria = isset($_GET['sort_criteria']) ? $_GET['sort_criteria'] : '';
     $sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : '';
-    fetchStudents($conn, $selected_department, $sort_criteria, $sort_order);
+    fetchMajor($conn, $selected_department, $sort_criteria, $sort_order);
     exit;
 }
 ?>
@@ -138,7 +138,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                     </tr>
                 </thead>
                 <tbody id="student-table-body">
-                    <?php fetchStudents($conn); ?>
+                    <?php fetchMajor($conn); ?>
                 </tbody>
             </table>
         </div>

@@ -2,7 +2,7 @@
 require 'connection.php';
 
 // Function to fetch student data based on the sorting criteria
-function fetchStudents($conn, $sort_criteria = '', $sort_order = '') {
+function fetchDepartment($conn, $sort_criteria = '', $sort_order = '') {
     $sql = "SELECT d.DepartmentID, d.DepartmentName, d.Location
             FROM department d";
 
@@ -39,7 +39,7 @@ function fetchStudents($conn, $sort_criteria = '', $sort_order = '') {
 if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
     $sort_criteria = isset($_GET['sort_criteria']) ? $_GET['sort_criteria'] : '';
     $sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : '';
-    fetchStudents($conn, $sort_criteria, $sort_order);
+    fetchDepartment($conn, $sort_criteria, $sort_order);
     exit;
 }
 ?>
@@ -107,7 +107,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                     </tr>
                 </thead>
                 <tbody id="student-table-body">
-                    <?php fetchStudents($conn); ?>
+                    <?php fetchDepartment($conn); ?>
                 </tbody>
             </table>
         </div>
