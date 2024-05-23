@@ -10,6 +10,12 @@ function fetchStudentCourses($conn, $sort_criteria = '', $sort_order = '') {
             INNER JOIN course c ON mc.CourseID = c.CourseID
             GROUP BY s.StudentID";
 
+    // For search query
+    $search_query = isset($_GET['search_query']) ? $_GET['search_query'] : '';
+    if (!empty($search_query)) {
+        $sql .= " HAVING s.StudentID LIKE '%$search_query%' OR s.LastName LIKE '%$search_query%' OR m.MajorName LIKE '%$search_query%'";
+    }
+
     if (!empty($sort_criteria) && !empty($sort_order)) {
         $valid_criteria = ['StudentID', 'FirstName', 'LastName', 'MajorName'];
         $valid_orders = ['ASC', 'DESC'];
@@ -19,12 +25,6 @@ function fetchStudentCourses($conn, $sort_criteria = '', $sort_order = '') {
         } else {
             die("Invalid sorting criteria or order.");
         }
-    }
-
-    // For search query
-    $search_query = isset($_GET['search_query']) ? $_GET['search_query'] : '';
-    if (!empty($search_query)) {
-        $sql .= " HAVING s.StudentID LIKE '%$search_query%' OR s.LastName LIKE '%$search_query%' OR m.MajorName LIKE '%$search_query%'";
     }
 
     $result = $conn->query($sql);
@@ -123,7 +123,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
             <div class="filter">
                 <h5>Search      <i class="fa-solid fa-magnifying-glass"></i></h5>
                 <div class="select-container">
-                    <input type="text" id="search_input" placeholder="Input studentid, lastname or major name...">
+                    <input type="text" id="search_input" placeholder="StudentID, lastname or major name...">
                     <button id="search_button"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
             </div>
@@ -188,11 +188,12 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
             fetchFilteredData();
 
             // Download PDF
-            $('.courseReport-download').click(function() {
+            $('.studentCoursesReport-download').click(function() {
+                var searchQuery = $('#search_input').val();
                 var sortCriteria = $('#sort_criteria').val();
                 var sortOrder = $('#sort_order').val();
 
-                window.location.href = '../generatePDF/studentCoursePDF.php?sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder;
+                window.location.href = '../generatePDF/studentCoursesPDF.php?search_input=' + searchQuery + '&sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder;
             });
         });
     </script>

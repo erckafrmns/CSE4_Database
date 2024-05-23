@@ -140,7 +140,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
             <div class="filter">
                 <h5>Search      <i class="fa-solid fa-magnifying-glass"></i></h5>
                 <div class="select-container">
-                    <input type="text" id="search_input" placeholder="Input majorid or major name...">
+                    <input type="text" id="search_input" placeholder="MajorID or major name...">
                     <button id="search_button"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
             </div>
