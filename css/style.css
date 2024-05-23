@@ -354,7 +354,7 @@ input::-webkit-input-placeholder{
     margin: 18px 0 0 750px ;
 }
 
-.report-table {
+.report-table, .majorCourseReport-table {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -362,7 +362,7 @@ input::-webkit-input-placeholder{
     padding-top: 10px;
 }
 
-.report-table table {
+.report-table table, .majorCourseReport-table table{
     width: 100%;
     border-collapse: collapse;
 }
@@ -371,18 +371,19 @@ input::-webkit-input-placeholder{
     background-color: none;
 }
 
-.report-table table tbody tr:nth-child(even) {
+.report-table table tbody tr:nth-child(even), .even-row {
     background-color: #99a6b6; 
 }
 
-.report-table th, .report-table td {
+.report-table th, .report-table td, .majorCourseReport-table th,
+.majorCourseReport-table td {
     padding: 8px;
     text-align: left;
     border: 1px solid #14202B;
     font-size: 14px;
 }
 
-.report-table th {
+.report-table th, .majorCourseReport-table th {
     background-color: #2C3E50;
     color: #dbdbd6;
 }

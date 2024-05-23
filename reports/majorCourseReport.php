@@ -2,104 +2,197 @@
 require '../connection.php';
 
 // Function to fetch major courses data
-function fetchMajorCourses($conn) {
+function fetchMajorCourses($conn, $sort_criteria = '', $sort_order = '') {
     $sql = "SELECT m.MajorID, m.MajorName, c.CourseID, c.CourseName
             FROM major m
             INNER JOIN major_course_jnct mc ON m.MajorID = mc.MajorID
-            INNER JOIN course c ON mc.CourseID = c.CourseID
-            ORDER BY m.MajorID, c.CourseID";
+            INNER JOIN course c ON mc.CourseID = c.CourseID";
+
+    if (!empty($sort_criteria) && !empty($sort_order)) {
+        $valid_criteria = ['MajorID', 'MajorName'];
+        $valid_orders = ['ASC', 'DESC'];
+
+        if (in_array($sort_criteria, $valid_criteria) && in_array($sort_order, $valid_orders)) {
+            $sql .= " ORDER BY $sort_criteria $sort_order, c.CourseID";
+        } else {
+            die("Invalid sorting criteria or order.");
+        }
+    }
 
     $result = $conn->query($sql);
 
-    $major_courses = array();
-    $prev_major_id = null;
-    while ($row = $result->fetch_assoc()) {
-        $major_id = $row['MajorID'];
-        $major_name = $row['MajorName'];
-        $course_id = $row['CourseID'];
-        $course_name = $row['CourseName'];
+    if ($result->num_rows > 0) {
+        $major_courses = array();
+        $prev_major_id = null;
+        while ($row = $result->fetch_assoc()) {
+            $major_id = $row['MajorID'];
+            $major_name = $row['MajorName'];
+            $course_id = $row['CourseID'];
+            $course_name = $row['CourseName'];
 
-        // Check if major ID has changed
-        if ($major_id !== $prev_major_id) {
-            $major_courses[$major_id] = array(
-                'major_id' => $major_id,
-                'major_name' => $major_name,
-                'courses' => array()
+            // Check if major ID has changed
+            if ($major_id !== $prev_major_id) {
+                $major_courses[$major_id] = array(
+                    'major_id' => $major_id,
+                    'major_name' => $major_name,
+                    'courses' => array()
+                );
+            }
+
+            // Add course to the major's courses
+            $major_courses[$major_id]['courses'][] = array(
+                'course_id' => $course_id,
+                'course_name' => $course_name
             );
+
+            // Update previous major ID
+            $prev_major_id = $major_id;
         }
 
-        // Add course to the major's courses
-        $major_courses[$major_id]['courses'][] = array(
-            'course_id' => $course_id,
-            'course_name' => $course_name
-        );
-
-        // Update previous major ID
-        $prev_major_id = $major_id;
+        $index = 0;
+        foreach ($major_courses as $major_data) {
+            $row_class = $index % 2 == 0 ? "odd-row" : "even-row";
+            foreach ($major_data['courses'] as $course_index => $course) {
+                echo "<tr class='$row_class'>";
+                if ($course_index === 0) {
+                    echo "<td rowspan='".count($major_data['courses'])."'>{$major_data['major_id']}</td>";
+                    echo "<td rowspan='".count($major_data['courses'])."'>{$major_data['major_name']}</td>";
+                }
+                echo "<td>{$course['course_id']}</td>";
+                echo "<td>{$course['course_name']}</td>";
+                echo "</tr>";
+            }
+            $index++;
+        }
+    } else {
+        echo "<tr><td colspan='4'>No results found</td></tr>";
     }
-
-    return $major_courses;
 }
 
-// Fetch major courses data
-$major_courses = fetchMajorCourses($conn);
-
+// Check if the request is an AJAX request and fetch the filtered and sorted data
+if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
+    $sort_criteria = isset($_GET['sort_criteria']) ? $_GET['sort_criteria'] : '';
+    $sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : '';
+    fetchMajorCourses($conn, $sort_criteria, $sort_order);
+    exit;
+}
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Major Course Report</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        table, th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: center;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        .even-row {
-            background-color: #99a6b6;
-        }
-    </style>
+    <title>Major-Course Report</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://kit.fontawesome.com/b6ecc94894.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <h2>Major Course Report</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Major ID</th>
-                <th>Major Name</th>
-                <th>Course ID</th>
-                <th>Course Name</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php $row_class = ''; ?>
-            <?php foreach ($major_courses as $major_id => $major_data): ?>
-                <?php foreach ($major_data['courses'] as $index => $course): ?>
-                    <tr class="<?php echo $row_class; ?>">
-                        <?php if ($index === 0): ?>
-                            <td rowspan="<?php echo count($major_data['courses']); ?>"><?php echo $major_data['major_id']; ?></td>
-                            <td rowspan="<?php echo count($major_data['courses']); ?>"><?php echo $major_data['major_name']; ?></td>
-                        <?php endif; ?>
-                        <td><?php echo $course['course_id']; ?></td>
-                        <td><?php echo $course['course_name']; ?></td>
+    <nav>
+        <h2><i class="fa-brands fa-wpforms fa-sm" style="color: #ffffff; font-style: italic;"></i> FORMS</h2>
+        <div class="forms-items">
+            <a href="../index.php"><i class="fa-solid fa-user fa-sm"></i> STUDENT</a>
+            <a href="../forms/major.php"><i class="fa-solid fa-book fa-sm"></i> MAJOR</a>
+            <a href="../forms/department.php"><i class="fa-solid fa-building-columns fa-sm"></i> DEPARTMENT</a>
+            <a href="../forms/course.php"><i class="fa-solid fa-book-open-reader fa-sm"></i> COURSE</a>
+        </div>
+        <button onclick="location.href='studentReport.php'" class="tabs"><i class="fa-regular fa-file-lines"></i> Reports</button>
+    </nav>
+
+    <div class="wrapper">
+        <div class="report-header">
+            <ul>
+                <li id="reportHead">Major-Course Report     <i class="fa-solid fa-caret-down fa-sm"></i></li>
+                <ul class="dropdown">
+                    <li><a href="studentReport.php">Student Report</a></li>
+                    <li><a href="majorReport.php">Major Report</a></li>
+                    <li><a href="departmentReport.php">Department Report</a></li>
+                </ul>
+            </ul>    
+        </div>
+        <div class="report-select">
+            <div class="sort">
+                <h5><i class="fa-solid fa-tornado fa-flip-horizontal fa-sm"></i>     Sort:</h5>
+                <div class="select-container">
+                    <select name="sort_criteria" id="sort_criteria">
+                        <option value="">Sort Criteria</option>
+                        <option value="MajorID">Major ID</option>
+                        <option value="MajorName">Major Name</option>
+                    </select>
+                    <select name="sort_order" id="sort_order">
+                        <option value="">Sort Order</option>
+                        <option value="ASC">Ascending</option>
+                        <option value="DESC">Descending</option>
+                    </select>
+                </div>
+            </div>
+            <button class="courseReport-download">Download PDF <i class="fa-solid fa-download"></i></button>
+        </div>
+        <div class="majorCourseReport-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">Major ID</th>
+                        <th scope="col">Major Name</th>
+                        <th scope="col">Course ID</th>
+                        <th scope="col">Course Name</th>
                     </tr>
-                <?php endforeach; ?>
-                <?php $row_class = ($row_class === '') ? 'even-row' : ''; // Toggle row class ?>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+                </thead>
+                <tbody id="majorCourseReport-table-body">
+                    <?php fetchMajorCourses($conn); ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            function fetchFilteredData() {
+                var sortCriteria = $('#sort_criteria').val();
+                var sortOrder = $('#sort_order').val();
+
+                $.ajax({
+                    url: 'majorCourseReport.php',
+                    type: 'GET',
+                    data: {
+                        ajax: 1,
+                        sort_criteria: sortCriteria,
+                        sort_order: sortOrder
+                    },
+                    success: function(response) {
+                        $('#majorCourseReport-table-body').html(response);
+                    }
+                });
+            }
+
+            $('#sort_criteria, #sort_order').change(function() {
+                fetchFilteredData();
+            });
+
+            // Initial fetch
+            fetchFilteredData();
+
+            // Download PDF
+            $('.courseReport-download').click(function() {
+                var sortCriteria = $('#sort_criteria').val();
+                var sortOrder = $('#sort_order').val();
+
+                window.location.href = '../generatePDF/coursePDF.php?sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder;
+            });
+        });
+    </script>
+    <script>
+        document.getElementById('reportHead').addEventListener('click', function() {
+            var dropdown = document.querySelector('ul .dropdown');
+            if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+                dropdown.style.display = 'block';
+            } else {
+                dropdown.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
