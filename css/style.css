@@ -402,8 +402,8 @@ ul {
     font-size: 25px;
     font-weight: 600;
     text-transform: uppercase;
-    margin: 15px 470px 0 470px;
     cursor: pointer;
+    margin-top: 15px;
     border-bottom: 3px solid #14202B;
 }
 
@@ -414,7 +414,7 @@ ul {
     z-index: 999;
     background-color: #2C3E50;
     border-radius: 5px 5px 15px 15px;
-    width: 230px;
+    width: 280px;
     border: 2px solid #dbdbd6;
 }
 
@@ -422,7 +422,7 @@ ul {
     padding: 5px 0 5px 0;
     cursor: pointer;
     height: auto;
-    width: 230px;
+    width: 280px;
 }
 
 .dropdown li a {

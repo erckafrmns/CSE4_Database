@@ -94,6 +94,8 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                     <li><a href="studentReport.php">Student Report</a></li>
                     <li><a href="departmentReport.php">Department Report</a></li>
                     <li><a href="courseReport.php">Course Report</a></li>
+                    <li><a href="majorCourseReport.php">Major-Course Report</a></li>
+                    <li><a href="studentCoursesReport.php">Student-Courses Report</a></li>
                 </ul>
             </ul>    
         </div>
