@@ -322,7 +322,8 @@ input::-webkit-input-placeholder{
 }
 
 .studentReport-download, .courseReport-download,
-.majorReport-download, .departmentReport-download {
+.majorReport-download, .departmentReport-download,
+.majorCourseReport-download, .studentCoursesReport-download{
     background-color: #2C3E50;
     color: #e9e9e4;
     height: 35px;
@@ -334,7 +335,8 @@ input::-webkit-input-placeholder{
 }
 
 .studentReport-download:hover, .courseReport-download:hover, 
-.majorReport-download:hover, .departmentReport-download:hover{
+.majorReport-download:hover, .departmentReport-download:hover,
+.majorCourseReport-download:hover, .studentCoursesReport-download:hover{
     transform: scale(0.98);
 }
 
@@ -352,6 +354,14 @@ input::-webkit-input-placeholder{
 
 .departmentReport-download {
     margin: 18px 0 0 750px ;
+}
+
+.majorCourseReport-download {
+    margin: 18px 0 0 452px ;
+}
+
+.studentCoursesReport-download {
+    margin: 18px 0 0 452px ;
 }
 
 .report-table, .majorCourseReport-table {
@@ -442,4 +452,37 @@ ul {
 }
 ul li:hover {
     color: #34485c; 
+}
+
+#search_input {
+    border: 2px solid #2C3E50;
+    color: #2C3E50;
+    width: 250px;
+    height: 26px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 600;
+    background-color: #D8DEE6;
+    box-shadow:0 2px 2px #2C3E50;
+    outline: none;
+}
+
+#search_input::placeholder {
+    font-weight: 550;
+    color: #898e94;
+}
+
+#search_button {
+    background-color: #2C3E50;
+    color: #e9e9e4;
+    height: 30px;
+    width: 45px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#search_button:hover {
+    transform: scale(0.98);
 }

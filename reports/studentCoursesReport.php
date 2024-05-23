@@ -21,6 +21,12 @@ function fetchStudentCourses($conn, $sort_criteria = '', $sort_order = '') {
         }
     }
 
+    // For search query
+    $search_query = isset($_GET['search_query']) ? $_GET['search_query'] : '';
+    if (!empty($search_query)) {
+        $sql .= " HAVING s.StudentID LIKE '%$search_query%' OR s.LastName LIKE '%$search_query%' OR m.MajorName LIKE '%$search_query%'";
+    }
+
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
@@ -114,7 +120,14 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                     </select>
                 </div>
             </div>
-            <button class="courseReport-download">Download PDF <i class="fa-solid fa-download"></i></button>
+            <div class="filter">
+                <h5>Search      <i class="fa-solid fa-magnifying-glass"></i></h5>
+                <div class="select-container">
+                    <input type="text" id="search_input" placeholder="Input studentid, lastname or major name...">
+                    <button id="search_button"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+            </div>
+            <button class="studentCoursesReport-download">Download PDF <i class="fa-solid fa-download"></i></button>
         </div>
         <div class="report-table">
             <table>
@@ -137,6 +150,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
     <script>
         $(document).ready(function() {
             function fetchFilteredData() {
+                var searchQuery = $('#search_input').val();
                 var sortCriteria = $('#sort_criteria').val();
                 var sortOrder = $('#sort_order').val();
 
@@ -145,6 +159,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                     type: 'GET',
                     data: {
                         ajax: 1,
+                        search_query: searchQuery,
                         sort_criteria: sortCriteria,
                         sort_order: sortOrder
                     },
@@ -154,7 +169,18 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                 });
             }
 
-            $('#sort_criteria, #sort_order').change(function() {
+            $('#search_input, #sort_criteria, #sort_order').change(function() {
+                fetchFilteredData();
+            });
+
+            // Function to handle search input keypress
+            $('#search_input').keypress(function(e) {
+                if (e.which == 13) { // Check if Enter key is pressed
+                    fetchFilteredData();
+                }
+            });
+
+            $('#search_button').click(function() {
                 fetchFilteredData();
             });
 
