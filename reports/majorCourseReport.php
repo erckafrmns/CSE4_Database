@@ -204,11 +204,12 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
             fetchFilteredData();
 
             // Download PDF
-            $('.courseReport-download').click(function() {
+            $('.majorCourseReport-download').click(function() {
+                var searchQuery = $('#search_input').val();
                 var sortCriteria = $('#sort_criteria').val();
                 var sortOrder = $('#sort_order').val();
 
-                window.location.href = '../generatePDF/coursePDF.php?sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder;
+                window.location.href = '../generatePDF/majorCoursePDF.php?search_input=' + searchQuery + '&sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder;
             });
         });
     </script>
