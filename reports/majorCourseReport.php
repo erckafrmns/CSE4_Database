@@ -8,6 +8,12 @@ function fetchMajorCourses($conn, $sort_criteria = '', $sort_order = '') {
             INNER JOIN major_course_jnct mc ON m.MajorID = mc.MajorID
             INNER JOIN course c ON mc.CourseID = c.CourseID";
 
+    // For search query
+    $search_query = isset($_GET['search_query']) ? $_GET['search_query'] : '';
+    if (!empty($search_query)) {
+        $sql .= " WHERE m.MajorID LIKE '%$search_query%' OR m.MajorName LIKE '%$search_query%'";
+    }
+
     if (!empty($sort_criteria) && !empty($sort_order)) {
         $valid_criteria = ['MajorID', 'MajorName'];
         $valid_orders = ['ASC', 'DESC'];
@@ -17,12 +23,6 @@ function fetchMajorCourses($conn, $sort_criteria = '', $sort_order = '') {
         } else {
             die("Invalid sorting criteria or order.");
         }
-    }
-
-    // For search query
-    $search_query = isset($_GET['search_query']) ? $_GET['search_query'] : '';
-    if (!empty($search_query)) {
-        $sql .= " WHERE m.MajorID LIKE '%$search_query%' OR m.MajorName LIKE '%$search_query%'";
     }
 
     $result = $conn->query($sql);
