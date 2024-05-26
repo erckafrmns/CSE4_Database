@@ -25,7 +25,7 @@ nav {
 }
 
 nav h1 {
-    font-size: 24;
+    font-size: 24px;
     font-weight: 800;
 }
 
@@ -117,7 +117,7 @@ nav h1 {
 }
 
 .contGuest a{
-    color: #5baac7 !important;
+    color: #17789b !important;
 }
 
 .overlayGuest a{

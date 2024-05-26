@@ -24,7 +24,7 @@
                     <input type="password" placeholder="Password" />
                     <a href="#">Forgot your password?</a>
                     <button>Sign In</button>
-                    <p class="contGuest">or <br>continue with <a href="">guest account</a></p>
+                    <p class="contGuest">or <br>continue with <a href="guestAccount.php">guest account</a></p>
                 </form>
             </div>
             <div class="form-container admin-container">
@@ -50,7 +50,7 @@
                         <span>STUDENT</span>
                         <p>To view your courses and edit your information, please press the button below and enter your credentials.</p>
                         <button class="ghost" id="student">STUDENT</button>
-                        <p class="overlayGuest">or <br>continue with <a href="">guest account</a></p>
+                        <p class="overlayGuest">or <br>continue with <a href="guestAccount.php">guest account</a></p>
                     </div>
                 </div>
             </div>
