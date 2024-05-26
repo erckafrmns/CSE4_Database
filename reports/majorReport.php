@@ -78,7 +78,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
     <nav>
         <h2><i class="fa-brands fa-wpforms fa-sm" style="color: #ffffff; font-style: italic;"></i> FORMS</h2>
         <div class="forms-items">
-            <a href="../index.php"><i class="fa-solid fa-user fa-sm"></i> STUDENT</a>
+            <a href="../forms/student.php"><i class="fa-solid fa-user fa-sm"></i> STUDENT</a>
             <a href="../forms/major.php"><i class="fa-solid fa-book fa-sm"></i> MAJOR</a>
             <a href="../forms/department.php"><i class="fa-solid fa-building-columns fa-sm"></i> DEPARTMENT</a>
             <a href="../forms/course.php"><i class="fa-solid fa-book-open-reader fa-sm"></i> COURSE</a>

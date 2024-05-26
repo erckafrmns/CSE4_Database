@@ -1,0 +1,214 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+body{
+    font-family: "Poppins", sans-serif;
+    background-color: #D8DEE6;
+}
+
+/* SIDE NAVBAR */
+nav{
+    height: 100%;
+    width: 245px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #2C3E50;
+    overflow-x: hidden;
+    box-shadow: 0 4px 5px #2C3E50;
+}
+
+nav h2{
+    color: white;
+    font-size: 22px;
+    font-style: italic;
+    margin-top: 15px;
+    padding: 40px 40px; 
+    box-sizing: border-box;
+}
+
+.tabs {
+    display: block;
+    font-size: 20px;
+    font-style: italic;
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    height:50px;
+    width: 100px;
+    border: 1px solid #4F6F8F;
+    border-radius: 20px 20px 20px 20px;
+    background-color: #2C3E50;
+    margin: 0 40px 0 40px;
+    padding: 10px 0;
+    cursor: pointer;
+    text-align: center;
+    width: calc(100% - 80px); 
+    box-sizing: border-box; 
+}
+
+.tabs:hover {
+    color: #4F6F8F; 
+}
+
+.forms-items{
+    margin-bottom: 140px;
+}
+
+.forms-items a{
+    display: block;
+    text-decoration: none;
+    color: #4F6F8F;
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0 40px 50px 55px ;
+    transition: all 0.3s ease;
+}
+
+.forms-items a:hover{
+    color: white;
+}
+
+.forms-items a.active{
+    color: white;
+}
+
+nav h2::after,
+.tabs a::after {
+    content: '';
+    display: block;
+    height: 1px;
+    width:100%;
+    background-color: #d8d8d3;
+    margin: 10px auto;
+}
+
+nav h2::after {
+    margin-bottom: 0; 
+    padding-bottom: 0;
+}
+
+/* CONTENT PANEL */
+.contentPanel{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: auto;
+    margin: 0 0 0 245px;
+    text-align: center;
+    color: #14202B;
+}
+
+.contentPanel h1{
+    padding: 15px 0 0 0;
+    font-size: 25px;
+    margin-bottom: 30px;
+}
+
+/* FORM */
+.form-header{
+    width: 500px;
+    height: 50px;
+    background-color: #2C3E50;
+    border: 2px solid #2C3E50;
+    box-shadow: 0 4px 2px #2C3E50;
+    border-radius: 20px 20px 0 0;
+}
+
+.form-header h3{
+    font-size: 16px;
+    color: white;
+}
+
+.form-container {
+    display: inline-block;
+    border: 2px solid #2C3E50;
+    border-radius: 0 0 20px 20px;
+    width: 499px;
+    height: 435px;
+    box-shadow: 0 4px 8px #2C3E50;
+}
+
+form{
+    margin-top: 30px;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0;
+    padding: 0 50px 0 55px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    color: #14202B;
+}
+
+.form-group input,
+.form-group select {
+    width: 400px; 
+    height: 40px;
+    box-sizing: border-box; 
+    background-color: #e9e9e4;
+    font-size: 16px;
+    color: #14202B;
+    font-weight: 600;
+    border: 2px solid #2C3E50;
+    border-radius: 5px;
+    padding: 5px 15px 0 15px;
+}
+
+input::-webkit-input-placeholder{
+    color: #a5a5a5;
+    font-size: 14px;
+}
+
+#StudentID {
+    cursor: not-allowed;
+}
+
+#MajorID {
+    width: 400px; 
+    height: 40px;
+    box-sizing: border-box;
+    background-color: #e9e9e4;
+    font-weight: 600;
+    padding: 6px 0 6px 12px;
+    border-radius: 5px;
+    margin-top: 3px;
+    color: #14202B;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#MajorID option{
+    color: #14202B;
+    font-size: 16px;
+    font-weight: 600;
+    width: 400px;
+    height: 40px;
+}
+
+.submitBTN {
+    grid-column: 1 / span 2; 
+    justify-self: center;
+    width: 400PX;
+    height: 45px;
+    border-radius: 5px;
+    margin-top: 15px;
+    background-color: #2C3E50;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submitBTN:hover{
+    color: #a5a5a5;
+    transform: scale(0.98);
+}

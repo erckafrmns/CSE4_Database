@@ -1,214 +1,245 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-body{
-    font-family: "Poppins", sans-serif;
-    background-color: #D8DEE6;
+* {
+    box-sizing: border-box;
 }
 
-/* SIDE NAVBAR */
-nav{
-    height: 100%;
-    width: 245px;
+body {
+    font-family: "Poppins", sans-serif;
+    background-image: linear-gradient(135deg, #4793AF, #FFC470);
+    margin: 0;
+}
+
+nav {
     position: fixed;
+    background-color: #2C3E50;
+    margin: 0;
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     z-index: 1;
     top: 0;
     left: 0;
-    background-color: #2C3E50;
-    overflow-x: hidden;
-    box-shadow: 0 4px 5px #2C3E50;
 }
 
-nav h2{
-    color: white;
-    font-size: 22px;
-    font-style: italic;
-    margin-top: 15px;
-    padding: 40px 40px; 
-    box-sizing: border-box;
+nav h1 {
+    font-size: 24;
+    font-weight: 800;
 }
 
-.tabs {
-    display: block;
-    font-size: 20px;
-    font-style: italic;
-    text-decoration: none;
-    color: white;
-    font-weight: 600;
-    height:50px;
-    width: 100px;
-    border: 1px solid #4F6F8F;
-    border-radius: 20px 20px 20px 20px;
-    background-color: #2C3E50;
-    margin: 0 40px 0 40px;
-    padding: 10px 0;
-    cursor: pointer;
-    text-align: center;
-    width: calc(100% - 80px); 
-    box-sizing: border-box; 
+.sarang {
+    color: #FFC470;
 }
 
-.tabs:hover {
-    color: #4F6F8F; 
+.univ {
+    color: #5baac7;
 }
 
-.forms-items{
-    margin-bottom: 140px;
-}
-
-.forms-items a{
-    display: block;
-    text-decoration: none;
-    color: #4F6F8F;
-    font-size: 18px;
-    font-weight: 500;
-    margin: 0 40px 50px 55px ;
-    transition: all 0.3s ease;
-}
-
-.forms-items a:hover{
-    color: white;
-}
-
-.forms-items a.active{
-    color: white;
-}
-
-nav h2::after,
-.tabs a::after {
-    content: '';
-    display: block;
-    height: 1px;
-    width:100%;
-    background-color: #d8d8d3;
-    margin: 10px auto;
-}
-
-nav h2::after {
-    margin-bottom: 0; 
-    padding-bottom: 0;
-}
-
-/* CONTENT PANEL */
-.contentPanel{
+.contentPanel {
+    margin: 60px 0 0 0;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    height: 100%;
-    width: auto;
-    margin: 0 0 0 245px;
-    text-align: center;
-    color: #14202B;
+    justify-content: center;
+    flex-direction: column;
+    height: 91vh;
+    font-family: "Poppins", sans-serif;
 }
 
-.contentPanel h1{
-    padding: 15px 0 0 0;
-    font-size: 25px;
-    margin-bottom: 30px;
-}
-
-/* FORM */
-.form-header{
-    width: 500px;
-    height: 50px;
-    background-color: #2C3E50;
-    border: 2px solid #2C3E50;
-    box-shadow: 0 4px 2px #2C3E50;
-    border-radius: 20px 20px 0 0;
-}
-
-.form-header h3{
-    font-size: 16px;
-    color: white;
+.container {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 
+            0 10px 10px rgba(0,0,0,0.22);
+    position: relative;
+    overflow: hidden;
+    width: 768px;
+    max-width: 100%;
+    min-height: 480px;
 }
 
 .form-container {
-    display: inline-block;
-    border: 2px solid #2C3E50;
-    border-radius: 0 0 20px 20px;
-    width: 499px;
-    height: 435px;
-    box-shadow: 0 4px 8px #2C3E50;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
 }
 
-form{
-    margin-top: 30px;
+.admin-container {
+    left: 0;
+    width: 50%;
+    z-index: 2;
 }
 
-.form-group {
-    margin-bottom: 18px;
+.student-container {
+    left: 0;
+    width: 50%;
+    opacity: 0;
+    z-index: 1;
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 0;
-    padding: 0 50px 0 55px;
-    text-align: left;
-    font-size: 12px;
+.container.right-panel-active .admin-container {
+    transform: translateX(100%);
+}
+
+.container.right-panel-active .student-container {
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 5;
+    animation: show 0.6s;
+}
+
+@keyframes show {
+    0%, 49.99% {
+        opacity: 0;
+        z-index: 1;
+    }
+    
+    50%, 100% {
+        opacity: 1;
+        z-index: 5;
+    }
+}
+
+.contentPanel h1 {
     font-weight: 600;
-    color: #14202B;
+    margin: 0;
 }
 
-.form-group input,
-.form-group select {
-    width: 400px; 
-    height: 40px;
-    box-sizing: border-box; 
-    background-color: #e9e9e4;
-    font-size: 16px;
-    color: #14202B;
-    font-weight: 600;
-    border: 2px solid #2C3E50;
-    border-radius: 5px;
-    padding: 5px 15px 0 15px;
-}
-
-input::-webkit-input-placeholder{
-    color: #a5a5a5;
+.contentPanel p {
     font-size: 14px;
+    font-weight: 300;
+    line-height: 20px;
+    letter-spacing: 0.5px;
+    /* margin: 20px 0 30px; */
+    margin-bottom: 30px;
 }
 
-#StudentID {
-    cursor: not-allowed;
+.contentPanel span {
+    font-size: 12px;
+    margin-bottom: 30px;
+    font-weight: 500;
 }
 
-#MajorID {
-    width: 400px; 
-    height: 40px;
-    box-sizing: border-box;
-    background-color: #e9e9e4;
-    font-weight: 600;
-    padding: 6px 0 6px 12px;
-    border-radius: 5px;
-    margin-top: 3px;
-    color: #14202B;
-    font-size: 16px;
-    cursor: pointer;
+.contentPanel a {
+    color: #333;
+    font-size: 14px;
+    text-decoration: none;
+    margin: 15px 0;
 }
 
-#MajorID option{
-    color: #14202B;
-    font-size: 16px;
-    font-weight: 600;
-    width: 400px;
-    height: 40px;
-}
-
-.submitBTN {
-    grid-column: 1 / span 2; 
-    justify-self: center;
-    width: 400PX;
-    height: 45px;
-    border-radius: 5px;
-    margin-top: 15px;
+.contentPanel button {
+    border-radius: 20px;
+    border: 1px solid #2C3E50;
     background-color: #2C3E50;
-    color: white;
-    font-size: 16px;
-    font-weight: 600;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 45px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 80ms ease-in;
     cursor: pointer;
-    transition: all 0.3s ease;
 }
 
-.submitBTN:hover{
-    color: #a5a5a5;
-    transform: scale(0.98);
+.contentPanel button:active {
+    transform: scale(0.95);
+}
+
+.contentPanel button:focus {
+    outline: none;
+}
+
+.contentPanel button.ghost {
+    background-color: transparent;
+    border-color: #FFFFFF;
+}
+
+form {
+    background-color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 50px;
+    height: 100%;
+    text-align: center;
+}
+
+input {
+    background-color: #eee;
+    border: 2px solid #d8d8d8;
+    padding: 12px 15px;
+    margin: 8px 0;
+    width: 100%;
+    height: 45px;
+    outline: none;
+}
+
+.overlay-container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.6s ease-in-out;
+    z-index: 100;
+}
+
+.container.right-panel-active .overlay-container{
+    transform: translateX(-100%);
+}
+
+.overlay {
+    background: #2C3E50;
+    background: -webkit-linear-gradient(to right, #2C3E50, #2C3E50);
+    background: linear-gradient(to right, #2C3E50, #2C3E50);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 0 0;
+    color: #FFFFFF;
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+      transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+}
+
+.container.right-panel-active .overlay {
+      transform: translateX(50%);
+}
+
+.overlay-panel {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 40px;
+    text-align: center;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+}
+
+.overlay-left {
+    transform: translateX(-20%);
+}
+
+.container.right-panel-active .overlay-left {
+    transform: translateX(0);
+}
+
+.overlay-right {
+    right: 0;
+    transform: translateX(0);
+}
+
+.container.right-panel-active .overlay-right {
+    transform: translateX(20%);
 }

@@ -50,7 +50,7 @@ while ($row = mysqli_fetch_assoc($majorResult)) {
     <nav>
         <h2><i class="fa-brands fa-wpforms fa-sm" style="color: #ffffff; font-style: italic;"></i>                  FORMS</h2>
         <div class="forms-items">
-            <a href="../index.php"><i class="fa-solid fa-user fa-sm"></i>               STUDENT</a>
+            <a href="student.php"><i class="fa-solid fa-user fa-sm"></i>               STUDENT</a>
             <a href="major.php"><i class="fa-solid fa-book fa-sm"></i>               MAJOR</a>
             <a href="department.php"><i class="fa-solid fa-building-columns fa-sm"></i>               DEPARTMENT</a>
             <a href="course.php" class="active"><i class="fa-solid fa-book-open-reader fa-sm"></i>               COURSE</a>
