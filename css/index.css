@@ -116,10 +116,25 @@ nav h1 {
     margin-bottom: 30px;
 }
 
+.contGuest a{
+    color: #5baac7 !important;
+}
+
+.overlayGuest a{
+    color: #FFC470 !important;
+}
+
+a:hover, .contGuest a:hover, .overlayGuest a:hover {
+    transform: scale(0.95);
+}
+
 .contentPanel span {
     font-size: 12px;
-    margin-bottom: 30px;
     font-weight: 500;
+}
+
+.acc{
+    margin-bottom: 30px;
 }
 
 .contentPanel a {
@@ -127,6 +142,7 @@ nav h1 {
     font-size: 14px;
     text-decoration: none;
     margin: 15px 0;
+    transition: all 80ms ease-in;
 }
 
 .contentPanel button {

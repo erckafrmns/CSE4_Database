@@ -19,18 +19,18 @@
             <div class="form-container student-container">
                 <form action="#">
                     <h1>SIGN IN</h1>
-                    <span>STUDENT ACCOUNT</span>
+                    <span class="acc">STUDENT ACCOUNT</span>
                     <input type="text" placeholder="Username" />
                     <input type="password" placeholder="Password" />
                     <a href="#">Forgot your password?</a>
                     <button>Sign In</button>
-                    <p>or <br>continue with <a href="">guest account</a></p>
+                    <p class="contGuest">or <br>continue with <a href="">guest account</a></p>
                 </form>
             </div>
             <div class="form-container admin-container">
                 <form action="#">
                     <h1>SIGN IN</h1>
-                    <span>ADMIN ACCOUNT</span>
+                    <span class="acc">ADMIN ACCOUNT</span>
                     <input type="text" placeholder="Username" />
                     <input type="password" placeholder="Password" />
                     <a href="#">Forgot your password?</a>
@@ -43,29 +43,29 @@
                         <h1>WELCOME</h1>
                         <span>ADMIN</span>
                         <p>To manage the system and access administrative tools, please press the button below and enter your credentials.</p>
-                        <button class="ghost" id="signIn">ADMIN</button>
+                        <button class="ghost" id="admin">ADMIN</button>
                     </div>
                     <div class="overlay-panel overlay-right">
                         <h1>WELCOME</h1>
                         <span>STUDENT</span>
                         <p>To view your courses and edit your information, please press the button below and enter your credentials.</p>
-                        <button class="ghost" id="signUp">STUDENT</button>
-                        <p>or <br>continue with <a href="">guest account</a></p>
+                        <button class="ghost" id="student">STUDENT</button>
+                        <p class="overlayGuest">or <br>continue with <a href="">guest account</a></p>
                     </div>
                 </div>
             </div>
         </div>
 
     <script>
-        const signUpButton = document.getElementById('signUp');
-        const signInButton = document.getElementById('signIn');
+        const studentButton = document.getElementById('student');
+        const adminButton = document.getElementById('admin');
         const container = document.getElementById('container');
 
-        signUpButton.addEventListener('click', () => {
+        studentButton.addEventListener('click', () => {
             container.classList.add("right-panel-active");
         });
 
-        signInButton.addEventListener('click', () => {
+        adminButton.addEventListener('click', () => {
             container.classList.remove("right-panel-active");
         });
 
