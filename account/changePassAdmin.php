@@ -2,56 +2,57 @@
 session_start();
 include('../connection.php');
 
-// Check if admin is logged in
-if(isset($_SESSION['admin_id'])) {
-    $admin_id = $_SESSION['admin_id'];
+if (!isset($_SESSION['admin_id'])) {
+    header("Location: ../index.php");
+    exit();
+}
 
-    // Fetch admin details from the database
-    $sql = "SELECT * FROM admin WHERE AdminID = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $admin_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
+$admin_id = $_SESSION['admin_id'];
 
-    if ($result->num_rows > 0) {
-        $admin_data = $result->fetch_assoc();
-    } else {
-        header("Location: ../index.php");
-        exit();
-    }
+$stmt = $conn->prepare("SELECT * FROM admin WHERE AdminID = ?");
+$stmt->bind_param("s", $admin_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    $admin_data = $result->fetch_assoc();
 } else {
     header("Location: ../index.php");
     exit();
 }
 
-// Handle form submission
+$error_messages = [];
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $current_password = $_POST['current_password'];
     $new_password = $_POST['new_password'];
     $confirm_new_password = $_POST['confirm_new_password'];
 
+    if ($current_password != $admin_data['Password']) {
+        $error_messages[] = '*Current Password is Incorrect*';
+    }
+
     if ($new_password != $confirm_new_password) {
-        echo "<script>alert('New passwords do not match');</script>";
-    } else {
-        // Verify current password
-        if (password_verify($current_password, $admin_data['Password'])) {
-            // Hash new password
-            $new_password_hashed = password_hash($new_password, PASSWORD_DEFAULT);
+        $error_messages[] = '*New Passwords Do Not Match*';
+    }
 
-            $update_sql = "UPDATE admin SET Password = ? WHERE AdminID = ?";
-            $update_stmt = $conn->prepare($update_sql);
-            $update_stmt->bind_param("ss", $new_password_hashed, $admin_id);
+    if (empty($error_messages)) {        
+        $update_stmt = $conn->prepare("UPDATE admin SET Password = ? WHERE AdminID = ?");
+        $update_stmt->bind_param("ss", $new_password, $admin_id);
 
-            if ($update_stmt->execute()) {
-                echo "<script>alert('Password changed successfully');</script>";
-                header("Location: ../adminAccount.php");
-                exit();
-            } else {
-                echo "<script>alert('Error changing password');</script>";
-            }
+        if ($update_stmt->execute()) {
+            echo "<script>alert('Password changed successfully');</script>";
+            header("Location: ../adminAccount.php");
+            exit();
         } else {
-            echo "<script>alert('Current password is incorrect');</script>";
+            $error_messages[] = '*Error Changing Password*';
         }
+    }
+
+    if (!empty($error_messages)) {
+        $_SESSION['error_messages'] = $error_messages;
+        header("Location: changePassAdmin.php");
+        exit();
     }
 }
 ?>
@@ -62,7 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Change Password</title>
-    <link rel="stylesheet" href="../css/changePass.css">
+    <link rel="stylesheet" href="../css/changePassAdmin.css">
     <script src="https://kit.fontawesome.com/b6ecc94894.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -96,12 +97,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <li class="menu-dropdown"><a href="">Account</a>
                 <div class="reports-dropdown">
                     <ul>
-                        <li><a href="../account/editInfo.php?admin_id=<?php echo $admin_id; ?>">Edit Information</a></li>
-                        <li><a href="../account/changePass.php?admin_id=<?php echo $admin_id; ?>">Change Password</a></li>
+                        <li><a href="../account/editInfoAdmin.php">Edit Information</a></li>
+                        <li><a href="../account/changePassAdmin.php">Change Password</a></li>
                     </ul>
                 </div>
             </li>
-            <li><button class="SignOutBTN" onclick="window.location.href='logout.php';">Sign Out</button></li>
+            <li><button class="SignOutBTN" onclick="window.location.href='../logout.php';">Sign Out</button></li>
         </ul>
     </nav>
 
@@ -109,7 +110,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="header">
             <h4><i class="fa-solid fa-lock"></i>        Change Password</h4>
         </div>
-        <form method="post" action="changePass.php">
+        <form method="post" action="changePassAdmin.php">
+
+            <?php if(isset($_SESSION['error_messages']) && !empty($_SESSION['error_messages'])): ?>
+                <ul class="error-messages">
+                    <?php foreach($_SESSION['error_messages'] as $message): ?>
+                        <li><?php echo $message; ?></li>
+                    <?php endforeach; ?>
+                </ul>
+                <?php unset($_SESSION['error_messages']); ?>
+            <?php endif; ?>
+
             <label for="current_password">Current Password</label>
             <input type="password" id="current_password" name="current_password" placeholder="Current Password" required><br>
 
@@ -118,7 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <label for="confirm_new_password">Confirm New Password</label>
             <input type="password" id="confirm_new_password" name="confirm_new_password" placeholder="Confirm New Password" required><br>
-
+    
             <div class="btn">
                 <button class="cancel" onclick="window.location.href='../adminAccount.php';">Cancel</button>
                 <button class="change" type="submit">Change Password</button>

@@ -65,8 +65,8 @@ if(isset($_SESSION['admin_id'])) {
             <li class="menu-dropdown"><a href="">Account</a>
                 <div class="reports-dropdown">
                     <ul>
-                        <li><a href="account/editInfo.php?admin_id=<?php echo $admin_id; ?>">Edit Information</a></li>
-                        <li><a href="account/changePass.php?admin_id=<?php echo $admin_id; ?>">Change Password</a></li>
+                        <li><a href="account/editInfoStudent.php">Edit Information</a></li>
+                        <li><a href="account/changePassAdmin.php">Change Password</a></li>
                     </ul>
                 </div>
             </li>

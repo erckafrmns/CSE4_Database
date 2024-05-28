@@ -1,0 +1,235 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    background-image: linear-gradient(135deg, #4793AF, #FFC470);
+}
+
+nav {
+    position: fixed;
+    background-color: #2C3E50;
+    margin: 0;
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    padding: 0 30px 0 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+nav h1 {
+    font-family: "Poppins", sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.sarang {
+    color: #FFC470;
+}
+
+.univ {
+    color: #5baac7;
+}
+
+nav ul {
+    margin: 0 30px 0 30px;
+}
+
+nav ul li {
+    display: inline-block;
+    font-size: 16px;
+    font-family: "Poppins", sans-serif;
+    list-style: none;
+    font-weight: 600;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white;
+}
+
+nav ul li a:hover {
+    color: #FFC470;
+}
+
+.dashboard {
+    margin-left: 516px;
+}
+
+.menu-dropdown {
+    position: relative;
+    margin: 0 0 0 60px;
+    padding-bottom: 5px;
+}
+
+.reports-dropdown {
+    display: none;
+}
+
+.menu-dropdown:hover .reports-dropdown {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 50%; 
+    transform: translateX(-50%); 
+    background-color: #2C3E50;
+    width: 170px;
+    font-size: 14px;
+    text-align: center;
+}
+
+nav ul li ul {
+    display: block;
+    margin: 10px;
+    padding: 0; 
+    list-style: none; 
+}
+
+nav ul li ul li {
+    display: inline-block;
+    list-style: none;
+    width: 100%; 
+}
+
+nav ul li ul li a {
+    display: block; 
+    width: 100%; 
+    height: 100%; 
+    padding: 8px; 
+    color: white; 
+    text-decoration: none; 
+    font-size: 14px;
+}
+
+
+nav ul li ul li:hover a{
+    background-color: #FFC470;
+    color: #2C3E50;
+}
+
+.SignOutBTN {
+    margin-left: 60px;
+    width: 100px;
+    height: 35px;
+    border-radius: 5px;
+    background-color: #FFC470;
+    color: #2C3E50;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.SignOutBTN:hover {
+    transform: scale(0.98);
+}
+
+.contentPanel {
+    margin: 60px 0 0 0;
+    height: 91vh;
+    font-family: "Poppins", sans-serif;
+    padding: 0 30px 0 30px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.contentPanel .header {
+    width: 502px;
+    height: 65px;
+    background-color: #2C3E50;
+    color: white;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 25px 25px 0 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.contentPanel form {
+    margin-top: 1px;
+    width: 500px;
+    height: 360px;
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 0 0 25px 25px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    padding: 0 60px 0 60px
+}
+
+label{
+    font-size: 13px;
+    font-weight: 500;
+    padding-left: 5px;
+    color: #2C3E50;
+}
+
+input{
+    background-color: #eee;
+    outline: none;
+    border: 2px solid #d8d8d8;
+    padding: 14px 15px;
+    width: 380px;
+    font-size: 15px;
+    align-self: center;
+    border: 10px;
+    letter-spacing: 1px;
+}
+
+.btn {
+    display: flex;
+    justify-content: space-around;
+}
+
+.btn .cancel {
+    background-color: #FFC470;
+    color: #2C3E50;
+    font-size: 15px;
+    font-weight: 500;
+    width: 120px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid #ffb44c;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn .change {
+    background-color: #2C3E50;
+    height: 40px;
+    width: 180px;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 10px;
+    border: 1px solid #0f1a25;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn .change:hover, .btn .cancel:hover {
+    transform: scale(0.98);
+}
+
+.error-messages {
+    list-style: none;
+}
+
+.error-messages li{
+    font-size: 13px;
+    color: red;
+    text-align: left;
+}

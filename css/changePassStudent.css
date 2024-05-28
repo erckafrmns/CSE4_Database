@@ -41,7 +41,7 @@ nav h1 {
 }
 
 nav ul {
-    margin: 0 30px 0 30px;
+    margin: 0 25px 0 25px;
 }
 
 nav ul li {
@@ -62,7 +62,7 @@ nav ul li a:hover {
 }
 
 .dashboard {
-    margin-left: 516px;
+    margin-left: 632px;
 }
 
 .menu-dropdown {
@@ -117,7 +117,7 @@ nav ul li ul li:hover a{
 }
 
 .SignOutBTN {
-    margin-left: 60px;
+    margin-left: 50px;
     width: 100px;
     height: 35px;
     border-radius: 5px;
@@ -222,4 +222,14 @@ input{
 
 .btn .change:hover, .btn .cancel:hover {
     transform: scale(0.98);
+}
+
+.error-messages {
+    list-style: none;
+}
+
+.error-messages li{
+    font-size: 13px;
+    color: red;
+    text-align: left;
 }

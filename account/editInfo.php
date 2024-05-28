@@ -3,20 +3,25 @@ session_start();
 include('../connection.php');
 
 if(isset($_SESSION['admin_id'])) {
-    $admin_id = $_SESSION['admin_id'];
-
+    $user_type = 'admin';
+    $user_id = $_SESSION['admin_id'];
     $sql = "SELECT * FROM admin WHERE AdminID = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $admin_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
+} elseif(isset($_SESSION['student_id'])) {
+    $user_type = 'student';
+    $user_id = $_SESSION['student_id'];
+    $sql = "SELECT * FROM student WHERE StudentID = ?";
+} else {
+    header("Location: ../index.php");
+    exit();
+}
 
-    if ($result->num_rows > 0) {
-        $admin_data = $result->fetch_assoc();
-    } else {
-        header("Location: ../index.php");
-        exit();
-    }
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    $user_data = $result->fetch_assoc();
 } else {
     header("Location: ../index.php");
     exit();
@@ -27,13 +32,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $last_name = $_POST['last_name'];
     $email = $_POST['email'];
 
-    $update_sql = "UPDATE admin SET FirstName = ?, LastName = ?, Email = ? WHERE AdminID = ?";
+    if ($user_type == 'admin') {
+        $update_sql = "UPDATE admin SET FirstName = ?, LastName = ?, Email = ? WHERE AdminID = ?";
+    } else {
+        $update_sql = "UPDATE student SET FirstName = ?, LastName = ?, Email = ? WHERE StudentID = ?";
+    }
+    
     $update_stmt = $conn->prepare($update_sql);
-    $update_stmt->bind_param("ssss", $first_name, $last_name, $email, $admin_id);
+    $update_stmt->bind_param("ssss", $first_name, $last_name, $email, $user_id);
 
     if ($update_stmt->execute()) {
         echo "<script>alert('Information updated successfully');</script>";
-        header("Location: ../adminAccount.php");
+        header("Location: ../" . $user_type . "Account.php");
         exit();
     } else {
         echo "<script>alert('Error updating information');</script>";
