@@ -17,24 +17,30 @@
 
         <div class="container" id="container">
             <div class="form-container student-container">
-                <form action="#">
+                <form action="login.php" method="POST">
                     <h1>SIGN IN</h1>
                     <span class="acc">STUDENT ACCOUNT</span>
-                    <input type="text" placeholder="Username" />
-                    <input type="password" placeholder="Password" />
+                    <input type="text" name="StudentID" placeholder="Student ID" />
+                    <input type="password" name="Password" placeholder="Password" />
+                    <?php if(isset($_GET['error']) && $_GET['error'] == 'student_login'): ?>
+                        <p class="error-message">*Invalid Student ID or Password*</p>
+                    <?php endif; ?>
                     <a href="#">Forgot your password?</a>
-                    <button>Sign In</button>
+                    <button type="submit" name="student_login">Sign In</button>
                     <p class="contGuest">or <br>continue with <a href="guestAccount.php">guest account</a></p>
                 </form>
             </div>
             <div class="form-container admin-container">
-                <form action="#">
+                <form action="login.php" method="POST">
                     <h1>SIGN IN</h1>
                     <span class="acc">ADMIN ACCOUNT</span>
-                    <input type="text" placeholder="Username" />
-                    <input type="password" placeholder="Password" />
+                    <input type="text" name="AdminID" placeholder="Admin ID" />
+                    <input type="password" name="Password" placeholder="Password" />
+                    <?php if(isset($_GET['error']) && $_GET['error'] == 'admin_login'): ?>
+                        <p class="error-message">*Invalid Admin ID or Password*</p>
+                    <?php endif; ?>
                     <a href="#">Forgot your password?</a>
-                    <button>Sign In</button>
+                    <button type="submit" name="admin_login">Sign In</button>
                 </form>
             </div>
             <div class="overlay-container">

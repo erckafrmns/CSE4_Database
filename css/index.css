@@ -112,8 +112,14 @@ nav h1 {
     font-weight: 300;
     line-height: 20px;
     letter-spacing: 0.5px;
-    /* margin: 20px 0 30px; */
     margin-bottom: 30px;
+}
+
+.error-message {
+    color: red !important;
+    font-size: 13px !important;
+    margin: 2px 0 0 0 !important;
+    font-weight: 500 !important;
 }
 
 .contGuest a{
