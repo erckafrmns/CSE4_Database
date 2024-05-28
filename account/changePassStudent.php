@@ -75,18 +75,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <li class="menu-dropdown"><a href="">Reports</a>
                 <div class="reports-dropdown">
                     <ul>
-                        <li><a href="reports/majorReport.php">Major</a></li>
-                        <li><a href="reports/departmentReport.php">Department</a></li>
-                        <li><a href="reports/courseReport.php">Course</a></li>
-                        <li><a href="reports/majorCourseReport.php">Major-Course</a></li>
+                        <li><a href="../reports/majorReport.php">Major</a></li>
+                        <li><a href="../reports/departmentReport.php">Department</a></li>
+                        <li><a href="../reports/courseReport.php">Course</a></li>
+                        <li><a href="../reports/majorCourseReport.php">Major-Course</a></li>
                     </ul>
                 </div>
             </li>
             <li class="menu-dropdown"><a href="">Account</a>
                 <div class="reports-dropdown">
                     <ul>
-                        <li><a href="account/editInfoStudent.php">Edit Information</a></li>
-                        <li><a href="account/changePassStudent.php">Change Password</a></li>
+                        <li><a href="editInfoStudent.php">Edit Information</a></li>
+                        <li><a href="changePassStudent.php">Change Password</a></li>
                     </ul>
                 </div>
             </li>

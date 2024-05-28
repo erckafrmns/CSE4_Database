@@ -227,3 +227,19 @@ input{
 .admId{
     cursor: not-allowed;
 }
+
+.success-message {
+    color: green !important;
+    font-size: 13px !important;
+    margin: 2px 0 0 0 !important;
+    font-weight: 500 !important;
+    text-align: center;
+}
+
+.error-message {
+    color: red !important;
+    font-size: 13px !important;
+    margin: 2px 0 0 0 !important;
+    font-weight: 500 !important;
+    text-align: center;
+}

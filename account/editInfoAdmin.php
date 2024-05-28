@@ -20,7 +20,7 @@ if(isset($_SESSION['admin_id'])) {
         exit();
     }
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['save'])) {
         $first_name = $_POST['first_name'];
         $last_name = $_POST['last_name'];
         $email = $_POST['email'];
@@ -30,9 +30,11 @@ if(isset($_SESSION['admin_id'])) {
         $update_stmt->bind_param("ssss", $first_name, $last_name, $email, $admin_id);
 
         if ($update_stmt->execute()) {
-            echo "Information updated successfully!";
+            header("Location: editInfoAdmin.php?success=update_success"); 
+            exit();
         } else {
-            echo "Error updating information.";
+            header("Location: editInfoAdmin.php?error=update_error"); 
+            exit();
         }
     }
 } else {
@@ -81,8 +83,8 @@ if(isset($_SESSION['admin_id'])) {
             <li class="menu-dropdown"><a href="">Account</a>
                 <div class="reports-dropdown">
                     <ul>
-                        <li><a href="../account/editInfoAdmin.php">Edit Information</a></li>
-                        <li><a href="../account/changePassAdmin.php">Change Password</a></li>
+                        <li><a href="editInfoAdmin.php">Edit Information</a></li>
+                        <li><a href="changePassAdmin.php">Change Password</a></li>
                     </ul>
                 </div>
             </li>
@@ -94,7 +96,15 @@ if(isset($_SESSION['admin_id'])) {
         <div class="header">
             <h4><i class="fa-solid fa-user-pen"></i>        Edit Information</h4>
         </div>
-        <form method="post" action="editInfo.php">
+        <form method="post" action="editInfoAdmin.php">
+
+            <?php if(isset($_GET['success']) && $_GET['success'] == 'update_success'): ?>
+                <p class="success-message">*Information Updated Successfully*</p>
+            <?php endif; ?>
+            <?php if(isset($_GET['error']) && $_GET['error'] == 'update_error'): ?>
+                <p class="error-message">*Error Updating Information*</p>
+            <?php endif; ?>
+
             <label for="admin_id">Admin ID</label>
             <input class="admId" type="text" id="admin_id" name="admin_id" value="<?php echo $admin_data['AdminID']; ?>" readonly><br>
             
@@ -108,11 +118,10 @@ if(isset($_SESSION['admin_id'])) {
             <input type="email" id="email" name="email" value="<?php echo $admin_data['Email']; ?>" required><br>
 
             <div class="btn">
-                <button class="cancel" onclick="window.location.href='../adminAccount.php';">Cancel</button>
+                <button class="cancel" type="button" onclick="window.location.href='../adminAccount.php';">Cancel</button>
                 <button class="save" type="submit">Save Changes</button>
             </div>
         </form>
     </div>
-    
 </body>
 </html>

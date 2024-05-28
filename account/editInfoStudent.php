@@ -18,7 +18,7 @@ if(isset($_SESSION['student_id'])) {
         exit();
     }
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['save'])) {
         $first_name = $_POST['first_name'];
         $last_name = $_POST['last_name'];
         $email = $_POST['email'];
@@ -28,9 +28,11 @@ if(isset($_SESSION['student_id'])) {
         $update_stmt->bind_param("ssss", $first_name, $last_name, $email, $student_id);
 
         if ($update_stmt->execute()) {
-            echo "Information updated successfully!";
+            header("Location: editInfoStudent.php?success=update_success"); 
+            exit();
         } else {
-            echo "Error updating information.";
+            header("Location: editInfoStudent.php?error=update_error"); 
+            exit();
         }
     }
 } else {
@@ -57,18 +59,18 @@ if(isset($_SESSION['student_id'])) {
             <li class="menu-dropdown"><a href="">Reports</a>
                 <div class="reports-dropdown">
                     <ul>
-                        <li><a href="reports/majorReport.php">Major</a></li>
-                        <li><a href="reports/departmentReport.php">Department</a></li>
-                        <li><a href="reports/courseReport.php">Course</a></li>
-                        <li><a href="reports/majorCourseReport.php">Major-Course</a></li>
+                        <li><a href="../reports/majorReport.php">Major</a></li>
+                        <li><a href="../reports/departmentReport.php">Department</a></li>
+                        <li><a href="../reports/courseReport.php">Course</a></li>
+                        <li><a href="../reports/majorCourseReport.php">Major-Course</a></li>
                     </ul>
                 </div>
             </li>
             <li class="menu-dropdown"><a href="">Account</a>
                 <div class="reports-dropdown">
                     <ul>
-                        <li><a href="account/editInfoStudent.php">Edit Information</a></li>
-                        <li><a href="account/changePassStudent.php">Change Password</a></li>
+                        <li><a href="editInfoStudent.php">Edit Information</a></li>
+                        <li><a href="changePassStudent.php">Change Password</a></li>
                     </ul>
                 </div>
             </li>
@@ -80,7 +82,15 @@ if(isset($_SESSION['student_id'])) {
         <div class="header">
             <h4><i class="fa-solid fa-user-pen"></i>        Edit Information</h4>
         </div>
-        <form method="post" action="editInfo.php">
+        <form method="post" action="editInfoStudent.php">
+
+            <?php if(isset($_GET['success']) && $_GET['success'] == 'update_success'): ?>
+                <p class="success-message">*Information Updated Successfully*</p>
+            <?php endif; ?>
+            <?php if(isset($_GET['error']) && $_GET['error'] == 'update_error'): ?>
+                <p class="error-message">*Error Updating Information*</p>
+            <?php endif; ?>
+
             <label for="student_id">Admin ID</label>
             <input class="admId" type="text" id="student_id" name="student_id" value="<?php echo $student_data['StudentID']; ?>" readonly><br>
             
@@ -94,7 +104,7 @@ if(isset($_SESSION['student_id'])) {
             <input type="email" id="email" name="email" value="<?php echo $student_data['Email']; ?>" required><br>
 
             <div class="btn">
-                <button class="cancel" onclick="window.location.href='../studentAccount.php';">Cancel</button>
+                <button class="cancel" type="button" onclick="window.location.href='../studentAccount.php';">Cancel</button>
                 <button class="save" type="submit">Save Changes</button>
             </div>
         </form>

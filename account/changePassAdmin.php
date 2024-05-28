@@ -97,8 +97,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <li class="menu-dropdown"><a href="">Account</a>
                 <div class="reports-dropdown">
                     <ul>
-                        <li><a href="../account/editInfoAdmin.php">Edit Information</a></li>
-                        <li><a href="../account/changePassAdmin.php">Change Password</a></li>
+                        <li><a href="editInfoAdmin.php">Edit Information</a></li>
+                        <li><a href="changePassAdmin.php">Change Password</a></li>
                     </ul>
                 </div>
             </li>
