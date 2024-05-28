@@ -61,20 +61,47 @@ while ($row = mysqli_fetch_assoc($majorResult)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Form</title>
-    <link rel="stylesheet" href="../css/student.css">
+    <link rel="stylesheet" href="../css/adminNav.css">
     <script src="https://kit.fontawesome.com/b6ecc94894.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
     <nav>
-        <h2><i class="fa-brands fa-wpforms fa-sm" style="color: #ffffff; font-style: italic;"></i>                  FORMS</h2>
-        <div class="forms-items">
-            <a href="student.php" class="active"><i class="fa-solid fa-user fa-sm"></i>               STUDENT</a>
-            <a href="major.php"><i class="fa-solid fa-book fa-sm"></i>               MAJOR</a>
-            <a href="department.php"><i class="fa-solid fa-building-columns fa-sm"></i>               DEPARTMENT</a>
-            <a href="course.php"><i class="fa-solid fa-book-open-reader fa-sm"></i>               COURSE</a>
-        </div>
-        <button onclick="location.href='../reports/studentReport.php'" class="tabs"><i class="fa-regular fa-file-lines"></i>            Reports</button>
+        <h1><span class="sarang">SARANG </span><span class="univ">UNIVERSITY</span></h1>
+        <ul>
+            <li class="dashboard"><a href="../adminAccount.php">Dashboard</a></li>
+            <li class="menu-dropdown"><a href="">Forms</a>
+                <div class="reports-dropdown">
+                    <ul>
+                        <li><a href="student.php">Add Student</a></li>
+                        <li><a href="major.php">Add Major</a></li>
+                        <li><a href="department.php">Add Department</a></li>
+                        <li><a href="course.php">Add Course</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="menu-dropdown"><a href="">Reports</a>
+                <div class="reports-dropdown">
+                    <ul>
+                        <li><a href="../reports/studentReport.php">Student</a></li>
+                        <li><a href="../reports/majorReport.php">Major</a></li>
+                        <li><a href="../reports/departmentReport.php">Department</a></li>
+                        <li><a href="../reports/courseReport.php">Course</a></li>
+                        <li><a href="../reports/majorCourseReport.php">Major-Course</a></li>
+                        <li><a href="../reports/studentCoursesReport.php">Student-Course</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="menu-dropdown"><a href="">Account</a>
+                <div class="reports-dropdown">
+                    <ul>
+                        <li><a href="editInfoAdmin.php">Edit Information</a></li>
+                        <li><a href="changePassAdmin.php">Change Password</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li><button class="SignOutBTN" onclick="window.location.href='../logout.php';">Sign Out</button></li>
+        </ul>
     </nav>
 
     <div class="contentPanel">

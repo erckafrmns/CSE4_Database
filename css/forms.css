@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+.contentPanel {
+    margin: 60px 0 0 0;
+    height: 91vh;
+    font-family: "Poppins", sans-serif;
+    padding: 0 40px 0 40px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.contentPanel .header {
+    margin-top: 20px;
+    color: white;
+    text-shadow: 0 5px 5px #2C3E50;
+    margin-bottom: 20px;
+}
+
+.contentPanel .formsNav {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.contentPanel .formsNav::after {
+    content: "";
+    display: block;
+    height: 2px; 
+    background-color: #2C3E50; 
+    width: 90%; 
+    position: absolute;
+    left: 50%;
+    margin-top: 40px;
+    transform: translateX(-50%);
+}
+
+
+.formsNav ul{
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+    width: 80%;
+}
+
+.formsNav ul li {
+    display: inline-block;
+}
+
+.formsNav ul li:not(:last-child)::after {
+    content: "|";
+    color: #2C3E50;
+    margin: 0 15px;
+}
+
+.formsNav ul li a {
+    text-align: center;
+    text-decoration: none;
+    color: #F0F0EA;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 15px 50px;
+    text-shadow: 0 3px 3px #2C3E50;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.formsNav ul li a:hover {
+    text-shadow: 0 2px 2px #2C3E50;
+    color: #2C3E50;
+}
+
+.content {
+    width: 100%;
+}
+
+.content h1 {
+    color: white;
+    text-shadow: 0 3px 3px #2C3E50;
+    padding: 15px 0 20px 120px;
+    font-size: 25px;
+}
+
+.content .form-container{
+    border: 1px solid black;
+    margin-left: 180px;
+    display: inline-block;
+}
+
+form{
+    margin-top: 30px;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0;
+    padding: 0 50px 0 55px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    color: #14202B;
+}
+
+.form-group input,
+.form-group select {
+    width: 400px; 
+    height: 40px;
+    box-sizing: border-box; 
+    background-color: #e9e9e4;
+    font-size: 16px;
+    color: #14202B;
+    font-weight: 600;
+    border: 2px solid #2C3E50;
+    border-radius: 5px;
+    padding: 5px 15px 0 15px;
+}
+
+input::-webkit-input-placeholder{
+    color: #a5a5a5;
+    font-size: 14px;
+}
+
+#StudentID {
+    cursor: not-allowed;
+}

@@ -31,6 +31,7 @@ if(isset($_SESSION['admin_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="css/adminNav.css">
     <link rel="stylesheet" href="css/admin.css">
     <script src="https://kit.fontawesome.com/b6ecc94894.js" crossorigin="anonymous"></script>
 </head>
@@ -40,7 +41,7 @@ if(isset($_SESSION['admin_id'])) {
         <h1><span class="sarang">SARANG </span><span class="univ">UNIVERSITY</span></h1>
         <ul>
             <li class="dashboard"><a href="adminAccount.php">Dashboard</a></li>
-            <li class="menu-dropdown"><a href="">Forms</a>
+            <li class="menu-dropdown"><a href="forms/forms.php">Forms</a>
                 <div class="reports-dropdown">
                     <ul>
                         <li><a href="forms/student.php">Add Student</a></li>
