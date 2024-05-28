@@ -20,7 +20,7 @@ if(isset($_SESSION['admin_id'])) {
         exit();
     }
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['save'])) {
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $first_name = $_POST['first_name'];
         $last_name = $_POST['last_name'];
         $email = $_POST['email'];
@@ -49,7 +49,8 @@ if(isset($_SESSION['admin_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Information</title>
-    <link rel="stylesheet" href="../css/editInfoAdmin.css">
+    <link rel="stylesheet" href="../css/adminNav.css">
+    <link rel="stylesheet" href="../css/editInfo.css">
     <script src="https://kit.fontawesome.com/b6ecc94894.js" crossorigin="anonymous"></script>
 </head>
 <body>
