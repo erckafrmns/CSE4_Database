@@ -27,7 +27,24 @@
     </nav>
 
     <div class="contentPanel">
-        <h1>BODY</h1>
+        
+        <div class="leftSide">
+            <h4>WELCOME TO</h4>
+            <h1>SARANG</h1>
+            <h2>UNIVERSITY</h2>
+            <p>'where all <span>dreams</span> come <span>true</span>'</p>
+        </div>
+
+        <div class="rightSide">
+            <h1>List of Reports</h1>
+            <ul>
+                <li><a href="">Major</a></li>
+                <li><a href="">Department</a></li>
+                <li><a href="">Course</a></li>
+                <li><a href="">Major-Course</a></li>
+            </ul>
+        </div>
+        
     </div>
     
 
