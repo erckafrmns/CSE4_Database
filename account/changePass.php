@@ -110,13 +110,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <h4><i class="fa-solid fa-lock"></i>        Change Password</h4>
         </div>
         <form method="post" action="changePass.php">
-            <label for="current_password">Current Password:</label>
+            <label for="current_password">Current Password</label>
             <input type="password" id="current_password" name="current_password" placeholder="Current Password" required><br>
 
-            <label for="new_password">New Password:</label>
+            <label for="new_password">New Password</label>
             <input type="password" id="new_password" name="new_password" placeholder="New Password"required><br>
 
-            <label for="confirm_new_password">Confirm New Password:</label>
+            <label for="confirm_new_password">Confirm New Password</label>
             <input type="password" id="confirm_new_password" name="confirm_new_password" placeholder="Confirm New Password" required><br>
 
             <div class="btn">

@@ -160,7 +160,7 @@ nav ul li ul li:hover a{
 .contentPanel form {
     margin-top: 1px;
     width: 500px;
-    height: 360px;
+    height: 450px;
     background-color: #FFFFFF;
     display: flex;
     flex-direction: column;
@@ -184,6 +184,7 @@ input{
     padding: 14px 15px;
     width: 380px;
     font-size: 15px;
+    font-weight: 545;
     align-self: center;
     border: 10px;
     letter-spacing: 1px;
@@ -207,7 +208,7 @@ input{
     cursor: pointer;
 }
 
-.btn .change {
+.btn .save {
     background-color: #2C3E50;
     height: 40px;
     width: 180px;
@@ -220,6 +221,10 @@ input{
     cursor: pointer;
 }
 
-.btn .change:hover, .btn .cancel:hover {
+.btn .save:hover, .btn .cancel:hover {
     transform: scale(0.98);
+}
+
+.admId{
+    cursor: not-allowed;
 }
