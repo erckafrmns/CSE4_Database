@@ -75,6 +75,10 @@
             container.classList.remove("right-panel-active");
         });
 
+        <?php if(isset($_GET['error']) && $_GET['error'] == 'student_login'): ?>
+            container.classList.add("right-panel-active");
+        <?php endif; ?>
+
     </script>
 
 </body>
