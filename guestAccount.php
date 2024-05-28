@@ -15,10 +15,10 @@
             <li class="reportNav"><a href="">REPORTS</a>
                 <div class="reports-dropdown">
                     <ul>
-                        <li><a href="#">Major</a></li>
-                        <li><a href="#">Department</a></li>
-                        <li><a href="#">Course</a></li>
-                        <li><a href="#">Major-Course</a></li>
+                        <li><a href="reports/majorReport.php">Major</a></li>
+                        <li><a href="reports/departmentReport.php">Department</a></li>
+                        <li><a href="reports/courseReport.php">Course</a></li>
+                        <li><a href="reports/majorCourseReport.php">Major-Course</a></li>
                     </ul>
                 </div>
             </li>
@@ -38,10 +38,10 @@
         <div class="rightSide">
             <h1>List of Reports</h1>
             <ul>
-                <li><a href="">Major</a></li>
-                <li><a href="">Department</a></li>
-                <li><a href="">Course</a></li>
-                <li><a href="">Major-Course</a></li>
+                <li><a href="reports/majorReport.php"><i class="fa-solid fa-graduation-cap fa-sm"></i> Major</a></li>
+                <li><a href="reports/departmentReport.php"><i class="fa-solid fa-building-columns fa-sm"></i> Department</a></li>
+                <li><a href="reports/courseReport.php"><i class="fa-solid fa-book fa-sm"></i> Course</a></li>
+                <li><a href="reports/majorCourseReport.php"><i class="fa-solid fa-book-open-reader fa-sm"></i> Major-Course</a></li>
             </ul>
         </div>
         
