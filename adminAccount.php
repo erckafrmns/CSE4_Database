@@ -30,7 +30,7 @@ if(isset($_SESSION['admin_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sarang University - ADMIN</title>
+    <title>Admin Dashboard</title>
     <link rel="stylesheet" href="css/admin.css">
     <script src="https://kit.fontawesome.com/b6ecc94894.js" crossorigin="anonymous"></script>
 </head>
@@ -53,10 +53,12 @@ if(isset($_SESSION['admin_id'])) {
             <li class="menu-dropdown"><a href="">Reports</a>
                 <div class="reports-dropdown">
                     <ul>
+                        <li><a href="reports/studentReport.php">Student</a></li>
                         <li><a href="reports/majorReport.php">Major</a></li>
                         <li><a href="reports/departmentReport.php">Department</a></li>
                         <li><a href="reports/courseReport.php">Course</a></li>
                         <li><a href="reports/majorCourseReport.php">Major-Course</a></li>
+                        <li><a href="reports/studentCoursesReport.php">Student-Course</a></li>
                     </ul>
                 </div>
             </li>
@@ -108,14 +110,14 @@ if(isset($_SESSION['admin_id'])) {
             <h3>What would you like to do?</h3>
             <div class="misc-container">
                 <ul>
-                    <li><a href="">Add Student</a></li>
-                    <li><a href="">View Student Report</a></li>
-                    <li><a href="">Add Major</a></li>
-                    <li><a href="">View Major Report</a></li>
-                    <li><a href="">Add Department</a></li>
-                    <li><a href="">View Department Report</a></li>
-                    <li><a href="">Add Course</a></li>
-                    <li><a href="">View Course Report</a></li>
+                    <li><a href="forms/student.php">Add Student</a></li>
+                    <li><a href="reports/studentReport.php">View Student Report</a></li>
+                    <li><a href="forms/major.php">Add Major</a></li>
+                    <li><a href="reports/majorReport.php">View Major Report</a></li>
+                    <li><a href="forms/department.php">Add Department</a></li>
+                    <li><a href="reports/departmentReport.php">View Department Report</a></li>
+                    <li><a href="forms/course.php">Add Course</a></li>
+                    <li><a href="reports/courseReport.php">View Course Report</a></li>
                 </ul>
             </div>
         </div>
