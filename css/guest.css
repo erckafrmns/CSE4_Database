@@ -23,6 +23,7 @@ nav {
     top: 0;
     left: 0;
     padding: 0 30px 0 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 nav h1 {
