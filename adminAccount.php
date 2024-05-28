@@ -63,8 +63,8 @@ if(isset($_SESSION['admin_id'])) {
             <li class="menu-dropdown"><a href="">Account</a>
                 <div class="reports-dropdown">
                     <ul>
-                        <li><a href="account/editInfo.php">Edit Information</a></li>
-                        <li><a href="account/changePass.php">Change Password</a></li>
+                        <li><a href="account/editInfo.php?admin_id=<?php echo $admin_id; ?>">Edit Information</a></li>
+                        <li><a href="account/changePass.php?admin_id=<?php echo $admin_id; ?>">Change Password</a></li>
                     </ul>
                 </div>
             </li>
@@ -91,16 +91,16 @@ if(isset($_SESSION['admin_id'])) {
             <h3>Summary of Reports</h3>
             <div class="summary-container">
                 <div class="student-summary">
-                    <h1>Student</h1>
+                    <h1>Total Student</h1>
                 </div>
                 <div class="major-summary">
-                    <h1>Major</h1>
+                    <h1>Total Major</h1>
                 </div>
                 <div class="department-summary">
-                    <h1>Department</h1>
+                    <h1>Total Department</h1>
                 </div>
                 <div class="course-summary">
-                    <h1>Course</h1>
+                    <h1>Total Course</h1>
                 </div>
             </div>
         </div>
@@ -109,10 +109,13 @@ if(isset($_SESSION['admin_id'])) {
             <div class="misc-container">
                 <ul>
                     <li><a href="">Add Student</a></li>
+                    <li><a href="">View Student Report</a></li>
                     <li><a href="">Add Major</a></li>
+                    <li><a href="">View Major Report</a></li>
                     <li><a href="">Add Department</a></li>
+                    <li><a href="">View Department Report</a></li>
                     <li><a href="">Add Course</a></li>
-                    <li><a href="">View Full Reports</a></li>
+                    <li><a href="">View Course Report</a></li>
                 </ul>
             </div>
         </div>
