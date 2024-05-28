@@ -26,7 +26,10 @@
         </ul>
     </nav>
 
-    <h1>BODY</h1>
+    <div class="contentPanel">
+        <h1>BODY</h1>
+    </div>
+    
 
 </body>
 </html>
