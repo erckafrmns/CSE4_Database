@@ -44,10 +44,10 @@ if(isset($_SESSION['admin_id'])) {
             <li class="menu-dropdown"><a href="forms/student.php">Forms</a>
                 <div class="reports-dropdown">
                     <ul>
-                        <li><a href="forms/student.php">Add Student</a></li>
-                        <li><a href="forms/major.php">Add Major</a></li>
-                        <li><a href="forms/department.php">Add Department</a></li>
-                        <li><a href="forms/course.php">Add Course</a></li>
+                        <li><a href="forms/student.php">Student Form</a></li>
+                        <li><a href="forms/major.php">Major Form</a></li>
+                        <li><a href="forms/department.php">Department Form</a></li>
+                        <li><a href="forms/course.php">Course Form</a></li>
                     </ul>
                 </div>
             </li>

@@ -1,5 +1,12 @@
 <?php
+session_start();
 require '../connection.php';
+
+// Check if an admin is logged in
+if (!isset($_SESSION['admin_id'])) {
+    header("Location: ../index.php");
+    exit();
+}
 
 // Generate unique student ID
 function generateUniqueStudentID($conn) {
@@ -77,13 +84,13 @@ while ($row = mysqli_fetch_assoc($majorResult)) {
         <h1><span class="sarang">SARANG </span><span class="univ">UNIVERSITY</span></h1>
         <ul>
             <li class="dashboard"><a href="../adminAccount.php">Dashboard</a></li>
-            <li class="menu-dropdown"><a href="">Forms</a>
+            <li class="menu-dropdown"><a href="student.php">Forms</a>
                 <div class="reports-dropdown">
                     <ul>
-                        <li><a href="student.php">Add Student</a></li>
-                        <li><a href="major.php">Add Major</a></li>
-                        <li><a href="department.php">Add Department</a></li>
-                        <li><a href="course.php">Add Course</a></li>
+                        <li><a href="student.php">Student Form</a></li>
+                        <li><a href="major.php">Major Form</a></li>
+                        <li><a href="department.php">Department Form</a></li>
+                        <li><a href="course.php">Course Form</a></li>
                     </ul>
                 </div>
             </li>
@@ -118,16 +125,16 @@ while ($row = mysqli_fetch_assoc($majorResult)) {
 
         <div class="formsNav">
             <ul>
-                <li><a href="student.php" class="active"><i class="fa-solid fa-user-plus"></i>  Add Student</a></li>
-                <li><a href="major.php"><i class="fa-solid fa-file-circle-plus"></i>  Add Major</a></li>
-                <li><a href="department.php"><i class="fa-solid fa-file-circle-plus"></i>  Add Department</a></li>
-                <li><a href="course.php"><i class="fa-solid fa-file-circle-plus"></i>  Add Course</a></li>
+                <li><a href="student.php" class="active"><i class="fa-solid fa-user fa-sm"></i> Student Form</a></li>
+                <li><a href="major.php" ><i class="fa-solid fa-graduation-cap fa-sm"></i> Major Form</a></li>
+                <li><a href="department.php" ><i class="fa-solid fa-building-columns fa-sm"></i> Department Form</a></li>
+                <li><a href="course.php"><i class="fa-solid fa-book-open-reader fa-sm"></i> Course Form</a></li>
             </ul>
         </div>
 
         <div class="content">
             
-            <h1><i class="fa-solid fa-user-plus"></i>  Student Form - Add New Student</h1>
+            <h1><i class="fa-solid fa-user-plus"></i>  Add New Student</h1>
 
             <div class="form-container">
                 <form action="" method="post" autocomplete="off">
