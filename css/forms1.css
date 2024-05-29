@@ -93,23 +93,23 @@
 
 .form-container {
     width: 100%;
-    max-width: 700px;
+    max-width: 400px;
     margin: auto;
 }
 
 .form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
+    margin-bottom: 20px;
 }
 
 .button-group, .success-message {
-    grid-column: span 2;
     display: flex;
     justify-content: center;
 }
@@ -120,8 +120,8 @@ label {
 }
 
 input, select {
-    padding: 12px 14px;
-    width: 100%;
+    padding: 14px 14px;
+    width: 400px;
     box-sizing: border-box;
     outline: none;
     background-color: white;
@@ -140,6 +140,7 @@ button.submitBTN {
     transition: all 0.3s ease;
     border-radius: 10px;
     font-size: 15px;
+    width: 400px;
     font-weight: 600;
 }
 

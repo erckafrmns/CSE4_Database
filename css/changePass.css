@@ -93,18 +93,15 @@ input{
 
 .error-messages {
     list-style: none;
-}
-
-.success-message {
-    color: green !important;
+    color: red !important;
     font-size: 13px !important;
     margin: 2px 0 0 0 !important;
     font-weight: 500 !important;
     text-align: center;
 }
 
-.error-message {
-    color: red !important;
+.success-message {
+    color: green !important;
     font-size: 13px !important;
     margin: 2px 0 0 0 !important;
     font-weight: 500 !important;

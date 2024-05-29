@@ -44,7 +44,7 @@ if (isset($_POST["submit"])){
     } else {
         $query = "INSERT INTO student VALUES ('$StudentID', '$FirstName', '$LastName', '$MajorID', '$Email', '$Password')";
         mysqli_query($conn, $query);
-        header("Location: student.php?success=update_success"); 
+        header("Location: student.php?success=add_success"); 
         $StudentID = generateUniqueStudentID($conn);
     }
 }
@@ -157,7 +157,7 @@ while ($row = mysqli_fetch_assoc($majorResult)) {
                             <input type="email" placeholder="Email" name="Email" required>
                         </div>
 
-                        <?php if(isset($_GET['success']) && $_GET['success'] == 'update_success'): ?>
+                        <?php if(isset($_GET['success']) && $_GET['success'] == 'add_success'): ?>
                             <p class="success-message">*Student Added Successfully*</p>
                         <?php endif; ?>
                         <div class="form-group button-group">
