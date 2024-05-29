@@ -139,7 +139,7 @@ while ($row = mysqli_fetch_assoc($departmentResult)) {
                         <?php endif; ?>
 
                         <?php if(isset($_GET['error']) && $_GET['error'] == 'add_error'): ?>
-                            <p class="error-message">*Major Already Exists*</p>
+                            <p class="error-message">*Major ID Already Exists*</p>
                         <?php endif; ?>
 
                         <div class="form-group button-group">

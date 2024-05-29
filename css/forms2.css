@@ -103,62 +103,27 @@
 }
 
 .form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 25px;
-}
-
-.form-group, .course-form-group {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
 }
 
-.button-group, .success-message, .error-message {
-    grid-column: span 2;
+.form-column {
+    flex: 1;
+    padding: 20px;
+}
+
+.form-group, .multiform-group {
+    margin-bottom: 15px;
+}
+
+.button-group {
+    flex-basis: 100%;
     display: flex;
-    justify-content: center;
-}
-
-label {
-    color: white;
-    font-size: 13px;
-}
-
-input, select, option {
-    padding: 12px 14px;
-    width: 100%;
-    box-sizing: border-box;
-    outline: none;
-    background-color: white;
-    border: 1px solid #eee;
-    font-size: 14px;
-    border-radius: 5px;
-    font-weight: 600;
-    color: #2C3E50;
-    letter-spacing: 1px;
-}
-
-.course-form-group {
-    margin-bottom: 18px;
-}
-
-.multiform-group select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-}
-
-.multiform-group select option{
-    margin-bottom: 10px;
-    border: 1px solid #d8d8d8;
-}
-
-select.courseSelect-major option:checked, select.courseSelect-major option:active {
-    background-color: #2C3E50; 
-    color: white; 
+    justify-content: flex-end;
 }
 
 button.submitBTN {
+    margin-top: 5px;
     padding: 15px 18px;
     background-color: #2C3E50;
     color: white;
@@ -172,11 +137,6 @@ button.submitBTN {
 
 button.submitBTN:hover {
     transform: scale(0.99);
-}
-
-
-#StudentID {
-    cursor: not-allowed;
 }
 
 .success-message {

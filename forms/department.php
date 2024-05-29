@@ -118,7 +118,7 @@ if (isset($_POST["submit"])){
                         <?php endif; ?>
 
                         <?php if(isset($_GET['error']) && $_GET['error'] == 'add_error'): ?>
-                            <p class="error-message">*Department Already Exists*</p>
+                            <p class="error-message">*Department ID Already Exists*</p>
                         <?php endif; ?>
 
                         <div class="form-group button-group">
