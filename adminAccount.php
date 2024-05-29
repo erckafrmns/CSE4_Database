@@ -41,7 +41,7 @@ if(isset($_SESSION['admin_id'])) {
         <h1><span class="sarang">SARANG </span><span class="univ">UNIVERSITY</span></h1>
         <ul>
             <li class="dashboard"><a href="adminAccount.php">Dashboard</a></li>
-            <li class="menu-dropdown"><a href="forms/forms.php">Forms</a>
+            <li class="menu-dropdown"><a href="forms/student.php">Forms</a>
                 <div class="reports-dropdown">
                     <ul>
                         <li><a href="forms/student.php">Add Student</a></li>

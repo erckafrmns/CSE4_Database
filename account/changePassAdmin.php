@@ -41,8 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $update_stmt->bind_param("ss", $new_password, $admin_id);
 
         if ($update_stmt->execute()) {
-            echo "<script>alert('Password changed successfully');</script>";
-            header("Location: ../adminAccount.php");
+            header("Location: changePassAdmin.php?success=update_success"); 
             exit();
         } else {
             $error_messages[] = '*Error Changing Password*';
@@ -112,6 +111,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <h4><i class="fa-solid fa-lock"></i>        Change Password</h4>
         </div>
         <form method="post" action="changePassAdmin.php">
+
+            <?php if(isset($_GET['success']) && $_GET['success'] == 'update_success'): ?>
+                <p class="success-message">*Password Changed Successfully*</p>
+            <?php endif; ?>
 
             <?php if(isset($_SESSION['error_messages']) && !empty($_SESSION['error_messages'])): ?>
                 <ul class="error-messages">
