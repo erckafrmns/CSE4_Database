@@ -1,3 +1,124 @@
+<?php
+session_start();
+include('../connection.php');
+
+if (!isset($_SESSION['admin_id'])) {
+    header("Location: ../index.php");
+    exit();
+}
+
+// Fetch all available majors and departments from the database
+$majorOptions = getOptions($conn, "major", "MajorID", "MajorName");
+$deptOptions = getOptions($conn, "department", "DepartmentID", "DepartmentName");
+$total_students = $conn->query("SELECT COUNT(*) AS count FROM student")->fetch_assoc()['count'];
+
+// Fetch options function
+function getOptions($conn, $table, $idColumn, $nameColumn) {
+    $query = "SELECT * FROM $table";
+    $result = mysqli_query($conn, $query);
+    $options = '';
+    while ($row = mysqli_fetch_assoc($result)) {
+        $options .= "<option value='{$row[$idColumn]}'>{$row[$nameColumn]}</option>";
+    }
+    return $options;
+}
+
+// Function to fetch student data based on the selected major, department, and sorting criteria
+function fetchStudents($conn, $selected_major = '', $selected_department = '', $sort_criteria = '', $sort_order = '') {
+    $sql = "SELECT s.StudentID, s.FirstName, s.LastName, m.MajorID, m.MajorName, d.DepartmentID, d.DepartmentName
+            FROM student s
+            JOIN major m ON s.MajorID = m.MajorID
+            JOIN department d ON m.DepartmentID = d.DepartmentID";
+
+    $where_clauses = [];
+    if (!empty($selected_major)) {
+        $where_clauses[] = "s.MajorID = '$selected_major'";
+    }
+    if (!empty($selected_department)) {
+        $where_clauses[] = "d.DepartmentID = '$selected_department'";
+    }
+
+    if (!empty($where_clauses)) {
+        $sql .= " WHERE " . implode(" AND ", $where_clauses);
+    }
+
+    if (!empty($sort_criteria) && !empty($sort_order)) {
+        $valid_criteria = ['StudentID', 'FirstName', 'LastName', 'MajorName', 'DepartmentName'];
+        $valid_orders = ['ASC', 'DESC'];
+
+        if (in_array($sort_criteria, $valid_criteria) && in_array($sort_order, $valid_orders)) {
+            $sql .= " ORDER BY $sort_criteria $sort_order";
+        } else {
+            die("Invalid sorting criteria or order.");
+        }
+    }
+
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        $count = 1;
+        while ($row = $result->fetch_assoc()) {
+            echo "<tr id='row-{$row["StudentID"]}'>";
+            echo "<td>" . $count++ . "</td>";
+            echo "<td>" . $row["StudentID"] . "</td>";
+            echo "<td>" . $row["FirstName"] . "</td>";
+            echo "<td>" . $row["LastName"] . "</td>";
+            echo "<td>" . $row["MajorID"] . "</td>";
+            echo "<td>" . $row["MajorName"] . "</td>";
+            echo "<td>" . $row["DepartmentID"] . "</td>";
+            echo "<td>" . $row["DepartmentName"] . "</td>";
+            echo "<td>
+                    <button onclick='updateStudent({$row["StudentID"]})'>Update</button>
+                    <button onclick='deleteStudent({$row["StudentID"]})'>Delete</button>
+                  </td>";
+            echo "</tr>";
+        }
+    } else {
+        echo "<tr><td colspan='9'>No results found</td></tr>";
+    }
+}
+
+// Handle AJAX requests
+if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
+    $selected_major = isset($_GET['select_major']) ? $_GET['select_major'] : '';
+    $selected_department = isset($_GET['select_department']) ? $_GET['select_department'] : '';
+    $sort_criteria = isset($_GET['sort_criteria']) ? $_GET['sort_criteria'] : '';
+    $sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : '';
+    fetchStudents($conn, $selected_major, $selected_department, $sort_criteria, $sort_order);
+    exit;
+}
+
+// Handle Delete Request
+if (isset($_POST['delete_student_id'])) {
+    $student_id = $_POST['delete_student_id'];
+    $delete_sql = "DELETE FROM student WHERE StudentID = '$student_id'";
+    if ($conn->query($delete_sql)) {
+        echo "Student deleted successfully.";
+    } else {
+        echo "Error deleting student.";
+    }
+    exit;
+}
+
+// Handle Update Request
+if (isset($_POST['update_student_id'])) {
+    $student_id = $_POST['update_student_id'];
+    $first_name = $_POST['first_name'];
+    $last_name = $_POST['last_name'];
+    $major_id = $_POST['major_id'];
+
+    $update_sql = "UPDATE student SET FirstName='$first_name', LastName='$last_name', MajorID='$major_id' WHERE StudentID='$student_id'";
+    if ($conn->query($update_sql)) {
+        echo "Student updated successfully.";
+    } else {
+        echo "Error updating student.";
+    }
+    exit;
+}
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +126,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Report</title>
     <link rel="stylesheet" href="../css/adminNav.css">
-    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="../css/reports.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://kit.fontawesome.com/b6ecc94894.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -47,6 +169,205 @@
             <li><button class="SignOutBTN" onclick="window.location.href='../logout.php';">Sign Out</button></li>
         </ul>
     </nav>
-    
+
+    <div class="sidebar">
+        <h2><i class="fa-solid fa-rectangle-list"></i> Reports</h2>
+        <div class="forms-items">
+            <a href="studentReport.php"><i class="fa-solid fa-user"></i>  STUDENT</a>
+            <a href="majorReport.php"><i class="fa-solid fa-graduation-cap"></i>  MAJOR</a>
+            <a href="departmentReport.php"><i class="fa-solid fa-building-columns"></i>  DEPARTMENT</a>
+            <a href="courseReport.php"><i class="fa-solid fa-book-open-reader"></i>  COURSE</a>
+            <a href="majorCourseReport.php"><i class="fa-solid fa-book"></i>  MAJOR - COURSE</a>
+            <a href="studentCourseReport.php"><i class="fa-solid fa-user-graduate"></i>  STUDENT - COURSE</a>
+        </div>
+    </div>
+
+    <div class="contentPanel">
+        
+        <div class="header">
+            <h1><i class="fa-solid fa-user fa-sm"></i>  Student Report</h1>
+        </div>
+
+        <div class="report-select">
+            <div class="sort">
+                <h5><i class="fa-solid fa-tornado fa-flip-horizontal fa-sm"></i>     Sort:</h5>
+                <div class="select-container">
+                    <select name="sort_criteria" id="sort_criteria">
+                        <option value="">Sort Criteria</option>
+                        <option value="StudentID">Student ID</option>
+                        <option value="FirstName">First Name</option>
+                        <option value="LastName">Last Name</option>
+                        <option value="MajorName">Major Name</option>
+                        <option value="DepartmentName">Department Name</option>
+                    </select>
+                    <select name="sort_order" id="sort_order">
+                        <option value="">Sort Order</option>
+                        <option value="ASC">Ascending</option>
+                        <option value="DESC">Descending</option>
+                    </select>
+                </div>
+            </div>
+            <div class="filter">
+                <h5><i class="fa-solid fa-filter fa-sm"></i>     Filter:</h5>
+                <div class="select-container">
+                    <select name="select_major" id="select_major">
+                        <option value="">All Major</option>
+                        <?php echo $majorOptions; ?>
+                    </select>
+                    <select name="select_department" id="select_department">
+                        <option value="">All Department</option>
+                        <?php echo $deptOptions; ?>
+                    </select>
+                </div>
+            </div>
+
+            <button class="downloadReport">Download Report <i class="fa-solid fa-download"></i></button>
+
+            <div class="search">
+                <input type="text" class="searchTerm" placeholder="Search Here">
+                <button type="submit" class="searchButton"><i class="fa fa-search"></i></button>
+            </div>
+            
+        </div>
+
+        <div class="summary">
+               
+            <h1><i class="fa-solid fa-user"></i> Total Students</h1>
+            <p><?php echo $total_students; ?></p>
+        </div>
+
+        <div class="report-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">No.</th>
+                        <th scope="col">Student ID</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Major ID</th>
+                        <th scope="col">Major Name</th>
+                        <th scope="col">Department ID</th>
+                        <th scope="col">Department Name</th>
+                        <th scope="col">Operations</th>
+                    </tr>
+                </thead>
+                <tbody id="report-table-body">
+                    <?php fetchStudents($conn); ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Update Student Modal -->
+    <div id="updateModal" style="display:none;">
+        <h2>Update Student</h2>
+        <form id="updateForm">
+            <input type="hidden" id="updateStudentID" name="update_student_id">
+            <label for="updateFirstName">First Name:</label>
+            <input type="text" id="updateFirstName" name="first_name" required><br>
+            <label for="updateLastName">Last Name:</label>
+            <input type="text" id="updateLastName" name="last_name" required><br>
+            <label for="updateMajor">Major:</label>
+            <select id="updateMajor" name="major_id" required>
+                <?php echo $majorOptions; ?>
+            </select><br>
+            <button type="submit">Update</button>
+            <button type="button" onclick="closeUpdateModal()">Cancel</button>
+        </form>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            function fetchFilteredData() {
+                var selectedMajor = $('#select_major').val();
+                var selectedDepartment = $('#select_department').val();
+                var sortCriteria = $('#sort_criteria').val();
+                var sortOrder = $('#sort_order').val();
+
+                $.ajax({
+                    url: 'studentReport.php',
+                    type: 'GET',
+                    data: {
+                        ajax: 1,
+                        select_major: selectedMajor,
+                        select_department: selectedDepartment,
+                        sort_criteria: sortCriteria,
+                        sort_order: sortOrder
+                    },
+                    success: function(response) {
+                        $('#report-table-body').html(response);
+                    }
+                });
+            }
+
+            $('#select_major, #select_department, #sort_criteria, #sort_order').change(function() {
+                fetchFilteredData();
+            });
+
+            // Initial fetch
+            fetchFilteredData();
+
+            // Download PDF
+            $('.downloadReport').click(function() {
+                var selectedMajor = $('#select_major').val();
+                var selectedDepartment = $('#select_department').val();
+                var sortCriteria = $('#sort_criteria').val();
+                var sortOrder = $('#sort_order').val();
+
+                window.location.href = '../generatePDF/studentPDF.php?select_major=' + selectedMajor + '&select_department=' + selectedDepartment + '&sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder;
+            });
+
+             // Delete student
+             window.deleteStudent = function(studentID) {
+                console.log('Delete student:', studentID); // Debug log
+                $.ajax({
+                    url: 'studentReport.php',
+                    type: 'POST',
+                    data: { delete_student_id: studentID },
+                    success: function(response) {
+                        alert(response);
+                        fetchFilteredData();
+                    }
+                });
+            };
+
+            // Update student
+            window.updateStudent = function(studentID) {
+                console.log('Update student:', studentID); // Debug log
+                // Get student data from the row
+                var row = $('#row-' + studentID);
+                var firstName = row.find('td').eq(2).text();
+                var lastName = row.find('td').eq(3).text();
+                var majorID = row.find('td').eq(4).text();
+
+                // Fill the update form with existing data
+                $('#updateStudentID').val(studentID);
+                $('#updateFirstName').val(firstName);
+                $('#updateLastName').val(lastName);
+                $('#updateMajor').val(majorID);
+
+                // Show the update modal
+                $('#updateModal').show();
+            };
+
+            $('#updateForm').submit(function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: 'studentReport.php',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        alert(response);
+                        closeUpdateModal();
+                        fetchFilteredData();
+                    }
+                });
+            });
+
+            window.closeUpdateModal = function() {
+                $('#updateModal').hide();
+            };
+        });
+    </script>
 </body>
 </html>

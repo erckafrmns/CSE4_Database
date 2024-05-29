@@ -57,7 +57,7 @@ if(isset($_SESSION['student_id'])) {
         <h1><span class="sarang">SARANG </span><span class="univ">UNIVERSITY</span></h1>
         <ul>
             <li class="dashboard"><a href="../studentAccount.php">Dashboard</a></li>
-            <li class="menu-dropdown"><a href="">Reports</a>
+            <li class="menu-dropdown"><a href="../reports/majorReport.php">Reports</a>
                 <div class="reports-dropdown">
                     <ul>
                         <li><a href="../reports/majorReport.php">Major</a></li>
@@ -67,7 +67,7 @@ if(isset($_SESSION['student_id'])) {
                     </ul>
                 </div>
             </li>
-            <li class="menu-dropdown"><a href="">Account</a>
+            <li class="menu-dropdown"><a href="editInfoStudent.php">Account</a>
                 <div class="reports-dropdown">
                     <ul>
                         <li><a href="editInfoStudent.php">Edit Information</a></li>

@@ -72,7 +72,7 @@ if(isset($_SESSION['student_id'])) {
                     echo '<h4 class="id"> <span>Student ID:</span> ' . $student_data['StudentID'] . '</h4>';
                     echo '<h4 class="role"> <span>Major ID:</span> ' . $student_data['MajorID'] . '</h4>';
                 } else {
-                    echo '<h4><i class="fa-solid fa-circle-user"></i> Admin</h4>';
+                    echo '<h4><i class="fa-solid fa-circle-user"></i> Null</h4>';
                 }
             ?>
         </div>
