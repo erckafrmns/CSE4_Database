@@ -55,7 +55,7 @@ if (isset($_POST["submit"])){
                     </ul>
                 </div>
             </li>
-            <li class="menu-dropdown"><a href="">Reports</a>
+            <li class="menu-dropdown"><a href="../reports/studentReport.php">Reports</a>
                 <div class="reports-dropdown">
                     <ul>
                         <li><a href="../reports/studentReport.php">Student</a></li>
@@ -67,11 +67,11 @@ if (isset($_POST["submit"])){
                     </ul>
                 </div>
             </li>
-            <li class="menu-dropdown"><a href="">Account</a>
+            <li class="menu-dropdown"><a href="../account/editInfoAdmin.php">Account</a>
                 <div class="reports-dropdown">
                     <ul>
-                        <li><a href="editInfoAdmin.php">Edit Information</a></li>
-                        <li><a href="changePassAdmin.php">Change Password</a></li>
+                        <li><a href="../account/editInfoAdmin.php">Edit Information</a></li>
+                        <li><a href="../account/changePassAdmin.php">Change Password</a></li>
                     </ul>
                 </div>
             </li>

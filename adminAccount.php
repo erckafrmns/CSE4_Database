@@ -51,7 +51,7 @@ if(isset($_SESSION['admin_id'])) {
                     </ul>
                 </div>
             </li>
-            <li class="menu-dropdown"><a href="">Reports</a>
+            <li class="menu-dropdown"><a href="reports/studentReport.php">Reports</a>
                 <div class="reports-dropdown">
                     <ul>
                         <li><a href="reports/studentReport.php">Student</a></li>
@@ -63,7 +63,7 @@ if(isset($_SESSION['admin_id'])) {
                     </ul>
                 </div>
             </li>
-            <li class="menu-dropdown"><a href="">Account</a>
+            <li class="menu-dropdown"><a href="account/editInfoAdmin.php">Account</a>
                 <div class="reports-dropdown">
                     <ul>
                         <li><a href="account/editInfoAdmin.php">Edit Information</a></li>

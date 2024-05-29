@@ -94,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </ul>
                 </div>
             </li>
-            <li class="menu-dropdown"><a href="">Account</a>
+            <li class="menu-dropdown"><a href="editInfoAdmin.php">Account</a>
                 <div class="reports-dropdown">
                     <ul>
                         <li><a href="editInfoAdmin.php">Edit Information</a></li>

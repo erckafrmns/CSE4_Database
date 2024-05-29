@@ -41,7 +41,7 @@ $departmentQuery = "SELECT * FROM department";
 $departmentResult = mysqli_query($conn, $departmentQuery);
 $deptOptions = '';
 while ($row = mysqli_fetch_assoc($departmentResult)) {
-    $deptOptions .= "<option value='{$row['DepartmentID']}'>{$row['DepartmentID']}</option>";
+    $deptOptions .= "<option value='{$row['DepartmentID']}'>{$row['DepartmentID']} - {$row['DepartmentName']}</option>";
 }
 
 ?>
@@ -73,7 +73,7 @@ while ($row = mysqli_fetch_assoc($departmentResult)) {
                     </ul>
                 </div>
             </li>
-            <li class="menu-dropdown"><a href="">Reports</a>
+            <li class="menu-dropdown"><a href="../reports/studentReport.php">Reports</a>
                 <div class="reports-dropdown">
                     <ul>
                         <li><a href="../reports/studentReport.php">Student</a></li>
@@ -85,11 +85,11 @@ while ($row = mysqli_fetch_assoc($departmentResult)) {
                     </ul>
                 </div>
             </li>
-            <li class="menu-dropdown"><a href="">Account</a>
+            <li class="menu-dropdown"><a href="../account/editInfoAdmin.php">Account</a>
                 <div class="reports-dropdown">
                     <ul>
-                        <li><a href="editInfoAdmin.php">Edit Information</a></li>
-                        <li><a href="changePassAdmin.php">Change Password</a></li>
+                        <li><a href="../account/editInfoAdmin.php">Edit Information</a></li>
+                        <li><a href="../accoun/changePassAdmin.php">Change Password</a></li>
                     </ul>
                 </div>
             </li>
