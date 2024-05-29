@@ -19,6 +19,13 @@ if(isset($_SESSION['admin_id'])) {
         header("Location: index.php");
         exit();
     }
+
+    // Fetch total counts
+    $total_students = $conn->query("SELECT COUNT(*) AS count FROM student")->fetch_assoc()['count'];
+    $total_majors = $conn->query("SELECT COUNT(*) AS count FROM major")->fetch_assoc()['count'];
+    $total_departments = $conn->query("SELECT COUNT(*) AS count FROM department")->fetch_assoc()['count'];
+    $total_courses = $conn->query("SELECT COUNT(*) AS count FROM course")->fetch_assoc()['count'];
+
 } else {
     header("Location: index.php");
     exit();
@@ -91,24 +98,32 @@ if(isset($_SESSION['admin_id'])) {
         </div>
 
         <div class="summary">
-            <h3>Summary of Reports</h3>
+            <h3><i class="fa-solid fa-rectangle-list"></i> Summary of Reports</h3>
             <div class="summary-container">
                 <div class="student-summary">
+                    <i class="fa-solid fa-user"></i>
                     <h1>Total Student</h1>
+                    <p><?php echo $total_students; ?></p>
                 </div>
                 <div class="major-summary">
+                    <i class="fa-solid fa-graduation-cap"></i>    
                     <h1>Total Major</h1>
+                    <p><?php echo $total_majors; ?></p>
                 </div>
                 <div class="department-summary">
+                    <i class="fa-solid fa-building-columns"></i>
                     <h1>Total Department</h1>
+                    <p><?php echo $total_departments; ?></p>
                 </div>
                 <div class="course-summary">
+                    <i class="fa-solid fa-book-open-reader"></i>
                     <h1>Total Course</h1>
+                    <p><?php echo $total_courses; ?></p>
                 </div>
             </div>
         </div>
         <div class="misc">
-            <h3>What would you like to do?</h3>
+            <h3><i class="fa-solid fa-location-pin"></i> What would you like to do?</h3>
             <div class="misc-container">
                 <ul>
                     <li><a href="forms/student.php">Add Student</a></li>

@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+
+* {
+    font-family: "Poppins", sans-serif;
+}
+
 .contentPanel {
     margin: 60px 0 0 0;
     height: 91vh;
@@ -13,14 +18,14 @@
 .userInfo {
     width: 98%;
     height: 60px;
-    background-color: #eee;
+    background-image: linear-gradient(135deg, #FFC470, #0F4979);
     border: 2px solid #b9b8b8;
-    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
     display: flex;
     align-items: center;
     margin-top: 40px;
     margin-bottom: 20px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
     padding: 0 30px 0 30px;
 }
 
@@ -37,23 +42,24 @@
 
 .userInfo .id {
     margin-left: 750px;
+    color: white;
+    font-size: 15px;
 }
 
 .userInfo .role {
     margin-left: 50px;
+    color: white;
+    font-size: 15px;
 }
 
 .userInfo span{
-    color: rgb(165, 67, 67);
+    color: #FFC470;
 }
 
 .summary {
     width: 98%;
     height: 300px;
-    background-color: #eee;
-    border: 2px solid #b9b8b8;
     border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
     padding: 15px 30px 15px 30px;
     margin-bottom: 20px;
     display: flex;
@@ -62,8 +68,10 @@
 
 .summary h3 {
     font-size: 18px;
-    color: #2C3E50;
+    color: white;
     margin-bottom: 10px;
+    padding-left: 5px;
+    text-shadow: 0 0 10px #2C3E50;
 }
 
 .summary .summary-container {
@@ -75,50 +83,71 @@
 }
 
 .summary .summary-container > div {
-    width: 23%; 
+    width: 22%; 
     height: 90%;
-    background-color: rgba(80, 102, 124, 0.8);
     border-radius: 20px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
     display: flex;
+    flex-direction: column;
     justify-content: center; 
     align-items: center; 
-    text-align: center;
-    font-size: 16px;
+    transition: all 0.3s ease;
 }
 
-.summary-container .student-summary h1 {
-    color: white;
+.summary-container i {
+    font-size: 42px;
+    margin-bottom: 10px;
+    color: #2C3E50;
 }
 
-.summary-container .major-summary h1 {
-    color: white;
+.summary-container p {
+    font-size: 50px;
+    color: #2C3E50;
+    padding: 0;
 }
 
-.summary-container .department-summary h1 {
-    color: white;
+.summary-container .student-summary h1, .summary-container .major-summary h1,
+.summary-container .department-summary h1, .summary-container .course-summary h1 {
+    color: #2C3E50;
+    font-size: 15px;
 }
 
-.summary-container .course-summary h1 {
-    color: white;
+.student-summary {
+    background-color: #98DDCA;
+}
+
+.major-summary {
+    background-color: #D5ECC2;
+}
+
+.department-summary {
+    background-color: #FFD3B4;
+}
+
+.course-summary {
+    background-color: #FFAAA7;
+}
+
+.student-summary:hover, .major-summary:hover,
+.department-summary:hover, .course-summary:hover {
+    transform: scale(0.95);
 }
 
 .misc {
     width: 98%;
     height: 130px;
-    background-color: #eee;
-    border: 2px solid #b9b8b8;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
     padding: 15px 30px 15px 30px;
 }
 
 .misc h3{
     font-size: 18px;
-    color: #2C3E50;
+    color: white;
     margin-bottom: 10px;
+    text-shadow: 0 0 10px #2C3E50;
+    margin-left: 5px;
 }
 
 .misc .misc-container {
@@ -147,9 +176,10 @@
     color: white;
     font-size: 14px;
     padding: 10px 20px;
-    background-color: #4793AF;
+    background-color: #2C3E50;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
     border-radius: 5px;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease-in-out;
 }
 
 .misc .misc-container ul li a:hover {
