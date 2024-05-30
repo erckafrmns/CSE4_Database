@@ -7,7 +7,6 @@ if (!isset($_SESSION['admin_id'])) {
     exit();
 }
 
-// Fetch all available majors and departments from the database
 $deptOptions = getOptions($conn, "department", "DepartmentID", "DepartmentName");
 $total_majors = $conn->query("SELECT COUNT(*) AS count FROM major")->fetch_assoc()['count'];
 
@@ -22,7 +21,6 @@ function getOptions($conn, $table, $idColumn, $nameColumn) {
     return $options;
 }
 
-// Function to fetch student data based on the selected major, department, and sorting criteria
 function fetchMajor($conn, $selected_department = '', $sort_criteria = '', $sort_order = '', $search_query = '') {
     $sql = "SELECT m.MajorID, m.MajorName, d.DepartmentID, d.DepartmentName
             FROM major m

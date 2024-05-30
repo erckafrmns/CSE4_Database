@@ -9,7 +9,6 @@ if (!isset($_SESSION['admin_id'])) {
 
 $total_departments = $conn->query("SELECT COUNT(*) AS count FROM department")->fetch_assoc()['count'];
 
-// Function to fetch student data based on the selected major, department, and sorting criteria
 function fetchDepartment($conn, $sort_criteria = '', $sort_order = '', $search_query = '') {
     $sql = "SELECT d.DepartmentID, d.DepartmentName, d.Location
             FROM department d";

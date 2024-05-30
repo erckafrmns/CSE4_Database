@@ -1,14 +1,32 @@
 <?php
 require '../connection.php';
 
-// Function to fetch student data based on the sorting criteria
-function fetchDepartment($conn, $sort_criteria = '', $sort_order = '') {
-    $sql = "SELECT d.DepartmentID, d.DepartmentName, d.Location
-            FROM department d";
+// Function to fetch unique credits
+function fetchUniqueCredits($conn) {
+    $sql = "SELECT DISTINCT Credits FROM course ORDER BY Credits ASC";
+    $result = $conn->query($sql);
 
+    $creditOptions = '';
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $creditOptions .= '<option value="' . $row["Credits"] . '">' . $row["Credits"] . '</option>';
+        }
+    }
+    return $creditOptions;
+}
+
+$creditOptions = fetchUniqueCredits($conn);
+
+// Function to fetch course data based on the sorting criteria and selected credits
+function fetchCourse($conn, $sort_criteria = '', $sort_order = '', $selected_credits = '') {
+    $sql = "SELECT c.CourseID, c.CourseName, c.Credits FROM course c";
+    
+    if (!empty($selected_credits)) {
+        $sql .= " WHERE c.Credits = " . intval($selected_credits);
+    }
 
     if (!empty($sort_criteria) && !empty($sort_order)) {
-        $valid_criteria = ['DepartmentID', 'DepartmentName', 'Location'];
+        $valid_criteria = ['CourseID', 'CourseName', 'Credits'];
         $valid_orders = ['ASC', 'DESC'];
 
         if (in_array($sort_criteria, $valid_criteria) && in_array($sort_order, $valid_orders)) {
@@ -25,9 +43,9 @@ function fetchDepartment($conn, $sort_criteria = '', $sort_order = '') {
         while ($row = $result->fetch_assoc()) {
             echo "<tr>";
             echo "<td>" . $count++ . "</td>";
-            echo "<td>" . $row["DepartmentID"] . "</td>";
-            echo "<td>" . $row["DepartmentName"] . "</td>";
-            echo "<td>" . $row["Location"] . "</td>";
+            echo "<td>" . $row["CourseID"] . "</td>";
+            echo "<td>" . $row["CourseName"] . "</td>";
+            echo "<td>" . $row["Credits"] . "</td>";
             echo "</tr>";
         }
     } else {
@@ -39,7 +57,8 @@ function fetchDepartment($conn, $sort_criteria = '', $sort_order = '') {
 if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
     $sort_criteria = isset($_GET['sort_criteria']) ? $_GET['sort_criteria'] : '';
     $sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : '';
-    fetchDepartment($conn, $sort_criteria, $sort_order);
+    $selected_credits = isset($_GET['selected_credits']) ? $_GET['selected_credits'] : '';
+    fetchCourse($conn, $sort_criteria, $sort_order, $selected_credits);
     exit;
 }
 ?>
@@ -49,7 +68,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Department Report</title>
+    <title>Course Report</title>
     <link rel="stylesheet" href="../css/style.css">
     <script src="https://kit.fontawesome.com/b6ecc94894.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -69,12 +88,12 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
     <div class="wrapper">
         <div class="report-header">
             <ul>
-                <li id="reportHead">Department Report     <i class="fa-solid fa-caret-down fa-sm"></i></li>
+                <li id="reportHead">Course Report     <i class="fa-solid fa-caret-down fa-sm"></i></li>
                 <ul class="dropdown">
                     <li><a href="studentReport.php">Student Report</a></li>
                     <li><a href="majorReport.php">Major Report</a></li>
+                    <li><a href="departmentReport.php">Department Report</a></li>
                     <li><a href="majorCourseReport.php">Major-Course Report</a></li>
-                    <li><a href="courseReport.php">Course Report</a></li>
                     <li><a href="studentCoursesReport.php">Student-Courses Report</a></li>
                 </ul>
             </ul>    
@@ -85,9 +104,9 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                 <div class="select-container">
                     <select name="sort_criteria" id="sort_criteria">
                         <option value="">Sort Criteria</option>
-                        <option value="DepartmentID">Department ID</option>
-                        <option value="DepartmentName">Department Name</option>
-                        <option value="Location">Location</option>
+                        <option value="CourseID">Course ID</option>
+                        <option value="CourseName">Course Name</option>
+                        <option value="Credits">Credits</option>
                     </select>
                     <select name="sort_order" id="sort_order">
                         <option value="">Sort Order</option>
@@ -96,20 +115,29 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                     </select>
                 </div>
             </div>
-            <button class="departmentReport-download">Download PDF <i class="fa-solid fa-download"></i></button>
+            <div class="filter">
+                <h5><i class="fa-solid fa-filter fa-sm"></i>     Filter:</h5>
+                <div class="select-container">
+                    <select name="select_credits" id="select_credits">
+                        <option value="">All Credits</option>
+                        <?php echo $creditOptions; ?>
+                    </select>
+                </div>
+            </div>
+            <button class="courseReport-download">Download PDF <i class="fa-solid fa-download"></i></button>
         </div>
         <div class="report-table">
             <table>
                 <thead>
                     <tr>
                         <th scope="col">No.</th>
-                        <th scope="col">Department ID</th>
-                        <th scope="col">Department Name</th>
-                        <th scope="col">Location</th>
+                        <th scope="col">Course ID</th>
+                        <th scope="col">Course Name</th>
+                        <th scope="col">Credits</th>
                     </tr>
                 </thead>
                 <tbody id="report-table-body">
-                    <?php fetchDepartment($conn); ?>
+                    <?php fetchCourse($conn); ?>
                 </tbody>
             </table>
         </div>
@@ -120,14 +148,16 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
             function fetchFilteredData() {
                 var sortCriteria = $('#sort_criteria').val();
                 var sortOrder = $('#sort_order').val();
+                var selectedCredits = $('#select_credits').val();
 
                 $.ajax({
-                    url: 'departmentReport.php',
+                    url: 'courseReport.php',
                     type: 'GET',
                     data: {
                         ajax: 1,
                         sort_criteria: sortCriteria,
-                        sort_order: sortOrder
+                        sort_order: sortOrder,
+                        selected_credits: selectedCredits
                     },
                     success: function(response) {
                         $('#report-table-body').html(response);
@@ -135,7 +165,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                 });
             }
 
-            $('#sort_criteria, #sort_order').change(function() {
+            $('#sort_criteria, #sort_order, #select_credits').change(function() {
                 fetchFilteredData();
             });
 
@@ -143,11 +173,12 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
             fetchFilteredData();
 
             // Download PDF
-            $('.departmentReport-download').click(function() {
+            $('.courseReport-download').click(function() {
                 var sortCriteria = $('#sort_criteria').val();
                 var sortOrder = $('#sort_order').val();
+                var selectedCredits = $('#select_credits').val();
 
-                window.location.href = '../generatePDF/departmentPDF.php?sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder;
+                window.location.href = '../generatePDF/coursePDF.php?sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder + '&selected_credits=' + selectedCredits;
             });
         });
     </script>
