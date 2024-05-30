@@ -308,7 +308,7 @@ if (isset($_POST['update_student_id'])) {
                 var sortOrder = $('#sort_order').val();
                 var searchQuery = $('#searchQuery').val();
 
-                window.location.href = '../generatePDF/studentPDF.php?select_department=' + selectedDepartment + '&sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder + '&search_query=' + searchQuery;
+                window.location.href = '../generatePDF/majorPDF.php?select_department=' + selectedDepartment + '&sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder + '&search_query=' + searchQuery;
             });
 
             // Delete student

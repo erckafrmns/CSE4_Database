@@ -1,8 +1,8 @@
 <?php
-require '../connection.php';  
+require '../connection.php';
 require_once('../tcpdf/tcpdf.php');
 
-function fetchStudentData($conn, $selected_major = '', $selected_department = '', $sort_criteria = '', $sort_order = '') {
+function fetchStudentData($conn, $selected_major = '', $selected_department = '', $sort_criteria = '', $sort_order = '', $search_query = '') {
     $sql = "SELECT s.StudentID, s.FirstName, s.LastName, m.MajorID, m.MajorName, d.DepartmentID, d.DepartmentName
             FROM student s
             JOIN major m ON s.MajorID = m.MajorID
@@ -14,6 +14,10 @@ function fetchStudentData($conn, $selected_major = '', $selected_department = ''
     }
     if (!empty($selected_department)) {
         $where_clauses[] = "d.DepartmentID = '$selected_department'";
+    }
+    if (!empty($search_query)) {
+        $search_query = $conn->real_escape_string($search_query);
+        $where_clauses[] = "(s.StudentID LIKE '%$search_query%' OR s.FirstName LIKE '%$search_query%' OR s.LastName LIKE '%$search_query%' OR m.MajorName LIKE '%$search_query%' OR m.MajorID LIKE '%$search_query%' OR d.DepartmentName LIKE '%$search_query%')";
     }
 
     if (!empty($where_clauses)) {
@@ -38,8 +42,9 @@ $selected_major = isset($_GET['select_major']) ? $_GET['select_major'] : '';
 $selected_department = isset($_GET['select_department']) ? $_GET['select_department'] : '';
 $sort_criteria = isset($_GET['sort_criteria']) ? $_GET['sort_criteria'] : '';
 $sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : '';
+$search_query = isset($_GET['search_query']) ? $_GET['search_query'] : '';
 
-$result = fetchStudentData($conn, $selected_major, $selected_department, $sort_criteria, $sort_order);
+$result = fetchStudentData($conn, $selected_major, $selected_department, $sort_criteria, $sort_order, $search_query);
 
 $pdf = new TCPDF();
 $pdf->AddPage();

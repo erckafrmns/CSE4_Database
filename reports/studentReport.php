@@ -39,7 +39,7 @@ function fetchStudents($conn, $selected_major = '', $selected_department = '', $
     }
     if (!empty($search_query)) {
         $search_query = $conn->real_escape_string($search_query);
-        $where_clauses[] = "(s.StudentID LIKE '%$search_query%' OR s.FirstName LIKE '%$search_query%' OR s.LastName LIKE '%$search_query%' OR m.MajorName LIKE '%$search_query%' OR d.DepartmentName LIKE '%$search_query%')";
+        $where_clauses[] = "(s.StudentID LIKE '%$search_query%' OR s.FirstName LIKE '%$search_query%' OR s.LastName LIKE '%$search_query%' OR m.MajorName LIKE '%$search_query%' OR m.MajorID LIKE '%$search_query%' OR d.DepartmentName LIKE '%$search_query%')";
     }
 
     if (!empty($where_clauses)) {

@@ -234,7 +234,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                 var sortOrder = $('#sort_order').val();
                 var searchQuery = $('#searchQuery').val();
 
-                window.location.href = '../generatePDF/studentCoursesPDF.php?sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder + '&searchQuery=' + searchQuery;
+                window.location.href = '../generatePDF/studentCoursesPDF.php?sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder + '&search_query=' + searchQuery;
             });
         });
             

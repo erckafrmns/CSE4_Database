@@ -257,59 +257,9 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                 var sortOrder = $('#sort_order').val();
                 var searchQuery = $('#searchQuery').val();
 
-                window.location.href = '../generatePDF/majorCoursePDF.php?sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder + '&searchQuery=' + searchQuery;
+                window.location.href = '../generatePDF/majorCoursePDF.php?sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder + '&search_query=' + searchQuery;
             });
 
-            // Delete student
-            window.deleteStudent = function(studentID) {
-            if (confirm('Are you sure you want to delete this student?')) {
-                $.ajax({
-                    url: 'majorReport.php',
-                    type: 'POST',
-                    data: { delete_student_id: studentID },
-                    success: function(response) {
-                        alert(response);
-                        fetchFilteredData();
-                    }
-                });
-            }
-        };
-            // Update student
-            window.updateStudent = function(studentID) {
-                console.log('Update student:', studentID); // Debug log
-                // Get student data from the row
-                var row = $('#row-' + studentID);
-                var firstName = row.find('td').eq(2).text();
-                var lastName = row.find('td').eq(3).text();
-                var majorID = row.find('td').eq(4).text();
-
-                // Fill the update form with existing data
-                $('#updateStudentID').val(studentID);
-                $('#updateFirstName').val(firstName);
-                $('#updateLastName').val(lastName);
-                $('#updateMajor').val(majorID);
-
-                // Show the update modal
-                $('#updateModal').show();
-            };
-
-            $('#updateForm').submit(function(e) {
-                e.preventDefault();
-                $.ajax({
-                    url: 'studentReport.php',
-                    type: 'POST',
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        alert(response);
-                        closeUpdateModal();
-                        fetchFilteredData();
-                    }
-                });
-            });
-
-            window.closeUpdateModal = function() {
-                $('#updateModal').hide();
-            };
         });
     </script>
 </body>
