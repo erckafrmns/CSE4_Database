@@ -2,7 +2,7 @@
 require '../connection.php';
 require_once('../tcpdf/tcpdf.php');
 
-function fetchMajorData($conn, $selected_department = '', $sort_criteria = '', $sort_order = '') {
+function fetchMajorData($conn, $selected_department = '', $sort_criteria = '', $sort_order = '', $search_query = '') {
     $sql = "SELECT m.MajorID, m.MajorName, d.DepartmentID, d.DepartmentName
             FROM major m
             JOIN department d ON m.DepartmentID = d.DepartmentID";
@@ -10,6 +10,11 @@ function fetchMajorData($conn, $selected_department = '', $sort_criteria = '', $
     $where_clauses = [];
     if (!empty($selected_department)) {
         $where_clauses[] = "d.DepartmentID = '$selected_department'";
+    }
+
+    if (!empty($search_query)) {
+        $search_query = $conn->real_escape_string($search_query);
+        $where_clauses[] = "(m.MajorID LIKE '%$search_query%' OR m.MajorName LIKE '%$search_query%' OR d.DepartmentID LIKE '%$search_query%' OR d.DepartmentName LIKE '%$search_query%')";
     }
 
     if (!empty($where_clauses)) {
@@ -33,12 +38,14 @@ function fetchMajorData($conn, $selected_department = '', $sort_criteria = '', $
 $selected_department = isset($_GET['select_department']) ? $_GET['select_department'] : '';
 $sort_criteria = isset($_GET['sort_criteria']) ? $_GET['sort_criteria'] : '';
 $sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : '';
+$search_query = isset($_GET['search_query']) ? $_GET['search_query'] : '';
 
-$result = fetchMajorData($conn, $selected_department, $sort_criteria, $sort_order);
+$result = fetchMajorData($conn, $selected_department, $sort_criteria, $sort_order, $search_query);
 
 $pdf = new TCPDF();
 $pdf->AddPage();
 $pdf->SetFont('helvetica', '', 10);
+
 $html = '<h2>Major Report</h2>';
 $html .= '<table border="1" cellpadding="5">
             <thead>

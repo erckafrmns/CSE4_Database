@@ -26,7 +26,7 @@ function fetchMajorCoursesData($conn, $search_query = '', $sort_criteria = '', $
     return $conn->query($sql);
 }
 
-$search_query = isset($_GET['search_input']) ? $_GET['search_input'] : '';
+$search_query = isset($_GET['search_query']) ? $_GET['search_query'] : '';
 $sort_criteria = isset($_GET['sort_criteria']) ? $_GET['sort_criteria'] : '';
 $sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : '';
 
@@ -52,7 +52,7 @@ if ($result->num_rows > 0) {
                 $html .= '</tbody></table>';
             }
             $html .= "<h3>$major_id | $major_name</h3>";
-            $html .= '<table border="1" cellpadding="5"><tbody>';
+            $html .= '<table border="1" cellpadding="5"><thead><tr><th>Course ID</th><th>Course Name</th></tr></thead><tbody>';
             $prev_major_id = $major_id;
             $first_row = false;
         }

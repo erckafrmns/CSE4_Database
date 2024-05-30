@@ -2,9 +2,18 @@
 require '../connection.php';
 require_once('../tcpdf/tcpdf.php');
 
-function fetchDepartmentData($conn, $sort_criteria = '', $sort_order = '') {
-    $sql = "SELECT d.DepartmentID, d.DepartmentName, d.Location
-            FROM department d";
+function fetchDepartmentData($conn, $sort_criteria = '', $sort_order = '', $search_query = '') {
+    $sql = "SELECT d.DepartmentID, d.DepartmentName, d.Location FROM department d";
+
+    $where_clauses = [];
+    if (!empty($search_query)) {
+        $search_query = $conn->real_escape_string($search_query);
+        $where_clauses[] = "(d.DepartmentID LIKE '%$search_query%' OR d.DepartmentName LIKE '%$search_query%' OR d.Location LIKE '%$search_query%')";
+    }
+
+    if (!empty($where_clauses)) {
+        $sql .= " WHERE " . implode(" AND ", $where_clauses);
+    }
 
     if (!empty($sort_criteria) && !empty($sort_order)) {
         $valid_criteria = ['DepartmentID', 'DepartmentName', 'Location'];
@@ -22,8 +31,9 @@ function fetchDepartmentData($conn, $sort_criteria = '', $sort_order = '') {
 
 $sort_criteria = isset($_GET['sort_criteria']) ? $_GET['sort_criteria'] : '';
 $sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : '';
+$search_query = isset($_GET['search_query']) ? $_GET['search_query'] : '';
 
-$result = fetchDepartmentData($conn, $sort_criteria, $sort_order);
+$result = fetchDepartmentData($conn, $sort_criteria, $sort_order, $search_query);
 
 $pdf = new TCPDF();
 $pdf->AddPage();

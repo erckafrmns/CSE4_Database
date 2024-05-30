@@ -45,7 +45,7 @@ function fetchStudentCourses($conn, $sort_criteria = '', $sort_order = '', $sear
     }
 }
 
-$search_query = isset($_GET['search_input']) ? $_GET['search_input'] : '';
+$search_query = isset($_GET['search_query']) ? $_GET['search_query'] : '';
 $sort_criteria = isset($_GET['sort_criteria']) ? $_GET['sort_criteria'] : '';
 $sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : '';
 

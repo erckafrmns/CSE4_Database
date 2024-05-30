@@ -2,11 +2,20 @@
 require '../connection.php';
 require_once('../tcpdf/tcpdf.php');
 
-function fetchCourseData($conn, $sort_criteria = '', $sort_order = '', $selected_credits = '') {
+function fetchCourseData($conn,  $selected_credits = '', $sort_criteria = '', $sort_order = '', $search_query = '') {
     $sql = "SELECT c.CourseID, c.CourseName, c.Credits FROM course c";
     
+    $where_clauses = [];
     if (!empty($selected_credits)) {
-        $sql .= " WHERE c.Credits = " . intval($selected_credits);
+        $where_clauses[] = "c.Credits = " . intval($selected_credits);
+    }
+    if (!empty($search_query)) {
+        $search_query = $conn->real_escape_string($search_query);
+        $where_clauses[] = "(c.CourseID LIKE '%$search_query%' OR c.CourseName LIKE '%$search_query%')";
+    }
+
+    if (!empty($where_clauses)) {
+        $sql .= " WHERE " . implode(" AND ", $where_clauses);
     }
 
     if (!empty($sort_criteria) && !empty($sort_order)) {
@@ -26,8 +35,9 @@ function fetchCourseData($conn, $sort_criteria = '', $sort_order = '', $selected
 $sort_criteria = isset($_GET['sort_criteria']) ? $_GET['sort_criteria'] : '';
 $sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : '';
 $selected_credits = isset($_GET['selected_credits']) ? $_GET['selected_credits'] : '';
+$search_query = isset($_GET['search_query']) ? $_GET['search_query'] : '';
 
-$result = fetchCourseData($conn, $sort_criteria, $sort_order, $selected_credits);
+$result = fetchCourseData($conn, $selected_credits, $sort_criteria, $sort_order, $search_query);
 
 $pdf = new TCPDF();
 $pdf->AddPage();
