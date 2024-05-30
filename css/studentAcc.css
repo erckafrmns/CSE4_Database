@@ -1,14 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 * {
+    font-family: "Poppins", sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+html, body {
+    height: 100%;
+}
+
 body {
     font-family: "Poppins", sans-serif;
     background-image: linear-gradient(135deg, #4793AF, #FFC470);
+    background-attachment: fixed;
+    background-size: cover;
 }
 
 nav {
@@ -145,93 +152,114 @@ nav ul li ul li:hover a{
 
 .userInfo {
     width: 98%;
-    height: 60px;
-    background-color: #eee;
-    border: 2px solid #b9b8b8;
+    height: auto;
     border-radius: 5px;
-    display: flex;
-    align-items: center;
-    margin-top: 40px;
-    margin-bottom: 20px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-    padding: 0 30px 0 30px;
-}
-
-.userInfo h4 {
-    font-size: 16px;
-    color: #2C3E50;
-}
-
-.userInfo i {
-    font-size: 32px;
-    color: #2C3E50;
-    margin-right: 15px;
-}
-
-.userInfo .id {
-    margin-left: 750px;
-}
-
-.userInfo .role {
-    margin-left: 50px;
-}
-
-.userInfo span{
-    color: rgb(165, 67, 67);
-}
-
-.summary {
-    width: 98%;
-    height: 300px;
-    background-color: #eee;
-    border: 2px solid #b9b8b8;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-    padding: 15px 30px 15px 30px;
-    margin-bottom: 20px;
     display: flex;
     flex-direction: column;
-}
-
-.summary h3 {
-    font-size: 18px;
-    color: #2C3E50;
-    margin-bottom: 10px;
-}
-
-.summary .summary-container {
-    width: 100%;
-    height: 220px;
-    display: flex;
-    justify-content: space-between; 
     align-items: center;
+    margin-top: 80px;
+    margin-bottom: 25px;
 }
 
-.summary .summary-container > div {
-    width: 23%; 
-    height: 90%;
-    background-color: rgba(80, 102, 124, 0.8);
-    border-radius: 20px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+
+.name {
+    width: 100%;
     display: flex;
-    justify-content: center; 
-    align-items: center; 
-    text-align: center;
-    font-size: 16px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-.summary-container .student-summary h1 {
-    color: white;
+.name i {
+    font-size: 50px;
+    color: #2C3E50;
+    text-shadow: 0 0 10px #79818a;
+    padding-bottom: 30px;
 }
 
-.summary-container .major-summary h1 {
-    color: white;
+.name h1 {
+    font-size: 24px;
+    color: #eee;
+    text-shadow: 0 0 10px #2C3E50;
 }
 
-.summary-container .department-summary h1 {
-    color: white;
+.info {
+    width: 94%;
+    height: 60px;
+    background-color: #2C3E50;
+    /* background-image: linear-gradient(135deg, #FFC470, #0F4979); */
+    border: 2px solid #b9b8b8;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-.summary-container .course-summary h1 {
-    color: white;
+.row2, .row3 {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
 }
+
+.stuID, .majorID, .deptName, .majorName {
+    width: 50%;
+    font-size: 14px;
+}
+
+.stuID, .deptName {
+    padding-left: 30px;
+    /* color: #2C3E50; */
+    color: #eee;
+}
+
+.majorID, .majorName {
+    padding-left: 16rem;
+    color: #eee;
+}
+
+.stuID span, .deptName span{
+    /* color: rgb(165, 67, 67); */
+    color: #f8b557;
+}
+
+.majorID span, .majorName span{
+    color: #f8b557;
+}
+
+.course-table{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 92%;
+}
+
+.course-table table{
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+.course-table table tbody tr:nth-child(odd) {
+    background-color: #eee;
+}
+
+.course-table table tbody tr:nth-child(even){
+    background-color: #eee; 
+}
+
+.course-table th, .course-table td{
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #14202B;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.course-table th{
+    background-color: #2C3E50;
+    color: #eee;
+    font-weight: 600;
+}
+
