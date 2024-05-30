@@ -183,7 +183,7 @@ if (isset($_POST['update_student_id'])) {
         
         <div class="header">
             <div class="total">
-                <i class="fa-solid fa-users"></i>   
+                <i class="fa-solid fa-chart-simple"></i>
                 <p>    <?php echo $total_majors; ?></p>  
             </div>
             <h1><i class="fa-solid fa-graduation-cap fa-sm"></i>  Major Report</h1>
