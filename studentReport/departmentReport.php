@@ -1,5 +1,11 @@
 <?php
+session_start();
 include('../connection.php');
+
+if (!isset($_SESSION['student_id'])) {
+    header("Location: ../index.php");
+    exit();
+}
 
 $total_departments = $conn->query("SELECT COUNT(*) AS count FROM department")->fetch_assoc()['count'];
 
