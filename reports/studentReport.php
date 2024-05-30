@@ -188,7 +188,7 @@ if (isset($_POST['update_student_id'])) {
     <div class="contentPanel">
         
         <div class="header">
-            <div class="totalStudent">
+            <div class="total">
                 <i class="fa-solid fa-users"></i>   
                 <p>    <?php echo $total_students; ?></p>  
             </div>

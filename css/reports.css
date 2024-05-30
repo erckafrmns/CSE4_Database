@@ -87,22 +87,27 @@ body {
     font-size: 24px;
     color: white;
     text-shadow: 0 0 10px #2C3E50;
+    text-transform: uppercase;
 }
 
-.totalStudent {
+.header h1 i {
+    color: #FFC470;
+}
+
+.total {
     width: 15%;
     display: flex;
     flex-direction: row;
 }
 
-.totalStudent p {
+.total p {
     font-size: 24px;
     color: white;
     text-shadow: 0 0 10px #2C3E50;
     align-self: last baseline;
 }
 
-.totalStudent i{
+.total i{
     color: #FFC470;
     text-shadow: 0 0 10px #2C3E50;
     font-size: 22px;
