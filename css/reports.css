@@ -51,13 +51,13 @@ body {
     text-decoration: none;
     padding: 20px 0;
     font-size: 14px;
+    transition: all 0.3s ease;
 }
 
 .sidebar .forms-items a:hover {
     background-color: #FFC470;
     color: #2C3E50;
     padding-left: 10px;
-    transition: 0.3s;
     border-radius: 2px 6px 6px 2px;
 }
 
