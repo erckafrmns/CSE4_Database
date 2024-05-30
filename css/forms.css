@@ -146,11 +146,13 @@ input, select, option {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
+    height: 210px;
 }
 
 .multiform-group select option{
     margin-bottom: 10px;
     border: 1px solid #d8d8d8;
+    padding: 5px 12px !important; 
 }
 
 select.courseSelect-major option:checked, select.courseSelect-major option:active {

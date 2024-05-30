@@ -24,7 +24,7 @@ function getOptions($conn, $table, $idColumn, $nameColumn) {
 }
 
 // Function to fetch student data based on the selected major, department, and sorting criteria
-function fetchStudents($conn, $selected_major = '', $selected_department = '', $sort_criteria = '', $sort_order = '') {
+function fetchStudents($conn, $selected_major = '', $selected_department = '', $sort_criteria = '', $sort_order = '', $search_query = '') {
     $sql = "SELECT s.StudentID, s.FirstName, s.LastName, m.MajorID, m.MajorName, d.DepartmentID, d.DepartmentName
             FROM student s
             JOIN major m ON s.MajorID = m.MajorID
@@ -36,6 +36,10 @@ function fetchStudents($conn, $selected_major = '', $selected_department = '', $
     }
     if (!empty($selected_department)) {
         $where_clauses[] = "d.DepartmentID = '$selected_department'";
+    }
+    if (!empty($search_query)) {
+        $search_query = $conn->real_escape_string($search_query);
+        $where_clauses[] = "(s.StudentID LIKE '%$search_query%' OR s.FirstName LIKE '%$search_query%' OR s.LastName LIKE '%$search_query%' OR m.MajorName LIKE '%$search_query%' OR d.DepartmentName LIKE '%$search_query%')";
     }
 
     if (!empty($where_clauses)) {
@@ -65,26 +69,25 @@ function fetchStudents($conn, $selected_major = '', $selected_department = '', $
             echo "<td>" . $row["LastName"] . "</td>";
             echo "<td>" . $row["MajorID"] . "</td>";
             echo "<td>" . $row["MajorName"] . "</td>";
-            echo "<td>" . $row["DepartmentID"] . "</td>";
             echo "<td>" . $row["DepartmentName"] . "</td>";
-            echo "<td>
-                    <button onclick='updateStudent({$row["StudentID"]})'>Update</button>
-                    <button onclick='deleteStudent({$row["StudentID"]})'>Delete</button>
+            echo "<td class='operationBTN'>
+                    <button class='update' onclick='updateStudent({$row["StudentID"]})'><i class='fa-solid fa-pen-to-square fa-sm'></i>   Update</button>
+                    <button class='delete' onclick='deleteStudent({$row["StudentID"]})'><i class='fa-solid fa-trash-can'></i>   Delete</button>
                   </td>";
             echo "</tr>";
         }
     } else {
-        echo "<tr><td colspan='9'>No results found</td></tr>";
+        echo "<tr><td colspan='8'>No results found</td></tr>";
     }
 }
 
-// Handle AJAX requests
 if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
     $selected_major = isset($_GET['select_major']) ? $_GET['select_major'] : '';
     $selected_department = isset($_GET['select_department']) ? $_GET['select_department'] : '';
     $sort_criteria = isset($_GET['sort_criteria']) ? $_GET['sort_criteria'] : '';
     $sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : '';
-    fetchStudents($conn, $selected_major, $selected_department, $sort_criteria, $sort_order);
+    $search_query = isset($_GET['search_query']) ? $_GET['search_query'] : '';
+    fetchStudents($conn, $selected_major, $selected_department, $sort_criteria, $sort_order, $search_query);
     exit;
 }
 
@@ -185,7 +188,12 @@ if (isset($_POST['update_student_id'])) {
     <div class="contentPanel">
         
         <div class="header">
+            <div class="totalStudent">
+                <i class="fa-solid fa-users"></i>   
+                <p>    <?php echo $total_students; ?></p>  
+            </div>
             <h1><i class="fa-solid fa-user fa-sm"></i>  Student Report</h1>
+            <button class="downloadReport">Download Report <i class="fa-solid fa-download"></i></button>
         </div>
 
         <div class="report-select">
@@ -201,7 +209,6 @@ if (isset($_POST['update_student_id'])) {
                         <option value="DepartmentName">Department Name</option>
                     </select>
                     <select name="sort_order" id="sort_order">
-                        <option value="">Sort Order</option>
                         <option value="ASC">Ascending</option>
                         <option value="DESC">Descending</option>
                     </select>
@@ -221,20 +228,15 @@ if (isset($_POST['update_student_id'])) {
                 </div>
             </div>
 
-            <button class="downloadReport">Download Report <i class="fa-solid fa-download"></i></button>
+           
 
             <div class="search">
-                <input type="text" class="searchTerm" placeholder="Search Here">
+                <input type="text" class="searchTerm" id="searchQuery" placeholder="Search Here">
                 <button type="submit" class="searchButton"><i class="fa fa-search"></i></button>
             </div>
             
         </div>
 
-        <div class="summary">
-               
-            <h1><i class="fa-solid fa-user"></i> Total Students</h1>
-            <p><?php echo $total_students; ?></p>
-        </div>
 
         <div class="report-table">
             <table>
@@ -246,7 +248,6 @@ if (isset($_POST['update_student_id'])) {
                         <th scope="col">Last Name</th>
                         <th scope="col">Major ID</th>
                         <th scope="col">Major Name</th>
-                        <th scope="col">Department ID</th>
                         <th scope="col">Department Name</th>
                         <th scope="col">Operations</th>
                     </tr>
@@ -283,6 +284,7 @@ if (isset($_POST['update_student_id'])) {
                 var selectedDepartment = $('#select_department').val();
                 var sortCriteria = $('#sort_criteria').val();
                 var sortOrder = $('#sort_order').val();
+                var searchQuery = $('#searchQuery').val();
 
                 $.ajax({
                     url: 'studentReport.php',
@@ -292,7 +294,8 @@ if (isset($_POST['update_student_id'])) {
                         select_major: selectedMajor,
                         select_department: selectedDepartment,
                         sort_criteria: sortCriteria,
-                        sort_order: sortOrder
+                        sort_order: sortOrder,
+                        search_query: searchQuery
                     },
                     success: function(response) {
                         $('#report-table-body').html(response);
@@ -304,6 +307,16 @@ if (isset($_POST['update_student_id'])) {
                 fetchFilteredData();
             });
 
+            $('.searchButton').click(function() {
+                fetchFilteredData();
+            });
+
+            $('#searchQuery').on('keyup', function(e) {
+                if (e.key === 'Enter' || e.keyCode === 13) {
+                    fetchFilteredData();
+                }
+            });
+
             // Initial fetch
             fetchFilteredData();
 
@@ -313,13 +326,14 @@ if (isset($_POST['update_student_id'])) {
                 var selectedDepartment = $('#select_department').val();
                 var sortCriteria = $('#sort_criteria').val();
                 var sortOrder = $('#sort_order').val();
+                var searchQuery = $('#searchQuery').val();
 
-                window.location.href = '../generatePDF/studentPDF.php?select_major=' + selectedMajor + '&select_department=' + selectedDepartment + '&sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder;
+                window.location.href = '../generatePDF/studentPDF.php?select_major=' + selectedMajor + '&select_department=' + selectedDepartment + '&sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder + '&search_query=' + searchQuery;
             });
 
-             // Delete student
-             window.deleteStudent = function(studentID) {
-                console.log('Delete student:', studentID); // Debug log
+            // Delete student
+            window.deleteStudent = function(studentID) {
+            if (confirm('Are you sure you want to delete this student?')) {
                 $.ajax({
                     url: 'studentReport.php',
                     type: 'POST',
@@ -329,8 +343,8 @@ if (isset($_POST['update_student_id'])) {
                         fetchFilteredData();
                     }
                 });
-            };
-
+            }
+        };
             // Update student
             window.updateStudent = function(studentID) {
                 console.log('Update student:', studentID); // Debug log
