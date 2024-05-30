@@ -159,7 +159,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
             <a href="departmentReport.php"><i class="fa-solid fa-building-columns"></i>  DEPARTMENT</a>
             <a href="courseReport.php"><i class="fa-solid fa-book-open-reader"></i>  COURSE</a>
             <a href="majorCourseReport.php"><i class="fa-solid fa-book"></i>  MAJOR - COURSE</a>
-            <a href="studentCourseReport.php"><i class="fa-solid fa-user-graduate"></i>  STUDENT - COURSE</a>
+            <a href="studentCoursesReport.php"><i class="fa-solid fa-user-graduate"></i>  STUDENT - COURSE</a>
         </div>
     </div>
 
