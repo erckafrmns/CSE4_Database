@@ -110,7 +110,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                     </ul>
                 </div>
             </li>
-            <li class="menu-dropdown"><a href="">Account</a>
+            <li class="menu-dropdown"><a href="../account/editInfoStudent.php">Account</a>
                 <div class="reports-dropdown">
                     <ul>
                         <li><a href="../account/editInfoStudent.php">Edit Information</a></li>
