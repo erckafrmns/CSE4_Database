@@ -72,13 +72,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h1><span class="sarang">SARANG </span><span class="univ">UNIVERSITY</span></h1>
         <ul>
             <li class="dashboard"><a href="../studentAccount.php">Dashboard</a></li>
-            <li class="menu-dropdown"><a href="">Reports</a>
+            <li class="menu-dropdown"><a href="../studentReport/majorReport.php">Reports</a>
                 <div class="reports-dropdown">
                     <ul>
-                        <li><a href="../reports/majorReport.php">Major</a></li>
-                        <li><a href="../reports/departmentReport.php">Department</a></li>
-                        <li><a href="../reports/courseReport.php">Course</a></li>
-                        <li><a href="../reports/majorCourseReport.php">Major-Course</a></li>
+                        <li><a href="../studentReport/majorReport.php">Major</a></li>
+                        <li><a href="../studentReport/departmentReport.php">Department</a></li>
+                        <li><a href="../studentReport/courseReport.php">Course</a></li>
+                        <li><a href="../studentReport/majorCourseReport.php">Major-Course</a></li>
                     </ul>
                 </div>
             </li>
