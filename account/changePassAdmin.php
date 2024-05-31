@@ -29,11 +29,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $confirm_new_password = $_POST['confirm_new_password'];
 
     if ($current_password != $admin_data['Password']) {
-        $error_messages[] = '*Current Password is Incorrect*';
+        $error_messages[] = 'Current Password is Incorrect';
     }
 
     if ($new_password != $confirm_new_password) {
-        $error_messages[] = '*New Passwords Do Not Match*';
+        $error_messages[] = 'New Passwords Do Not Match';
     }
 
     if (empty($error_messages)) {        
@@ -65,6 +65,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="../css/adminNav.css">
     <link rel="stylesheet" href="../css/changePass.css">
     <script src="https://kit.fontawesome.com/b6ecc94894.js" crossorigin="anonymous"></script>
+    <script src="../sweetalert/sweetalert2.min.js"></script>
+    <script src="../sweetalert/sweetalert2.min.js/sweetalert2.all.min.js"></script>
 </head>
 <body>
 
@@ -113,15 +115,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <form method="post" action="changePassAdmin.php">
 
             <?php if(isset($_GET['success']) && $_GET['success'] == 'update_success'): ?>
-                <p class="success-message">*Password Changed Successfully*</p>
+                <script>
+                    Swal.fire({
+                        icon: "success",
+                        title: "SUCCESS",
+                        text: "Password Changed Successfully!",
+                        confirmButtonColor: "#2C3E50"
+                    });
+                </script>
             <?php endif; ?>
 
             <?php if(isset($_SESSION['error_messages']) && !empty($_SESSION['error_messages'])): ?>
-                <ul class="error-messages">
-                    <?php foreach($_SESSION['error_messages'] as $message): ?>
-                        <li><?php echo $message; ?></li>
-                    <?php endforeach; ?>
-                </ul>
+                <script>
+                    var errorMessages = "<?php echo implode('<br>', $_SESSION['error_messages']); ?>";
+                    Swal.fire({
+                        icon: "error",
+                        title: "UNSUCCESSFUL",
+                        html: errorMessages,
+                        confirmButtonColor: "#2C3E50"
+                        });
+                </script>
                 <?php unset($_SESSION['error_messages']); ?>
             <?php endif; ?>
 

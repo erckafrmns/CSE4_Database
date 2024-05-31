@@ -9,7 +9,6 @@ if (!isset($_SESSION['admin_id'])) {
 
 // Fetch all available majors and departments from the database
 $majorOptions = getOptions($conn, "major", "MajorID", "MajorName");
-$deptOptions = getOptions($conn, "department", "DepartmentID", "DepartmentName");
 $total_students = $conn->query("SELECT COUNT(*) AS count FROM student")->fetch_assoc()['count'];
 
 // Fetch options function
@@ -24,22 +23,20 @@ function getOptions($conn, $table, $idColumn, $nameColumn) {
 }
 
 // Function to fetch student data based on the selected major, department, and sorting criteria
-function fetchStudents($conn, $selected_major = '', $selected_department = '', $sort_criteria = '', $sort_order = '', $search_query = '') {
-    $sql = "SELECT s.StudentID, s.FirstName, s.LastName, m.MajorID, m.MajorName, d.DepartmentID, d.DepartmentName
+function fetchStudents($conn, $selected_major = '', $sort_criteria = '', $sort_order = '', $search_query = '') {
+    $sql = "SELECT s.StudentID, s.FirstName, s.LastName, s.Email, m.MajorID, m.MajorName
             FROM student s
-            JOIN major m ON s.MajorID = m.MajorID
-            JOIN department d ON m.DepartmentID = d.DepartmentID";
+            JOIN major m ON s.MajorID = m.MajorID";
 
     $where_clauses = [];
+
     if (!empty($selected_major)) {
         $where_clauses[] = "s.MajorID = '$selected_major'";
     }
-    if (!empty($selected_department)) {
-        $where_clauses[] = "d.DepartmentID = '$selected_department'";
-    }
+
     if (!empty($search_query)) {
         $search_query = $conn->real_escape_string($search_query);
-        $where_clauses[] = "(s.StudentID LIKE '%$search_query%' OR s.FirstName LIKE '%$search_query%' OR s.LastName LIKE '%$search_query%' OR m.MajorName LIKE '%$search_query%' OR m.MajorID LIKE '%$search_query%' OR d.DepartmentName LIKE '%$search_query%')";
+        $where_clauses[] = "(s.StudentID LIKE '%$search_query%' OR s.FirstName LIKE '%$search_query%' OR s.LastName LIKE '%$search_query%' OR m.MajorName LIKE '%$search_query%' OR m.MajorID LIKE '%$search_query%' OR s.Email LIKE '%$search_query%')";
     }
 
     if (!empty($where_clauses)) {
@@ -47,7 +44,7 @@ function fetchStudents($conn, $selected_major = '', $selected_department = '', $
     }
 
     if (!empty($sort_criteria) && !empty($sort_order)) {
-        $valid_criteria = ['StudentID', 'FirstName', 'LastName', 'MajorName', 'DepartmentName'];
+        $valid_criteria = ['StudentID', 'FirstName', 'LastName', 'MajorName', 'Email'];
         $valid_orders = ['ASC', 'DESC'];
 
         if (in_array($sort_criteria, $valid_criteria) && in_array($sort_order, $valid_orders)) {
@@ -69,7 +66,7 @@ function fetchStudents($conn, $selected_major = '', $selected_department = '', $
             echo "<td>" . $row["LastName"] . "</td>";
             echo "<td>" . $row["MajorID"] . "</td>";
             echo "<td>" . $row["MajorName"] . "</td>";
-            echo "<td>" . $row["DepartmentName"] . "</td>";
+            echo "<td>" . $row["Email"] . "</td>";
             echo "<td class='operationBTN'>
                     <button class='update' onclick='updateStudent({$row["StudentID"]})'><i class='fa-solid fa-pen-to-square fa-sm'></i>   Update</button>
                     <button class='delete' onclick='deleteStudent({$row["StudentID"]})'><i class='fa-solid fa-trash-can'></i>   Delete</button>
@@ -83,11 +80,10 @@ function fetchStudents($conn, $selected_major = '', $selected_department = '', $
 
 if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
     $selected_major = isset($_GET['select_major']) ? $_GET['select_major'] : '';
-    $selected_department = isset($_GET['select_department']) ? $_GET['select_department'] : '';
     $sort_criteria = isset($_GET['sort_criteria']) ? $_GET['sort_criteria'] : '';
     $sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : '';
     $search_query = isset($_GET['search_query']) ? $_GET['search_query'] : '';
-    fetchStudents($conn, $selected_major, $selected_department, $sort_criteria, $sort_order, $search_query);
+    fetchStudents($conn, $selected_major, $sort_criteria, $sort_order, $search_query);
     exit;
 }
 
@@ -206,7 +202,7 @@ if (isset($_POST['update_student_id'])) {
                         <option value="FirstName">First Name</option>
                         <option value="LastName">Last Name</option>
                         <option value="MajorName">Major Name</option>
-                        <option value="DepartmentName">Department Name</option>
+                        <option value="Email">Email</option>
                     </select>
                     <select name="sort_order" id="sort_order">
                         <option value="ASC">Ascending</option>
@@ -220,10 +216,6 @@ if (isset($_POST['update_student_id'])) {
                     <select name="select_major" id="select_major">
                         <option value="">All Major</option>
                         <?php echo $majorOptions; ?>
-                    </select>
-                    <select name="select_department" id="select_department">
-                        <option value="">All Department</option>
-                        <?php echo $deptOptions; ?>
                     </select>
                 </div>
             </div>
@@ -248,7 +240,7 @@ if (isset($_POST['update_student_id'])) {
                         <th scope="col">Last Name</th>
                         <th scope="col">Major ID</th>
                         <th scope="col">Major Name</th>
-                        <th scope="col">Department Name</th>
+                        <th scope="col">Email</th>
                         <th scope="col">Operations</th>
                     </tr>
                 </thead>
@@ -281,7 +273,6 @@ if (isset($_POST['update_student_id'])) {
         $(document).ready(function() {
             function fetchFilteredData() {
                 var selectedMajor = $('#select_major').val();
-                var selectedDepartment = $('#select_department').val();
                 var sortCriteria = $('#sort_criteria').val();
                 var sortOrder = $('#sort_order').val();
                 var searchQuery = $('#searchQuery').val();
@@ -292,7 +283,6 @@ if (isset($_POST['update_student_id'])) {
                     data: {
                         ajax: 1,
                         select_major: selectedMajor,
-                        select_department: selectedDepartment,
                         sort_criteria: sortCriteria,
                         sort_order: sortOrder,
                         search_query: searchQuery
@@ -303,7 +293,7 @@ if (isset($_POST['update_student_id'])) {
                 });
             }
 
-            $('#select_major, #select_department, #sort_criteria, #sort_order').change(function() {
+            $('#select_major, #sort_criteria, #sort_order').change(function() {
                 fetchFilteredData();
             });
 
@@ -323,12 +313,11 @@ if (isset($_POST['update_student_id'])) {
             // Download PDF
             $('.downloadReport').click(function() {
                 var selectedMajor = $('#select_major').val();
-                var selectedDepartment = $('#select_department').val();
                 var sortCriteria = $('#sort_criteria').val();
                 var sortOrder = $('#sort_order').val();
                 var searchQuery = $('#searchQuery').val();
 
-                window.location.href = '../generatePDF/studentPDF.php?select_major=' + selectedMajor + '&select_department=' + selectedDepartment + '&sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder + '&search_query=' + searchQuery;
+                window.location.href = '../generatePDF/studentPDF.php?select_major=' + selectedMajor + '&sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder + '&search_query=' + searchQuery;
             });
 
             // Delete student

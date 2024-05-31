@@ -52,6 +52,8 @@ if(isset($_SESSION['admin_id'])) {
     <link rel="stylesheet" href="../css/adminNav.css">
     <link rel="stylesheet" href="../css/editInfo.css">
     <script src="https://kit.fontawesome.com/b6ecc94894.js" crossorigin="anonymous"></script>
+    <script src="../sweetalert/sweetalert2.min.js"></script>
+    <script src="../sweetalert/sweetalert2.min.js/sweetalert2.all.min.js"></script>
 </head>
 <body>
 
@@ -100,10 +102,24 @@ if(isset($_SESSION['admin_id'])) {
         <form method="post" action="editInfoAdmin.php">
 
             <?php if(isset($_GET['success']) && $_GET['success'] == 'update_success'): ?>
-                <p class="success-message">*Information Updated Successfully*</p>
+                <script>
+                    Swal.fire({
+                        icon: "success",
+                        title: "SUCCESS",
+                        text: "Information Updated Successfully!",
+                        confirmButtonColor: "#2C3E50"
+                    });
+                </script>
             <?php endif; ?>
             <?php if(isset($_GET['error']) && $_GET['error'] == 'update_error'): ?>
-                <p class="error-message">*Error Updating Information*</p>
+                <script>
+                    Swal.fire({
+                        icon: "error",
+                        title: "UNSUCCESSFUL",
+                        text: "Error Updating Information!",
+                        confirmButtonColor: "#2C3E50"
+                    });
+                </script>
             <?php endif; ?>
 
             <label for="admin_id">Admin ID</label>
