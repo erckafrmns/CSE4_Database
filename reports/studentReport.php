@@ -7,6 +7,8 @@ if (!isset($_SESSION['admin_id'])) {
     exit();
 }
 
+
+
 // Fetch all available majors and departments from the database
 $majorOptions = getOptions($conn, "major", "MajorID", "MajorName");
 $total_students = $conn->query("SELECT COUNT(*) AS count FROM student")->fetch_assoc()['count'];
@@ -55,7 +57,7 @@ function fetchStudents($conn, $selected_major = '', $sort_criteria = '', $sort_o
     }
 
     $result = $conn->query($sql);
-
+    
     if ($result->num_rows > 0) {
         $count = 1;
         while ($row = $result->fetch_assoc()) {
@@ -68,8 +70,8 @@ function fetchStudents($conn, $selected_major = '', $sort_criteria = '', $sort_o
             echo "<td>" . $row["MajorName"] . "</td>";
             echo "<td>" . $row["Email"] . "</td>";
             echo "<td class='operationBTN'>
-                    <button class='update' onclick='updateStudent({$row["StudentID"]})'><i class='fa-solid fa-pen-to-square fa-sm'></i>   Update</button>
-                    <button class='delete' onclick='deleteStudent({$row["StudentID"]})'><i class='fa-solid fa-trash-can'></i>   Delete</button>
+                    <button class='update' data-id='{$row["StudentID"]}'><i class='fa-solid fa-pen-to-square fa-sm'></i>   Update</button>
+                    <button class='delete' data-id='{$row["StudentID"]}'><i class='fa-solid fa-trash-can'></i>   Delete</button>
                   </td>";
             echo "</tr>";
         }
@@ -86,34 +88,6 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
     fetchStudents($conn, $selected_major, $sort_criteria, $sort_order, $search_query);
     exit;
 }
-
-// Handle Delete Request
-if (isset($_POST['delete_student_id'])) {
-    $student_id = $_POST['delete_student_id'];
-    $delete_sql = "DELETE FROM student WHERE StudentID = '$student_id'";
-    if ($conn->query($delete_sql)) {
-        echo "Student deleted successfully.";
-    } else {
-        echo "Error deleting student.";
-    }
-    exit;
-}
-
-// Handle Update Request
-if (isset($_POST['update_student_id'])) {
-    $student_id = $_POST['update_student_id'];
-    $first_name = $_POST['first_name'];
-    $last_name = $_POST['last_name'];
-    $major_id = $_POST['major_id'];
-
-    $update_sql = "UPDATE student SET FirstName='$first_name', LastName='$last_name', MajorID='$major_id' WHERE StudentID='$student_id'";
-    if ($conn->query($update_sql)) {
-        echo "Student updated successfully.";
-    } else {
-        echo "Error updating student.";
-    }
-    exit;
-}
 ?>
 
 
@@ -128,6 +102,8 @@ if (isset($_POST['update_student_id'])) {
     <link rel="stylesheet" href="../css/reports.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://kit.fontawesome.com/b6ecc94894.js" crossorigin="anonymous"></script>
+    <script src="../sweetalert/sweetalert2.min.js"></script>
+    <script src="../sweetalert/sweetalert2.min.js/sweetalert2.all.min.js"></script>
 </head>
 <body>
 
@@ -229,6 +205,35 @@ if (isset($_POST['update_student_id'])) {
             
         </div>
 
+        <!-- <?php if(isset($_GET['delete']) && $_GET['delete'] == 'delete_record'): ?>
+            <script>
+                Swal.fire({
+                    icon: "warning",
+                    title: "Are you sure?",
+                    text: "Delete student with StudentID:",
+                    showDenyButton: true,
+                    denyButtonText: `Cancel`,
+                    confirmButtonColor: "#2C3E50",
+                    confirmButtonText: "Delete"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            icon: "success",
+                            title: "SUCCESS",
+                            text: "Record Deleted Successfully!",
+                            confirmButtonColor: "#2C3E50"
+                        });
+                    } else if (result.isDenied) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "UNSUCCESSFUL",
+                            text: "Record Was Not Deleted!",
+                            confirmButtonColor: "#2C3E50"
+                        });
+                    }
+                });
+            </script>
+        <?php endif; ?> -->
 
         <div class="report-table">
             <table>
@@ -249,24 +254,6 @@ if (isset($_POST['update_student_id'])) {
                 </tbody>
             </table>
         </div>
-    </div>
-
-    <!-- Update Student Modal -->
-    <div id="updateModal" style="display:none;">
-        <h2>Update Student</h2>
-        <form id="updateForm">
-            <input type="hidden" id="updateStudentID" name="update_student_id">
-            <label for="updateFirstName">First Name:</label>
-            <input type="text" id="updateFirstName" name="first_name" required><br>
-            <label for="updateLastName">Last Name:</label>
-            <input type="text" id="updateLastName" name="last_name" required><br>
-            <label for="updateMajor">Major:</label>
-            <select id="updateMajor" name="major_id" required>
-                <?php echo $majorOptions; ?>
-            </select><br>
-            <button type="submit">Update</button>
-            <button type="button" onclick="closeUpdateModal()">Cancel</button>
-        </form>
     </div>
 
     <script>
@@ -320,57 +307,116 @@ if (isset($_POST['update_student_id'])) {
                 window.location.href = '../generatePDF/studentPDF.php?select_major=' + selectedMajor + '&sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder + '&search_query=' + searchQuery;
             });
 
-            // Delete student
-            window.deleteStudent = function(studentID) {
-            if (confirm('Are you sure you want to delete this student?')) {
+
+            $(document).on('click', '.update', function() {
+                var studentID = $(this).data('id');
+                // Fetch student details and open update modal
                 $.ajax({
-                    url: 'studentReport.php',
-                    type: 'POST',
-                    data: { delete_student_id: studentID },
-                    success: function(response) {
-                        alert(response);
-                        fetchFilteredData();
-                    }
-                });
-            }
-        };
-            // Update student
-            window.updateStudent = function(studentID) {
-                console.log('Update student:', studentID); // Debug log
-                // Get student data from the row
-                var row = $('#row-' + studentID);
-                var firstName = row.find('td').eq(2).text();
-                var lastName = row.find('td').eq(3).text();
-                var majorID = row.find('td').eq(4).text();
+                    url: 'getStudentDetails.php',
+                    type: 'GET',
+                    data: { StudentID: studentID },
+                    success: function(data) {
+                        // Populate the form with fetched data and show Swal modal
+                        var student = JSON.parse(data);
+                        (async () => {
+                            const { value: formValues } = await Swal.fire({
+                                title: 'Update Record',
+                                html:
+                                `<input class="swal2-input" id="StudentID" value="${student.StudentID}" placeholder="Student ID" readonly>` + '<br>' +
+                                `<input class="swal2-input" id="FirstName" value="${student.FirstName}" placeholder="First Name">` + '<br>' +
+                                `<input class="swal2-input" id="LastName" value="${student.LastName}" placeholder="Last Name">` + '<br>' +
+                                `<input class="swal2-input" id="MajorID" value="${student.MajorID}" placeholder="Major ID">` + '<br>' +
+                                `<input class="swal2-input" id="Email" value="${student.Email}" placeholder="Email">`,
+                                showDenyButton: true,
+                                denyButtonText: `Cancel`,
+                                confirmButtonColor: "#2C3E50",
+                                confirmButtonText: "Update",
+                            }).then((result) => {
+                                if (result.isDenied) {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "CANCELED",
+                                        confirmButtonColor: "#2C3E50"
+                                    });
+                                } else if (result.isConfirmed) {
+                                    var data = {
+                                        StudentID: $('#StudentID').val(),
+                                        FirstName: $('#FirstName').val(),
+                                        LastName: $('#LastName').val(),
+                                        MajorID: $('#MajorID').val(),
+                                        Email: $('#Email').val()
+                                    };
+                                    console.log(data);
 
-                // Fill the update form with existing data
-                $('#updateStudentID').val(studentID);
-                $('#updateFirstName').val(firstName);
-                $('#updateLastName').val(lastName);
-                $('#updateMajor').val(majorID);
+                                    $.ajax({
+                                        url: 'updateStudent.php',
+                                        type: 'post',
+                                        data: data,
+                                        success:function(){
+                                            Swal.fire({
+                                                icon: 'success',
+                                                title: 'UPDATE SUCCESSFUL',
+                                                confirmButtonColor: "#2C3E50",
+                                                html:
+                                                'StudentID : ' + data['StudentID'] + '<br>' +
+                                                'FirstName : ' + data['FirstName'] + '<br>' +
+                                                'LastName : ' + data['LastName'] + '<br>' +
+                                                'MajorID : ' + data['MajorID'] + '<br>' +
+                                                'Email : ' + data['Email'] 
+                                            });
+                                            fetchFilteredData();
+                                        }
+                                    });
+                                    
+                                }
+                            })
 
-                // Show the update modal
-                $('#updateModal').show();
-            };
-
-            $('#updateForm').submit(function(e) {
-                e.preventDefault();
-                $.ajax({
-                    url: 'studentReport.php',
-                    type: 'POST',
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        alert(response);
-                        closeUpdateModal();
-                        fetchFilteredData();
+                            
+                        })();
                     }
                 });
             });
 
-            window.closeUpdateModal = function() {
-                $('#updateModal').hide();
-            };
+            $(document).on('click', '.delete', function() {
+                var studentID = $(this).data('id');
+                Swal.fire({
+                    icon: "warning",
+                    title: "Are you sure?",
+                    text: "Delete student with StudentID: " + studentID,
+                    showDenyButton: true,
+                    denyButtonText: `Cancel`,
+                    confirmButtonColor: "#2C3E50",
+                    confirmButtonText: "Delete"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: 'deleteStudent.php',
+                            type: 'POST',
+                            data: { StudentID: studentID },
+                            success: function() {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "SUCCESS",
+                                    text: "Record Deleted Successfully!",
+                                    confirmButtonColor: "#2C3E50"
+                                });
+                                fetchFilteredData();
+                            }
+                        });
+                    } else if (result.isDenied) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "UNSUCCESSFUL",
+                            text: "Record Was Not Deleted!",
+                            confirmButtonColor: "#2C3E50"
+                        });
+                    }
+                });
+            });
+
+
         });
     </script>
+
 </body>
 </html>

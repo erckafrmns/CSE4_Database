@@ -72,7 +72,6 @@ if (isset($_POST["submit"])){
         $_SESSION['duplicate_student'] = $studentData;
 
         header("Location: student.php?error=duplicate_entry");
-        // header("Location: student.php?error=duplicate_entry&FirstName=" . urlencode($FirstName) . "&LastName=" . urlencode($LastName) . "&StudentID=" . urlencode($StudentID) . "&MajorID=" . urlencode($MajorID) . "&Email=" . urlencode($Email) . "&Password=" . urlencode($Password));
         exit();
     } else {
         $query = "INSERT INTO student VALUES ('$StudentID', '$FirstName', '$LastName', '$MajorID', '$Email', '$Password')";

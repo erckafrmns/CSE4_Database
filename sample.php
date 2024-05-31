@@ -6,40 +6,60 @@
   </head>
   <body>
     <button class = "adduser">Add User</button>
-    <script type="text/javascript">
-      $('.adduser').click(function(){
-        (async () => {
-          const { value: formValues } = await Swal.fire({
-            title: 'Add New User',
-            html:
-              '<input class="swal2-input" id="name" placeholder = "Name">' +
-              '<input class="swal2-input" id="age" placeholder = "Age">',
-            showCancelButton: true,
-          })
+    <script>
+        $('.adduser').click(function(){
+            (async () => {
+                const { value: formValues } = await Swal.fire({
+                    title: 'Update Record',
+                    html:
+                    '<input class="swal2-input" id="StudentID" value="SU24-123456" placeholder = "Student ID" readonly>' +
+                    '<input class="swal2-input" id="FirstName" value="Ericka" placeholder = "First Name">' +
+                    '<input class="swal2-input" id="LastName" value="Rasos" placeholder = "Last Name">' +
+                    '<input class="swal2-input" id="MajorID" value="BSCS" placeholder = "Major ID">' +
+                    '<input class="swal2-input" id="Email" value="ericka@email" placeholder = "Email">',
+                    showDenyButton: true,
+                    denyButtonText: `Cancel`,
+                    confirmButtonColor: "#2C3E50",
+                    confirmButtonText: "Update"
+              }).then((result) => {
+                if (result.isDenied) {
+                  Swal.fire({
+                      icon: "error",
+                      title: "CANCELED",
+                      confirmButtonColor: "#2C3E50"
+                  });
+                }
+              })
+                if (formValues) {
+                    var data = {
+                      StudentID: $('#StudentID').val(),
+                      FirstName: $('#FirstName').val(),
+                      LastName: $('#LastName').val(),
+                      MajorID: $('#MajorID').val(),
+                      Email: $('#Email').val()
+                    };
 
-          if (formValues) {
-            var data = {
-              name: $('#name').val(),
-              age: $('#age').val()
-            };
-
-            $.ajax({
-              url: 'index.php',
-              type: 'post',
-              data: data,
-              success:function(){
-                Swal.fire({
-                  icon: 'success',
-                  title: 'Inserted Successfully',
-                  html:
-                  'Name : ' + data['name'] + '<br>' +
-                  'Age : ' + data['age']
-                })
-              }
-            })
-          }
-        })()
-      })
+                    $.ajax({
+                        url: 'update.php',
+                        type: 'post',
+                        data: data,
+                        success:function(){
+                            Swal.fire({
+                              icon: 'success',
+                              title: 'UPDATE SUCCESSFUL',
+                              confirmButtonColor: "#2C3E50",
+                              html:
+                              'StudentID : ' + data['StudentID'] + '<br>' +
+                              'FirstName : ' + data['FirstName'] + '<br>' +
+                              'LastName : ' + data['LastName'] + '<br>' +
+                              'MajorID : ' + data['MajorID'] + '<br>' +
+                              'Email : ' + data['Email'] 
+                            })
+                        }
+                    })
+                }
+            })()
+        })
     </script>
 
     <?php
