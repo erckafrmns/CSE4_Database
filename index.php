@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sarang University</title>
     <link rel="stylesheet" href="css/index.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://kit.fontawesome.com/b6ecc94894.js" crossorigin="anonymous"></script>
+    <script src="sweetalert/sweetalert2.min.js"></script>
+    <script src="sweetalert/sweetalert2.min.js/sweetalert2.all.min.js"></script>
 </head>
 <body>
     
@@ -25,7 +28,7 @@
                     <?php if(isset($_GET['error']) && $_GET['error'] == 'student_login'): ?>
                         <p class="error-message">*Invalid Student ID or Password*</p>
                     <?php endif; ?>
-                    <a href="#">Forgot your password?</a>
+                    <a href="#" class="forgot-password" data-type="student">Forgot your password?</a>
                     <button type="submit" name="student_login">Sign In</button>
                     <p class="contGuest">or <br>continue with <a href="guestAccount.php">guest account</a></p>
                 </form>
@@ -39,7 +42,7 @@
                     <?php if(isset($_GET['error']) && $_GET['error'] == 'admin_login'): ?>
                         <p class="error-message">*Invalid Admin ID or Password*</p>
                     <?php endif; ?>
-                    <a href="#">Forgot your password?</a>
+                    <a href="#" class="forgot-password" data-type="admin">Forgot your password?</a>
                     <button type="submit" name="admin_login">Sign In</button>
                 </form>
             </div>
@@ -78,6 +81,62 @@
         <?php if(isset($_GET['error']) && $_GET['error'] == 'student_login'): ?>
             container.classList.add("right-panel-active");
         <?php endif; ?>
+
+        // Handle forgot password
+        document.querySelectorAll('.forgot-password').forEach(element => {
+            element.addEventListener('click', (e) => {
+                e.preventDefault();
+                const userType = e.target.dataset.type; // 'student' or 'admin'
+
+                Swal.fire({
+                    title: 'Forgot your password?',
+                    input: 'text',
+                    inputLabel: `Please enter your ${userType === 'student' ? 'StudentID' : 'AdminID'}`,
+                    inputPlaceholder: `Enter your ${userType === 'student' ? 'StudentID' : 'AdminID'}`,
+                    showCancelButton: true,
+                    confirmButtonColor: "#2C3E50",
+                    confirmButtonText: 'Submit',
+                    preConfirm: (id) => {
+                        return new Promise((resolve) => {
+                            console.log(`ID entered: ${id}, User Type: ${userType}`);
+                            $.ajax({
+                                url: 'verifyID.php',
+                                type: 'POST',
+                                data: { id: id, type: userType },
+                                success: function(response) {
+                                    console.log(`Server response: ${JSON.stringify(response)}`);
+                                    const responseData = JSON.parse(response);
+                                    if (responseData.id === id) {
+                                        // ID exists, send email
+                                        $.ajax({
+                                            url: 'sendEmail.php',
+                                            type: 'POST',
+                                            data: { email: '', id: id, type: userType },
+                                            success: function(response) {
+                                                Swal.fire(
+                                                    'Email Sent!',
+                                                    'A password reset link has been sent to your email.',
+                                                    'success'
+                                                );
+                                            }
+                                        });
+                                    } else {
+                                        // ID not found
+                                        Swal.showValidationMessage('ID not found');
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    // Error handling if request fails
+                                    Swal.showValidationMessage('Error occurred');
+                                }
+                            });
+                        });
+                    }
+                });
+            });
+        });
+
+
 
     </script>
 
