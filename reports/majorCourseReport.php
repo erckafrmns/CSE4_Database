@@ -79,6 +79,9 @@ function fetchMajorCourses($conn, $sort_criteria = '', $sort_order = '', $search
                 }
                 echo "<td>{$course['course_id']}</td>";
                 echo "<td>{$course['course_name']}</td>";
+                echo "<td class='operationBTN'>
+                <button class='delete' data-majorid='{$major_data["major_id"]}' data-courseid='{$course["course_id"]}'><i class='fa-solid fa-square-minus'></i>    Remove</button>
+                  </td>";
                 echo "</tr>";
             }
             $index++;
@@ -110,6 +113,8 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
     <link rel="stylesheet" href="../css/reports.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://kit.fontawesome.com/b6ecc94894.js" crossorigin="anonymous"></script>
+    <script src="../sweetalert/sweetalert2.min.js"></script>
+    <script src="../sweetalert/sweetalert2.min.js/sweetalert2.all.min.js"></script>
 </head>
 <body>
 
@@ -203,6 +208,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                         <th scope="col">Major Name</th>
                         <th scope="col">Course ID</th>
                         <th scope="col">Course Name</th>
+                        <th scope="col">Remove Course</th>
                     </tr>
                 </thead>
                 <tbody id="report-table-body">
@@ -259,6 +265,45 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
 
                 window.location.href = '../generatePDF/majorCoursePDF.php?sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder + '&search_query=' + searchQuery;
             });
+
+
+            // Remove course in major 
+            $(document).on('click', '.delete', function() {
+                var courseID = $(this).data('courseid');
+                var majorID = $(this).data('majorid');
+                Swal.fire({
+                    icon: "warning",
+                    title: "Remove Course " + courseID,
+                    text: "Are you sure you want to remove this course from " + majorID +"?",
+                    showDenyButton: true,
+                    denyButtonText: `Cancel`,
+                    confirmButtonColor: "#2C3E50",
+                    confirmButtonText: "Remove"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: 'removeCourseinMajor.php',
+                            type: 'POST',
+                            data: { CourseID: courseID, MajorID: majorID },
+                            success: function() {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Course Removed Successfully!",
+                                    confirmButtonColor: "#2C3E50"
+                                });
+                                fetchFilteredData();
+                            }
+                        });
+                    } else if (result.isDenied) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Cancelled",
+                            confirmButtonColor: "#2C3E50"
+                        });
+                    }
+                });
+            });
+
 
         });
     </script>
