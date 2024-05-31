@@ -205,36 +205,6 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
             
         </div>
 
-        <!-- <?php if(isset($_GET['delete']) && $_GET['delete'] == 'delete_record'): ?>
-            <script>
-                Swal.fire({
-                    icon: "warning",
-                    title: "Are you sure?",
-                    text: "Delete student with StudentID:",
-                    showDenyButton: true,
-                    denyButtonText: `Cancel`,
-                    confirmButtonColor: "#2C3E50",
-                    confirmButtonText: "Delete"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire({
-                            icon: "success",
-                            title: "SUCCESS",
-                            text: "Record Deleted Successfully!",
-                            confirmButtonColor: "#2C3E50"
-                        });
-                    } else if (result.isDenied) {
-                        Swal.fire({
-                            icon: "error",
-                            title: "UNSUCCESSFUL",
-                            text: "Record Was Not Deleted!",
-                            confirmButtonColor: "#2C3E50"
-                        });
-                    }
-                });
-            </script>
-        <?php endif; ?> -->
-
         <div class="report-table">
             <table>
                 <thead>
@@ -330,7 +300,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                                 showDenyButton: true,
                                 denyButtonText: `Cancel`,
                                 confirmButtonColor: "#2C3E50",
-                                confirmButtonText: "Update",
+                                confirmButtonText: "Update"
                             }).then((result) => {
                                 if (result.isDenied) {
                                     Swal.fire({
@@ -406,8 +376,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                     } else if (result.isDenied) {
                         Swal.fire({
                             icon: "error",
-                            title: "UNSUCCESSFUL",
-                            text: "Record Was Not Deleted!",
+                            title: "CANCELLED",
                             confirmButtonColor: "#2C3E50"
                         });
                     }

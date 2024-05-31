@@ -219,8 +219,7 @@ while ($row = mysqli_fetch_assoc($majorResult)) {
                                     } else if (result.isDenied) {
                                         Swal.fire({
                                             icon: "error",
-                                            title: "UNSUCCESSFUL",
-                                            text: "Student was not Added!",
+                                            title: "CANCELLED",
                                             confirmButtonColor: "#2C3E50"
                                         });
                                     }

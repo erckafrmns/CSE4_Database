@@ -29,11 +29,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $confirm_new_password = $_POST['confirm_new_password'];
 
     if ($current_password != $student_data['Password']) {
-        $error_messages[] = '*Current Password is Incorrect*';
+        $error_messages[] = 'Current Password is Incorrect';
     }
 
     if ($new_password != $confirm_new_password) {
-        $error_messages[] = '*New Passwords Do Not Match*';
+        $error_messages[] = 'New Passwords Do Not Match';
     }
 
     if (empty($error_messages)) {
@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: changePassStudent.php?success=update_success"); 
             exit();
         } else {
-            $error_messages[] = '*Error Changing Password*';
+            $error_messages[] = 'Error Changing Password';
         }
     }
 

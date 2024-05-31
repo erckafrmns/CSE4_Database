@@ -21,6 +21,17 @@ function getOptions($conn, $table, $idColumn, $nameColumn) {
     return $options;
 }
 
+$deptID = getDeptID($conn, "department", "DepartmentID", "DepartmentName");
+function getDeptID($conn, $table, $idColumn, $nameColumn) {
+    $query = "SELECT * FROM $table";
+    $result = mysqli_query($conn, $query);
+    $options = '';
+    while ($row = mysqli_fetch_assoc($result)) {
+        $options .= "<option value='{$row[$idColumn]}'>{$row[$idColumn]}</option>";
+    }
+    return $options;
+}
+
 function fetchMajor($conn, $selected_department = '', $sort_criteria = '', $sort_order = '', $search_query = '') {
     $sql = "SELECT m.MajorID, m.MajorName, d.DepartmentID, d.DepartmentName
             FROM major m
@@ -64,8 +75,8 @@ function fetchMajor($conn, $selected_department = '', $sort_criteria = '', $sort
             echo "<td>" . $row["DepartmentID"] . "</td>";
             echo "<td>" . $row["DepartmentName"] . "</td>";
             echo "<td class='operationBTN'>
-                    <button class='update' onclick='updateStudent({$row["MajorID"]})'><i class='fa-solid fa-pen-to-square fa-sm'></i>   Update</button>
-                    <button class='delete' onclick='deleteStudent({$row["MajorID"]})'><i class='fa-solid fa-trash-can'></i>   Delete</button>
+                    <button class='update' data-id='{$row["MajorID"]}'><i class='fa-solid fa-pen-to-square fa-sm'></i>   Update</button>
+                    <button class='delete' data-id='{$row["MajorID"]}'><i class='fa-solid fa-trash-can'></i>   Delete</button>
                   </td>";
             echo "</tr>";
         }
@@ -82,34 +93,6 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
     fetchMajor($conn, $selected_department, $sort_criteria, $sort_order, $search_query);
     exit;
 }
-
-// Handle Delete Request
-if (isset($_POST['delete_student_id'])) {
-    $student_id = $_POST['delete_student_id'];
-    $delete_sql = "DELETE FROM student WHERE StudentID = '$student_id'";
-    if ($conn->query($delete_sql)) {
-        echo "Student deleted successfully.";
-    } else {
-        echo "Error deleting student.";
-    }
-    exit;
-}
-
-// Handle Update Request
-if (isset($_POST['update_student_id'])) {
-    $student_id = $_POST['update_student_id'];
-    $first_name = $_POST['first_name'];
-    $last_name = $_POST['last_name'];
-    $major_id = $_POST['major_id'];
-
-    $update_sql = "UPDATE student SET FirstName='$first_name', LastName='$last_name', MajorID='$major_id' WHERE StudentID='$student_id'";
-    if ($conn->query($update_sql)) {
-        echo "Student updated successfully.";
-    } else {
-        echo "Error updating student.";
-    }
-    exit;
-}
 ?>
 
 
@@ -124,6 +107,8 @@ if (isset($_POST['update_student_id'])) {
     <link rel="stylesheet" href="../css/reports.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://kit.fontawesome.com/b6ecc94894.js" crossorigin="anonymous"></script>
+    <script src="../sweetalert/sweetalert2.min.js"></script>
+    <script src="../sweetalert/sweetalert2.min.js/sweetalert2.all.min.js"></script>
 </head>
 <body>
 
@@ -242,24 +227,6 @@ if (isset($_POST['update_student_id'])) {
         </div>
     </div>
 
-    <!-- Update Student Modal -->
-    <div id="updateModal" style="display:none;">
-        <h2>Update Student</h2>
-        <form id="updateForm">
-            <input type="hidden" id="updateStudentID" name="update_student_id">
-            <label for="updateFirstName">First Name:</label>
-            <input type="text" id="updateFirstName" name="first_name" required><br>
-            <label for="updateLastName">Last Name:</label>
-            <input type="text" id="updateLastName" name="last_name" required><br>
-            <label for="updateMajor">Major:</label>
-            <select id="updateMajor" name="major_id" required>
-                <?php echo $majorOptions; ?>
-            </select><br>
-            <button type="submit">Update</button>
-            <button type="button" onclick="closeUpdateModal()">Cancel</button>
-        </form>
-    </div>
-
     <script>
         $(document).ready(function() {
             function fetchFilteredData() {
@@ -311,56 +278,105 @@ if (isset($_POST['update_student_id'])) {
                 window.location.href = '../generatePDF/majorPDF.php?select_department=' + selectedDepartment + '&sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder + '&search_query=' + searchQuery;
             });
 
-            // Delete student
-            window.deleteStudent = function(studentID) {
-            if (confirm('Are you sure you want to delete this student?')) {
+            $(document).on('click', '.update', function() {
+                var majorID = $(this).data('id');
                 $.ajax({
-                    url: 'majorReport.php',
-                    type: 'POST',
-                    data: { delete_student_id: studentID },
-                    success: function(response) {
-                        alert(response);
-                        fetchFilteredData();
-                    }
-                });
-            }
-        };
-            // Update student
-            window.updateStudent = function(studentID) {
-                console.log('Update student:', studentID); // Debug log
-                // Get student data from the row
-                var row = $('#row-' + studentID);
-                var firstName = row.find('td').eq(2).text();
-                var lastName = row.find('td').eq(3).text();
-                var majorID = row.find('td').eq(4).text();
+                    url: 'getMajorDetails.php',
+                    type: 'GET',
+                    data: { MajorID: majorID },
+                    success: function(data) {
+                        var major = JSON.parse(data);
+                        (async () => {
+                            const { value: formValues } = await Swal.fire({
+                                title: 'Update Major',
+                                html:
+                                `<input class="swal2-input" id="MajorID" value="${major.MajorID}" placeholder="Major ID" readonly>` + '<br>' +
+                                `<input class="swal2-input" id="MajorName" value="${major.MajorName}" placeholder="Major Name">` + '<br>' +
+                                `<select id="DepartmentID" class="swal2-select">
+                                    <option value="${major.DepartmentID}">${major.DepartmentID}</option>
+                                    <?php echo $deptID; ?>
+                                </select>`,
+                                showDenyButton: true,
+                                denyButtonText: `Cancel`,
+                                confirmButtonColor: "#2C3E50",
+                                confirmButtonText: "Update",
+                                width: 600
+                            }).then((result) => {
+                                if (result.isDenied) {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "CANCELED",
+                                        confirmButtonColor: "#2C3E50"
+                                    });
+                                } else if (result.isConfirmed) {
+                                    var data = {
+                                        MajorID: $('#MajorID').val(),
+                                        MajorName: $('#MajorName').val(),
+                                        DepartmentID: $('#DepartmentID').val()
+                                    };
+                                    $.ajax({
+                                        url: 'updateMajor.php',
+                                        type: 'POST',
+                                        data: data,
+                                        success: function() {
+                                            Swal.fire({
+                                                icon: 'success',
+                                                title: 'UPDATE SUCCESSFUL',
+                                                confirmButtonColor: "#2C3E50",
+                                                html:
+                                                'MajorID: ' + data['MajorID'] + '<br>' +
+                                                'MajorName: ' + data['MajorName'] + '<br>' +
+                                                'DepartmentID: ' + data['DepartmentID']
+                                            });
+                                            fetchFilteredData();
+                                        }
+                                    });
+                                }
+                            })
 
-                // Fill the update form with existing data
-                $('#updateStudentID').val(studentID);
-                $('#updateFirstName').val(firstName);
-                $('#updateLastName').val(lastName);
-                $('#updateMajor').val(majorID);
-
-                // Show the update modal
-                $('#updateModal').show();
-            };
-
-            $('#updateForm').submit(function(e) {
-                e.preventDefault();
-                $.ajax({
-                    url: 'studentReport.php',
-                    type: 'POST',
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        alert(response);
-                        closeUpdateModal();
-                        fetchFilteredData();
+                            
+                        })();
                     }
                 });
             });
 
-            window.closeUpdateModal = function() {
-                $('#updateModal').hide();
-            };
+            $(document).on('click', '.delete', function() {
+                var majorID = $(this).data('id');
+                Swal.fire({
+                    icon: "warning",
+                    title: "DELETE " + majorID,
+                    text: "Deleting this major will also remove all associated records. Are you sure you want to proceed?",
+                    showDenyButton: true,
+                    denyButtonText: `Cancel`,
+                    confirmButtonColor: "#2C3E50",
+                    confirmButtonText: "Delete"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: 'deleteMajor.php',
+                            type: 'POST',
+                            data: { MajorID: majorID },
+                            success: function() {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "SUCCESS",
+                                    text: "Record Deleted Successfully!",
+                                    confirmButtonColor: "#2C3E50"
+                                });
+                                fetchFilteredData();
+                            }
+                        });
+                    } else if (result.isDenied) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "CANCELLED",
+                            confirmButtonColor: "#2C3E50"
+                        });
+                    }
+                });
+            });
+
+
         });
     </script>
 </body>

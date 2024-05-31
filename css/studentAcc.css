@@ -173,14 +173,14 @@ nav ul li ul li:hover a{
 
 .name i {
     font-size: 50px;
-    color: #2C3E50;
+    color: #FFC470;
     text-shadow: 0 0 10px #79818a;
     padding-bottom: 30px;
 }
 
 .name h1 {
     font-size: 24px;
-    color: #eee;
+    color: white;
     text-shadow: 0 0 10px #2C3E50;
 }
 
