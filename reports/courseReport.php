@@ -65,8 +65,8 @@ function fetchCourse($conn, $selected_credits = '', $sort_criteria = '', $sort_o
             echo "<td>" . $row["CourseName"] . "</td>";
             echo "<td>" . $row["Credits"] . "</td>";
             echo "<td class='operationBTN'>
-                    <button class='update' onclick='updateStudent({$row["CourseID"]})'><i class='fa-solid fa-pen-to-square fa-sm'></i>   Update</button>
-                    <button class='delete' onclick='deleteStudent({$row["CourseID"]})'><i class='fa-solid fa-trash-can'></i>   Delete</button>
+                    <button class='update' data-id='{$row["CourseID"]}'><i class='fa-solid fa-pen-to-square fa-sm'></i>   Update</button>
+                    <button class='delete' data-id='{$row["CourseID"]}'><i class='fa-solid fa-trash-can'></i>   Delete</button>
                   </td>";
             echo "</tr>";
         }
@@ -83,34 +83,6 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
     fetchCourse($conn, $selected_credits, $sort_criteria, $sort_order, $search_query);
     exit;
 }
-
-// Handle Delete Request
-if (isset($_POST['delete_student_id'])) {
-    $student_id = $_POST['delete_student_id'];
-    $delete_sql = "DELETE FROM student WHERE StudentID = '$student_id'";
-    if ($conn->query($delete_sql)) {
-        echo "Student deleted successfully.";
-    } else {
-        echo "Error deleting student.";
-    }
-    exit;
-}
-
-// Handle Update Request
-if (isset($_POST['update_student_id'])) {
-    $student_id = $_POST['update_student_id'];
-    $first_name = $_POST['first_name'];
-    $last_name = $_POST['last_name'];
-    $major_id = $_POST['major_id'];
-
-    $update_sql = "UPDATE student SET FirstName='$first_name', LastName='$last_name', MajorID='$major_id' WHERE StudentID='$student_id'";
-    if ($conn->query($update_sql)) {
-        echo "Student updated successfully.";
-    } else {
-        echo "Error updating student.";
-    }
-    exit;
-}
 ?>
 
 
@@ -125,6 +97,8 @@ if (isset($_POST['update_student_id'])) {
     <link rel="stylesheet" href="../css/reports.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://kit.fontawesome.com/b6ecc94894.js" crossorigin="anonymous"></script>
+    <script src="../sweetalert/sweetalert2.min.js"></script>
+    <script src="../sweetalert/sweetalert2.min.js/sweetalert2.all.min.js"></script>
 </head>
 <body>
 
@@ -241,24 +215,6 @@ if (isset($_POST['update_student_id'])) {
         </div>
     </div>
 
-    <!-- Update Student Modal -->
-    <div id="updateModal" style="display:none;">
-        <h2>Update Student</h2>
-        <form id="updateForm">
-            <input type="hidden" id="updateStudentID" name="update_student_id">
-            <label for="updateFirstName">First Name:</label>
-            <input type="text" id="updateFirstName" name="first_name" required><br>
-            <label for="updateLastName">Last Name:</label>
-            <input type="text" id="updateLastName" name="last_name" required><br>
-            <label for="updateMajor">Major:</label>
-            <select id="updateMajor" name="major_id" required>
-                <?php echo $majorOptions; ?>
-            </select><br>
-            <button type="submit">Update</button>
-            <button type="button" onclick="closeUpdateModal()">Cancel</button>
-        </form>
-    </div>
-
     <script>
         $(document).ready(function() {
             function fetchFilteredData() {
@@ -310,56 +266,95 @@ if (isset($_POST['update_student_id'])) {
                 window.location.href = '../generatePDF/coursePDF.php?selected_credits=' + selectedCredits + '&sort_criteria=' + sortCriteria + '&sort_order=' + sortOrder + '&search_query=' + searchQuery;
             });
 
-            // Delete student
-            window.deleteStudent = function(studentID) {
-            if (confirm('Are you sure you want to delete this student?')) {
+
+            $(document).on('click', '.update', function() {
+                var courseID = $(this).data('id');
                 $.ajax({
-                    url: 'majorReport.php',
-                    type: 'POST',
-                    data: { delete_student_id: studentID },
-                    success: function(response) {
-                        alert(response);
-                        fetchFilteredData();
-                    }
-                });
-            }
-        };
-            // Update student
-            window.updateStudent = function(studentID) {
-                console.log('Update student:', studentID); // Debug log
-                // Get student data from the row
-                var row = $('#row-' + studentID);
-                var firstName = row.find('td').eq(2).text();
-                var lastName = row.find('td').eq(3).text();
-                var majorID = row.find('td').eq(4).text();
-
-                // Fill the update form with existing data
-                $('#updateStudentID').val(studentID);
-                $('#updateFirstName').val(firstName);
-                $('#updateLastName').val(lastName);
-                $('#updateMajor').val(majorID);
-
-                // Show the update modal
-                $('#updateModal').show();
-            };
-
-            $('#updateForm').submit(function(e) {
-                e.preventDefault();
-                $.ajax({
-                    url: 'studentReport.php',
-                    type: 'POST',
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        alert(response);
-                        closeUpdateModal();
-                        fetchFilteredData();
+                    url: 'getCourseDetails.php',
+                    type: 'GET',
+                    data: { CourseID: courseID },
+                    success: function(data) {
+                        var course = JSON.parse(data);
+                        (async () => {
+                            const { value: formValues } = await Swal.fire({
+                                title: 'Update Course',
+                                html:
+                                `<input class="swal2-input" id="CourseID" value="${course.CourseID}" placeholder="Course ID" readonly>` + '<br>' +
+                                `<input class="swal2-input" id="CourseName" value="${course.CourseName}" placeholder="Course Name">` + '<br>' +
+                                `<input class="swal2-input" id="Credits" value="${course.Credits}" placeholder="Credits">`,
+                                showDenyButton: true,
+                                denyButtonText: `Cancel`,
+                                confirmButtonColor: "#2C3E50",
+                                confirmButtonText: "Update",
+                                width: 600
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    var data = {
+                                        CourseID: $('#CourseID').val(),
+                                        CourseName: $('#CourseName').val(),
+                                        Credits: $('#Credits').val()
+                                    };
+                                    $.ajax({
+                                        url: 'updateCourse.php',
+                                        type: 'POST',
+                                        data: data,
+                                        success: function() {
+                                            Swal.fire({
+                                                icon: 'success',
+                                                title: 'Update Successful',
+                                                confirmButtonColor: "#2C3E50",
+                                                html:
+                                                'Course ID: ' + data['CourseID'] + '<br>' +
+                                                'Course Name: ' + data['CourseName'] + '<br>' +
+                                                'Credits: ' + data['Credits']
+                                            });
+                                            fetchFilteredData();
+                                        }
+                                    });
+                                }
+                            });
+                        })();
                     }
                 });
             });
 
-            window.closeUpdateModal = function() {
-                $('#updateModal').hide();
-            };
+            // Delete course
+            $(document).on('click', '.delete', function() {
+                var courseID = $(this).data('id');
+                Swal.fire({
+                    icon: "warning",
+                    title: "Delete Course " + courseID,
+                    text: "Are you sure you want to delete this course?",
+                    showDenyButton: true,
+                    denyButtonText: `Cancel`,
+                    confirmButtonColor: "#2C3E50",
+                    confirmButtonText: "Delete"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: 'deleteCourse.php',
+                            type: 'POST',
+                            data: { CourseID: courseID },
+                            success: function() {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Record Deleted Successfully!",
+                                    confirmButtonColor: "#2C3E50"
+                                });
+                                fetchFilteredData();
+                            }
+                        });
+                    } else if (result.isDenied) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Cancelled",
+                            confirmButtonColor: "#2C3E50"
+                        });
+                    }
+                });
+            });
+
+            
         });
     </script>
 </body>
