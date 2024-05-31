@@ -38,6 +38,8 @@ if (isset($_POST["submit"])){
     <link rel="stylesheet" href="../css/adminNav.css">
     <link rel="stylesheet" href="../css/forms1.css">
     <script src="https://kit.fontawesome.com/b6ecc94894.js" crossorigin="anonymous"></script>
+    <script src="../sweetalert/sweetalert2.min.js"></script>
+    <script src="../sweetalert/sweetalert2.min.js/sweetalert2.all.min.js"></script>
 </head>
 <body>
 
@@ -114,11 +116,25 @@ if (isset($_POST["submit"])){
                         </div>
 
                         <?php if(isset($_GET['success']) && $_GET['success'] == 'add_success'): ?>
-                            <p class="success-message">*Department Added Successfully*</p>
+                            <script>
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "SUCCESS",
+                                    text: "Department Added Successfully!",
+                                    confirmButtonColor: "#2C3E50"
+                                });
+                            </script>
                         <?php endif; ?>
 
                         <?php if(isset($_GET['error']) && $_GET['error'] == 'add_error'): ?>
-                            <p class="error-message">*Department ID Already Exists*</p>
+                            <script>
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "UNSUCCESSFUL",
+                                    text: "Department ID Already Exists!",
+                                    confirmButtonColor: "#2C3E50"
+                                    });
+                            </script>
                         <?php endif; ?>
 
                         <div class="form-group button-group">

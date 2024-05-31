@@ -43,11 +43,26 @@ if (isset($_POST["submit"])){
     $checkMajorQuery = "SELECT * FROM major WHERE MajorID = '$MajorID'";
     $checkMajorResult = mysqli_query($conn, $checkMajorQuery);
 
+    // Check if a student with the same first and last name exists
+    $checkStudentQuery = "SELECT * FROM student WHERE FirstName = '$FirstName' AND LastName = '$LastName'";
+    $checkStudentResult = mysqli_query($conn, $checkStudentQuery);
+
+
     // Generate the password
     $Password = strtolower($LastName) . '123';
 
     if (mysqli_num_rows($checkMajorResult) == 0) {
-        echo "<script> alert('Invalid Input: Major ID does not exist'); </script>";
+        echo "<script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid Input',
+                text: 'Major ID does not exist',
+                confirmButtonColor: '#2C3E50'
+            });
+    </script>";
+    } elseif (mysqli_num_rows($checkStudentResult) > 0) {
+        header("Location: student.php?error=duplicate_entry&FirstName=" . urlencode($FirstName) . "&LastName=" . urlencode($LastName));
+        exit();
     } else {
         $query = "INSERT INTO student VALUES ('$StudentID', '$FirstName', '$LastName', '$MajorID', '$Email', '$Password')";
         mysqli_query($conn, $query);
@@ -77,6 +92,8 @@ while ($row = mysqli_fetch_assoc($majorResult)) {
     <link rel="stylesheet" href="../css/adminNav.css">
     <link rel="stylesheet" href="../css/forms.css">
     <script src="https://kit.fontawesome.com/b6ecc94894.js" crossorigin="anonymous"></script>
+    <script src="../sweetalert/sweetalert2.min.js"></script>
+    <script src="../sweetalert/sweetalert2.min.js/sweetalert2.all.min.js"></script>
 </head>
 <body>
 
@@ -165,8 +182,47 @@ while ($row = mysqli_fetch_assoc($majorResult)) {
                         </div>
 
                         <?php if(isset($_GET['success']) && $_GET['success'] == 'add_success'): ?>
-                            <p class="success-message">*Student Added Successfully*</p>
+                            <script>
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "SUCCESS",
+                                    text: "Student Added Successfully!",
+                                    confirmButtonColor: "#2C3E50"
+                                });
+                            </script>
                         <?php endif; ?>
+
+                        <?php if(isset($_GET['error']) && $_GET['error'] == 'duplicate_entry'): ?>
+                            <script>
+                                Swal.fire({
+                                    icon: "warning",
+                                    title: "DUPLICATE ENTRY",
+                                    confirmButtonText: "Add Student",
+                                    showLoaderOnConfirm: true,
+                                    showDenyButton: true,
+                                    denyButtonText: `Cancel`,
+                                    confirmButtonColor: "#2C3E50",
+                                    text: "A student with this name '<?php echo $_GET['FirstName']; ?> <?php echo $_GET['LastName']; ?>' already exists! Do you still want to continue?"
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        Swal.fire({
+                                            icon: "success",
+                                            title: "SUCCESS",
+                                            text: "Student Added Successfully!",
+                                            confirmButtonColor: "#2C3E50"
+                                        });
+                                    } else if (result.isDenied) {
+                                        Swal.fire({
+                                            icon: "error",
+                                            title: "UNSUCCESSFUL",
+                                            text: "Student was not Added!",
+                                            confirmButtonColor: "#2C3E50"
+                                        });
+                                    }
+                                });
+                            </script>
+                        <?php endif; ?>
+
                         <div class="form-group button-group">
                             <button type="submit" class="submitBTN" name="submit">SUBMIT <i class="fa-solid fa-arrow-up-right-from-square fa-sm"></i></button>
                         </div>
