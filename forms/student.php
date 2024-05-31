@@ -61,7 +61,18 @@ if (isset($_POST["submit"])){
             });
     </script>";
     } elseif (mysqli_num_rows($checkStudentResult) > 0) {
-        header("Location: student.php?error=duplicate_entry&FirstName=" . urlencode($FirstName) . "&LastName=" . urlencode($LastName));
+        $studentData = [
+            'StudentID' => $StudentID,
+            'FirstName' => $FirstName,
+            'LastName' => $LastName,
+            'MajorID' => $MajorID,
+            'Email' => $Email,
+            'Password' => $Password
+        ];
+        $_SESSION['duplicate_student'] = $studentData;
+
+        header("Location: student.php?error=duplicate_entry");
+        // header("Location: student.php?error=duplicate_entry&FirstName=" . urlencode($FirstName) . "&LastName=" . urlencode($LastName) . "&StudentID=" . urlencode($StudentID) . "&MajorID=" . urlencode($MajorID) . "&Email=" . urlencode($Email) . "&Password=" . urlencode($Password));
         exit();
     } else {
         $query = "INSERT INTO student VALUES ('$StudentID', '$FirstName', '$LastName', '$MajorID', '$Email', '$Password')";
@@ -202,15 +213,10 @@ while ($row = mysqli_fetch_assoc($majorResult)) {
                                     showDenyButton: true,
                                     denyButtonText: `Cancel`,
                                     confirmButtonColor: "#2C3E50",
-                                    text: "A student with this name '<?php echo $_GET['FirstName']; ?> <?php echo $_GET['LastName']; ?>' already exists! Do you still want to continue?"
+                                    text: "A student with this name '<?php echo $_SESSION['duplicate_student']['FirstName']; ?> <?php echo $_SESSION['duplicate_student']['LastName']; ?>' already exists! Do you still want to continue?"
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        Swal.fire({
-                                            icon: "success",
-                                            title: "SUCCESS",
-                                            text: "Student Added Successfully!",
-                                            confirmButtonColor: "#2C3E50"
-                                        });
+                                        window.location.href = 'confirm_student.php';
                                     } else if (result.isDenied) {
                                         Swal.fire({
                                             icon: "error",
