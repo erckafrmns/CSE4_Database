@@ -21,7 +21,7 @@ if (isset($_POST['id']) && isset($_POST['type'])) {
     if ($email) {
         // Send the reset email
         $subject = 'Password Reset Request';
-        $resetLink = "http://localhost/CSE4_DATABASE/reset_link?email=$email&id=$id";
+        $resetLink = "http://localhost/CSE4_DATABASE/reset_link.php?email=$email&id=$id";
         $message = "Dear User,\nWe have received a request to reset your password associated with the ID: $id. If you made this request, please click on the link below to reset your password:\n\n\t$resetLink \n\nIf you did not request a password reset, please ignore this email. Your password will remain unchanged.This email was sent from an unmonitored email address. Please do not reply to this email.\n\nThank you,\nSarang University IT Support";
         $headers = "From: Sarang University <no-reply@saranguniversity.com>\r\n";
         if (mail($email, $subject, $message, $headers)) {
