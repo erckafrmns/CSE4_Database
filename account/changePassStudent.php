@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $new_password = $_POST['new_password'];
     $confirm_new_password = $_POST['confirm_new_password'];
 
-    if ($current_password != $student_data['Password']) {
+    if (!password_verify($current_password, $student_data['Password'])) {
         $error_messages[] = 'Current Password is Incorrect';
     }
 
@@ -37,8 +37,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if (empty($error_messages)) {
+        // Hash the new password before updating
+        $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+
         $update_stmt = $conn->prepare("UPDATE student SET Password = ? WHERE StudentID = ?");
-        $update_stmt->bind_param("ss", $new_password, $student_id);
+        $update_stmt->bind_param("ss", $hashed_password, $student_id);
 
         if ($update_stmt->execute()) {
             header("Location: changePassStudent.php?success=update_success"); 
@@ -46,6 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             $error_messages[] = 'Error Changing Password';
         }
+
     }
 
     if (!empty($error_messages)) {

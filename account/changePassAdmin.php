@@ -28,7 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $new_password = $_POST['new_password'];
     $confirm_new_password = $_POST['confirm_new_password'];
 
-    if ($current_password != $admin_data['Password']) {
+    // Verify current password
+    if (!password_verify($current_password, $admin_data['Password'])) {
         $error_messages[] = 'Current Password is Incorrect';
     }
 
@@ -37,8 +38,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if (empty($error_messages)) {        
+        // Hash the new password before updating
+        $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+
         $update_stmt = $conn->prepare("UPDATE admin SET Password = ? WHERE AdminID = ?");
-        $update_stmt->bind_param("ss", $new_password, $admin_id);
+        $update_stmt->bind_param("ss", $hashed_password, $admin_id);
 
         if ($update_stmt->execute()) {
             header("Location: changePassAdmin.php?success=update_success"); 
@@ -84,7 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </ul>
                 </div>
             </li>
-            <li class="menu-dropdown"><a href="">Reports</a>
+            <li class="menu-dropdown"><a href="../reports/studentReport.php">Reports</a>
                 <div class="reports-dropdown">
                     <ul>
                         <li><a href="../reports/studentReport.php">Student</a></li>
